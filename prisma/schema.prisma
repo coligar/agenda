@@ -46,7 +46,7 @@ model User {
   rg                    String?
   sex                   Sex?
   status                StatusUser    @default(NOTVERIFIED)
-  area_activityId       String?       @unique
+  area_activityId       String?
   area_activity         AreaActivity? @relation(fields: [area_activityId], references: [id])
   schedule              Schedule?
   address               Address[]
@@ -58,7 +58,7 @@ model AreaActivity {
   name     String    @unique
   color    String    @unique
   schedule Schedule?
-  user     User?
+  user     User[]
 }
 
 model Address {

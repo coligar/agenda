@@ -7,13 +7,11 @@ import ProTip from '../src/ProTip';
 import Copyright from '../src/Copyright';
 import { useState } from 'react';
 import { prisma } from '../lib/prisma';
-import axios from 'axios'
 import { useGetData } from '../hooks/useRequest';
 import ActivityForm from '../components/form/activities/activityForm';
 import UserSimpleForm from '../components/form/users/userSimpleForm';
 import ActivityFormList from '../components/form/activities/activityFormList';
 import UsersSimpleList from '../components/form/users/usersSimpleList';
-import { toast } from 'react-toastify';
 import useSWR, { mutate, SWRConfig } from 'swr';
 
 
@@ -23,6 +21,7 @@ interface IUser
   name: string;
   role?: string;
   avatar?: string;
+  area_activityId?: string;
 }
 
 interface IGetUserData
@@ -95,7 +94,7 @@ export default function Home(props:any, fallback:any)
       </Box>
       <Box>
         <h2>Adicionar atuação</h2>
-        <ActivityForm url='api/activity' type='POST' dados={[]}/>
+        <ActivityForm url='api/activity' type='POST'/>
         
         <h2>Editar de atuação</h2>
         <SWRConfig value={fallback}>
@@ -107,7 +106,7 @@ export default function Home(props:any, fallback:any)
 
       <Box>
         <h2>Cadastrar usuários</h2>
-        <UserSimpleForm url='api/user' type='POST' dados={[]}/>
+        <UserSimpleForm url='api/user' type='POST'/>
 
         <h2>Editar usuários</h2>
         <SWRConfig value={fallback}>
