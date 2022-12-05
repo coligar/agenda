@@ -12,6 +12,8 @@ import ActivityForm from '../components/form/activities/activityForm';
 import UserSimpleForm from '../components/form/users/userSimpleForm';
 import ActivityFormList from '../components/form/activities/activityFormList';
 import UsersSimpleList from '../components/form/users/usersSimpleList';
+import ScholarityForm from '../components/form/scholarity/scholarityForm';
+import ScholarityFormList from '../components/form/scholarity/scholarityFormList';
 import useSWR, { mutate, SWRConfig } from 'swr';
 
 
@@ -59,6 +61,7 @@ export default function Home(props:any, fallback:any)
   const [agendas, setAgenda] = useState(props.schedule)
   const [users, setUsers] = useState(props.users)
   const [activityArea, setActivityArea] = useState()
+  const [scholarity, setScholarity] = useState()
   const [dataUser, setDataUser] = useState<IUser>()
   const {data: schedule} = useGetData('api/schedule')
 
@@ -70,6 +73,11 @@ export default function Home(props:any, fallback:any)
   const getActivityArea = (data:any) =>
   {
     setActivityArea(data)
+  }
+
+  const getScholarity = (data:any) =>
+  {
+    setScholarity(data)
   }
 
   return (
@@ -84,13 +92,24 @@ export default function Home(props:any, fallback:any)
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          MUI v5 + Next.js with TypeScript example
+          Área de formulários para Testes
         </Typography>
-        <Link href="/about" color="secondary">
-          Go to the about page
+        <Link href="/main" color="secondary">
+          Ir para layout principal
         </Link>
-        <ProTip />
-        <Copyright />
+
+      </Box>
+
+      <Box>
+        <h2>Adicionar escolaridade</h2>
+        <ScholarityForm url='api/scholarity' type='POST'/>
+        
+        <h2>Editar escolaridade</h2>
+        <SWRConfig value={fallback}>
+          <ScholarityFormList onClick={getScholarity}/>
+        </SWRConfig>
+
+        <ScholarityForm url='api/scholarity' type='PUT' dados={scholarity}/>
       </Box>
       <Box>
         <h2>Adicionar atuação</h2>

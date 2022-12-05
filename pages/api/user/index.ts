@@ -1,3 +1,4 @@
+import { AreaActivity } from './../../../node_modules/.prisma/client/index.d';
 import { prisma } from "../../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -20,7 +21,11 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
             response = await prisma.user.findMany(
             {
                 orderBy:{role:'desc'},
-                include:{address:true}
+                include:{
+                    address:true,
+                    contact:true,
+                    area_activity: true,
+                }
             })
         }
 

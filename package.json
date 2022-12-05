@@ -17,7 +17,7 @@
     "@mui/icons-material": "^5.10.15",
     "@mui/material": "latest",
     "@next/font": "latest",
-    "@prisma/client": "latest",
+    "@prisma/client": "^4.7.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
@@ -35,6 +35,6 @@
     "yup": "latest"
   },
   "devDependencies": {
-    "prisma": "latest"
+    "prisma": "^4.7.1"
   }
 }

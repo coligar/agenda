@@ -17,7 +17,7 @@ model Schedule {
   endtime         DateTime       @db.Time(0)
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
-  userId          String?        @unique
+  userId          String?
   status          StatusSchedule @default(ACTIVE)
   interviewer     String?        @unique
   schedule_typeId String?        @unique
@@ -25,6 +25,8 @@ model Schedule {
   schedule_type   ScheduleType?  @relation(fields: [schedule_typeId], references: [id])
   area_activity   AreaActivity?  @relation(fields: [area_activityId], references: [id])
   user            User?          @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model User {
@@ -38,7 +40,7 @@ model User {
   account_verified      Boolean       @default(false)
   account_verified_date DateTime?
   birth_date            DateTime?     @db.Date
-  cpf                   String?
+  cpf                   String?       @db.VarChar(14)
   have_desability       Boolean       @default(false)
   lastname              String?
   own_car               Boolean       @default(false)
@@ -47,10 +49,37 @@ model User {
   sex                   Sex?
   status                StatusUser    @default(NOTVERIFIED)
   area_activityId       String?
+  schedule              Schedule[]
   area_activity         AreaActivity? @relation(fields: [area_activityId], references: [id])
-  schedule              Schedule?
+  resume                Resume?
   address               Address[]
   contact               Contact[]
+
+  @@index([area_activityId])
+}
+
+model Resume {
+  id                      String                   @id @default(cuid())
+  sumary                  String                   @db.Text
+  userId                  String                   @unique
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  user                    User                     @relation(fields: [userId], references: [id])
+  professional_experience ProfessionalExperience[]
+}
+
+model ProfessionalExperience {
+  id          String   @id @default(cuid())
+  company     String   @db.VarChar(255)
+  admission   DateTime @db.Date
+  resignation DateTime @db.Date
+  activity    String   @db.MediumText
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  resumeId    String
+  resume      Resume   @relation(fields: [resumeId], references: [id])
+
+  @@index([resumeId])
 }
 
 model AreaActivity {
@@ -62,7 +91,7 @@ model AreaActivity {
 }
 
 model Address {
-  id         String  @id @default(cuid())
+  id         String   @id @default(cuid())
   zip        String
   address    String
   number     String
@@ -71,7 +100,11 @@ model Address {
   city       String
   uf         String
   userId     String
-  user       User    @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Contact {
@@ -81,15 +114,26 @@ model Contact {
   userId             String
   contact_type       ContactType @default(RESIDENTIAL)
   is_default_contact Boolean     @default(false)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
   user               User        @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Scholarity {
+  id   String @id @default(cuid())
+  name String
 }
 
 model ScheduleType {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  icon     String    @unique
-  color    String    @unique
-  schedule Schedule?
+  id        String    @id @default(cuid())
+  name      String    @unique
+  icon      String    @unique
+  color     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  schedule  Schedule?
 }
 
 enum StatusUser {
