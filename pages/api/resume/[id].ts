@@ -6,19 +6,8 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
     const { id } = req.query
 
     const { 
-        email, 
-        name, 
-        lastname, 
-        role, 
-        avatar, 
-        birth_date, 
-        cpf, 
-        rg, 
-        sex,
-        have_desability, 
-        own_car,
-        status,
-        area_activity,
+        sumary, 
+
     } = req.body
 
     try 
@@ -33,54 +22,38 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
 
         if(req.method === 'PUT')
         {
-            response = await prisma.user.update(
+            response = await prisma.resume.update(
             {
                 where:{
                     id: id?.toString()
                 }, 
                 data:
                 {
-                    email, 
-                    name, 
-                    lastname, 
-                    role, 
-                    avatar, 
-                    birth_date, 
-                    cpf, 
-                    rg, 
-                    sex,
-                    have_desability, 
-                    own_car,
-                    status,
-                    area_activity,
+                    sumary, 
                 }
             })
 
             status_code = 202
-            response = {message : 'Usuário atualizado com sucesso'}
+            response = {message : 'Currículo atualizado com sucesso'}
         }
 
         if(req.method === 'GET')
         {
-            response = await prisma.user.findUnique(
+            response = await prisma.resume.findUnique(
             {
                 where:{
                     id: id?.toString()
                 },
                 include:{
-                    address:true,
-                    email_contact:true,
-                    area_activity: true,
-                    phone_contact: true,
-                    resume: true,
-                    schedule: true,
+                    user: true,
+                    professional_experience: true
                 }
             })
         }
 
         if(req.method === 'DELETE')
         {
-            response = await prisma.user.delete(
+            response = await prisma.resume.delete(
             {
                 where:{
                     id: id?.toString()
@@ -88,7 +61,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
             })
 
             status_code = 204
-            response = {message : 'Usuário excluído com sucesso'}
+            response = {message : 'Currículo excluído com sucesso'}
         }
 
         

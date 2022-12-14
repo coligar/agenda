@@ -32,12 +32,13 @@ const Search = styled('div')(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
+
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
+      marginLeft: theme.spacing(1),
       width: 'auto',
     },
   }));
@@ -62,7 +63,10 @@ const Search = styled('div')(({ theme }) => ({
       width: '100%',
       [theme.breakpoints.up('md')]: {
         width: '20ch',
-      },
+        '&:focus':{
+          width: '40ch',
+        }
+      }
     },
   }));
 
@@ -205,7 +209,7 @@ const Main = () =>
                         <SearchIcon />
                     </SearchIconWrapper>
                     <StyledInputBase
-                    placeholder="Search…"
+                    placeholder="Pesquisar…"
                     inputProps={{ 'aria-label': 'search' }}
                     />
                 </Search>

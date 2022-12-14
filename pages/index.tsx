@@ -14,7 +14,11 @@ import ActivityFormList from '../components/form/activities/activityFormList';
 import UsersSimpleList from '../components/form/users/usersSimpleList';
 import ScholarityForm from '../components/form/scholarity/scholarityForm';
 import ScholarityFormList from '../components/form/scholarity/scholarityFormList';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 import useSWR, { mutate, SWRConfig } from 'swr';
+import CurriculoForm from '../components/form/curriculo/curriculoForm';
+import FullUserForm from '../components/form/users/fullUserForm';
 
 
 interface IUser
@@ -100,40 +104,109 @@ export default function Home(props:any, fallback:any)
 
       </Box>
 
-      <Box>
-        <h2>Adicionar escolaridade</h2>
-        <ScholarityForm url='api/scholarity' type='POST'/>
-        
-        <h2>Editar escolaridade</h2>
-        <SWRConfig value={fallback}>
-          <ScholarityFormList onClick={getScholarity}/>
-        </SWRConfig>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
 
-        <ScholarityForm url='api/scholarity' type='PUT' dados={scholarity}/>
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Adicionar escolaridade</h2>
+              <ScholarityForm url='api/scholarity' type='POST'/>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Listar escolaridade</h2>
+              <SWRConfig value={fallback}>
+                <ScholarityFormList onClick={getScholarity}/>
+              </SWRConfig>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper>
+            <h2>Editar escolaridade</h2>
+              <ScholarityForm url='api/scholarity' type='PUT' dados={scholarity}/>
+            </Paper>
+          </Grid>
+
+
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Adicionar atuação</h2>
+              <ActivityForm url='api/activity' type='POST'/>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Listar de atuação</h2>
+              <SWRConfig value={fallback}>
+                <ActivityFormList onClick={getActivityArea}/>
+              </SWRConfig>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Editar de atuação</h2>
+              <ActivityForm url='api/activity' type='PUT' dados={activityArea}/>
+            </Paper>
+          </Grid>
+
+
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Cadastrar usuários</h2>
+              <UserSimpleForm url='api/user' type='POST'/>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Listar usuários</h2>
+              <SWRConfig value={fallback}>
+                <UsersSimpleList onClick={getUserData}/>
+              </SWRConfig>
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Editar usuários</h2>
+              <UserSimpleForm url='api/user' type='PUT' dados={dataUser}/>
+            </Paper>
+          </Grid>
+        </Grid>
       </Box>
-      <Box>
-        <h2>Adicionar atuação</h2>
-        <ActivityForm url='api/activity' type='POST'/>
-        
-        <h2>Editar de atuação</h2>
-        <SWRConfig value={fallback}>
-          <ActivityFormList onClick={getActivityArea}/>
-        </SWRConfig>
 
-        <ActivityForm url='api/activity' type='PUT' dados={activityArea}/>
+      <Box sx={{ 
+        flexGrow: 1,
+        boxShadow: 0,
+        bgcolor: 'background.paper',
+        m: 1,
+        borderRadius:2,
+        overflow: 'hidden',
+        width: '100%',
+       }}>
+        <Paper>
+        <CurriculoForm type='POST'/>
+        </Paper>
+        
       </Box>
 
-      <Box>
-        <h2>Cadastrar usuários</h2>
-        <UserSimpleForm url='api/user' type='POST'/>
 
-        <h2>Editar usuários</h2>
-        <SWRConfig value={fallback}>
-          <UsersSimpleList onClick={getUserData}/>
-        </SWRConfig>
+      <Box sx={{ 
+        flexGrow: 1,
+        boxShadow: 0,
+        bgcolor: 'background.paper',
+        m: 1,
+        borderRadius:2,
+        overflow: 'hidden',
+        width: '100%',
+       }}>
+        <Paper>
+        <FullUserForm type='POST'/>
+        </Paper>
         
-        <UserSimpleForm url='api/user' type='PUT' dados={dataUser}/>
       </Box>
+
+
+
     </Container>
   );
 }

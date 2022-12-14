@@ -4,7 +4,27 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, resp: NextApiResponse)
 {
-    const { email, name, lastname, role, avatar, birth_date, cpf, rg, sex, password, area_activityId} = req.body
+    const { 
+        email, 
+        name, 
+        lastname, 
+        role, 
+        avatar, 
+        birth_date, 
+        cpf, 
+        rg, 
+        sex, 
+        password, 
+        area_activityId,
+        zip,
+        address,
+        number,
+        complement,
+        district,
+        city,
+        uf,
+        phone,
+    } = req.body
 
     try 
     {
@@ -23,8 +43,11 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                 orderBy:{role:'desc'},
                 include:{
                     address:true,
-                    contact:true,
+                    email_contact:true,
                     area_activity: true,
+                    phone_contact: true,
+                    resume: true,
+                    schedule: true,
                 }
             })
         }
@@ -45,7 +68,23 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     rg,
                     sex,
                     password,
-                    area_activityId
+                    area_activityId,
+                    email_contact:
+                    {
+                        create:
+                        {
+                            email: email,
+                            is_default_email: true,
+                        }
+                    },
+                    phone_contact:
+                    {
+                        create:
+                        {
+                            phone,
+                            is_default_phone: true,
+                        }
+                    }
                 }
             })
         
