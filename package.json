@@ -14,20 +14,24 @@
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@hookform/resolvers": "latest",
-    "@mui/icons-material": "^5.10.15",
+    "@mui/icons-material": "^5.11.0",
     "@mui/material": "latest",
+    "@mui/x-data-grid": "^5.17.16",
+    "@mui/x-date-pickers": "^5.0.11",
     "@next/font": "latest",
-    "@prisma/client": "^4.7.1",
+    "@prisma/client": "^4.8.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
     "axios": "latest",
+    "dayjs": "^1.11.7",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.4",
     "next": "13.0.4",
     "next-google-fonts": "^2.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-draggable": "^4.4.5",
     "react-hook-form": "latest",
     "react-toastify": "latest",
     "swr": "latest",
@@ -35,6 +39,6 @@
     "yup": "latest"
   },
   "devDependencies": {
-    "prisma": "^4.7.1"
+    "prisma": "^4.8.0"
   }
 }

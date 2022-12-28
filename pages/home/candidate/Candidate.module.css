@@ -1,0 +1,186 @@
+.container
+{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    padding-bottom: 25px;
+}
+
+.info_area,
+.resume_area,
+.noevent
+{
+    display: flex;
+    flex: 1;
+}
+
+.info_area,
+.resume_area
+{
+
+    flex-direction: column;
+    margin-top: 15px;
+    height: 100vh;
+}
+
+.noevent
+{
+    flex-direction:column;
+    align-items:center;
+    justify-content: center;
+    padding: 25px 0 65px 0;
+}
+
+.noevent img{
+    margin-bottom: 25px;
+}
+
+.info_area
+{
+    /*border-right: 1px solid #CFCFCF;*/
+    padding-right: 0px;
+}
+
+.schedule,
+.log_info,
+.resume
+{
+    align-items: center;
+}
+
+.title_area
+{
+    flex-direction: column;
+    margin: 10px 0 15px 0; 
+}
+
+.title_area h2, .title_area p
+{
+    padding: 0;
+    margin: 0;
+}
+
+.title_area h2
+{
+    font-weight: 600;
+    color:rgb(0, 0, 0, 0.6);
+    font-size:16px;
+    text-transform:uppercase;
+    margin-bottom: 8px;
+}
+
+.title_area p
+{
+    color: #707070;
+    font-size: 13px;
+}
+
+.title_area span.feature 
+{
+    color:#3B92E7;
+}
+
+@media screen and (max-width: 768px) 
+{
+    .container
+    {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+    }
+
+    .info_area,
+    .resume_area
+    {
+        flex:1;
+        flex-direction: column;
+        margin-top: 15px;
+    }
+
+    .schedule,
+    .log_info,
+    .resume
+    {
+       margin-bottom: 55px;
+    }
+
+    .info_area
+    {
+        border-right: none;
+        margin-right:0;
+        padding-right: 0;
+    }
+
+    .resume_area
+    {
+       order: 1;
+    }
+ 
+    .info_area
+    {
+        order: 2;
+    }
+}
+
+@media screen and (max-width: 540px) 
+{
+    .container
+    {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+    }
+
+    .info_area,
+    .resume_area
+    {
+        flex:1;
+        flex-direction: column;
+        margin-top: 15px;
+    }
+
+    .schedule,
+    .log_info,
+    .resume
+    {
+       margin-bottom: 55px;
+    }
+    .info_area
+    {
+        border-right: none;
+        margin-right:0;
+        padding-right: 0;
+    }
+}
+
+@media screen and (max-width: 414px) 
+{
+    .container
+    {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+    }
+
+    .info_area,
+    .resume_area
+    {
+        flex:1;
+        flex-direction: column;
+        margin-top: 15px;
+        height:100%;
+    }
+
+    .schedule,
+    .log_info,
+    .resume
+    {
+       margin-bottom: 55px;
+    }
+    .info_area
+    {
+        border-right: none;
+        margin-right:0;
+        padding-right: 0;
+    }
+}
