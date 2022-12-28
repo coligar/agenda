@@ -153,7 +153,7 @@ const ModernCalendar = (props:any) =>
                     'Content-Type': 'application/json; charset=UTF-8'
                 }
             })
-            console.log('passou aqui', response)
+            //console.log('passou aqui', response)
             if(!response.ok)
             {
                 throw new Error(response.statusText)
@@ -163,7 +163,7 @@ const ModernCalendar = (props:any) =>
         {
             console.log(error)
         }
-    },[])
+    },[current])
 
 
     useEffect(() => 
