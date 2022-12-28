@@ -34,7 +34,7 @@ const AvatarPicture = (props: any) =>
     function stringAvatar(name = '') 
     {   
         let my_name
-        let last_index_array = parseInt(Number(name.split(' ').length)) - 1
+        let last_index_array = name.split(' ').length - 1
 
         if(name == '')
         {
