@@ -1,6 +1,4 @@
-
-
-const Iframe = ({url, height}) => 
+const Iframe = (url:any, height:any) => 
 {
     let h = (height) ? height+'px' : '450px'
 
