@@ -1,6 +1,6 @@
 import style from "./Tag.module.css"
 
-const Tag = (props) => 
+const Tag = (props:any) => 
 {
     let color
 

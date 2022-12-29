@@ -1,8 +1,8 @@
 import IconButton from '@mui/material/IconButton'
 import CommentIcon from '@mui/icons-material/Comment'
-import Comments from '../forms/resumecomments'
+import Comments from '../form/resumecomments'
 
-const DoComment = (props) => 
+const DoComment = (props:any) => 
 {
     const {openWindow, closeWindow, dialog, callback, data, ...others} = props
     let icon_padding = (props.padding) ? props.padding : "3px"

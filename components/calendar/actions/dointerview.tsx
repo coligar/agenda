@@ -1,8 +1,8 @@
 import IconButton from '@mui/material/IconButton';
 import DateIcon from '@mui/icons-material/DateRange'
-import ScheduleForm from '../forms/scheduleinterview'
+import ScheduleForm from '../form/scheduleinterview'
 
-const DoInterview = (props) =>
+const DoInterview = (props:any) =>
 {
     const {openWindow, closeWindow, dialog, callback, data, ...others} = props
     let icon_padding = (props.padding) ? props.padding : "3px"

@@ -169,7 +169,7 @@ const ModernCalendar = (props:any) =>
     useEffect(() => 
     {
         //doSchedule()
-        getData()
+       // getData()
     },[doSchedule, getData])
 
 

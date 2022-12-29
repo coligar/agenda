@@ -2,7 +2,7 @@ import IconButton from '@mui/material/IconButton'
 import PinIcon from '@mui/icons-material/Room'
 import Iframe from './iframe'
 
-const GoMap = (props) => 
+const GoMap = (props:any) => 
 {
     const {openWindow, ...others} = props
     let icon_padding = (props.padding) ? props.padding : "3px"

@@ -2,7 +2,7 @@ import IconButton from '@mui/material/IconButton'
 import PhoneIcon from '@mui/icons-material/PhoneInTalk'
 
 
-const DoCall = (props) => 
+const DoCall = (props:any) => 
 {
     let icon_padding = (props.padding) ? props.padding : "3px"
     let font_size = (props.font_size) ? props.fontsize : "18px"

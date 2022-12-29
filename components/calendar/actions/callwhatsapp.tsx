@@ -2,7 +2,7 @@ import IconButton from '@mui/material/IconButton'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
 import { useState } from 'react'
 
-const CallWhatsapp = (props) => 
+const CallWhatsapp = (props:any) => 
 {
     let icon_padding = (props.padding) ? props.padding : "3px"
     let font_size = (props.font_size) ? props.fontsize : "18px"

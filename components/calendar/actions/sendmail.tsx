@@ -1,7 +1,7 @@
 import IconButton from '@mui/material/IconButton'
 import MailIcon from '@mui/icons-material/MailOutline'
 
-const SendMail = (props) => 
+const SendMail = (props:any) => 
 {
     let icon_padding = (props.padding) ? props.padding : "3px"
     let font_size = (props.font_size) ? props.fontsize : "18px"

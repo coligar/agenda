@@ -46,8 +46,14 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     email_contact:true,
                     area_activity: true,
                     phone_contact: true,
-                    resume: true,
+                    resume:{
+                        include:{
+                            experience: true,
+                        },
+                    },
                     schedule: true,
+                    curriculo: true,
+                    scholarity: true,
                 }
             })
         }

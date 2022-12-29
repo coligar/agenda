@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                 },
                 include:{
                     user: true,
-                    professional_experience: true
+                    experience: true
                 }
             })
         }

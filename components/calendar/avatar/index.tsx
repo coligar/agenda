@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar'
 import Stack from '@mui/material/Stack'
 
-const AvatarPicture = (props) => 
+const AvatarPicture = (props:any) => 
 {
     
     function hasborder(border = false)
@@ -11,7 +11,7 @@ const AvatarPicture = (props) =>
     }
 
     
-    function stringToColor(string) 
+    function stringToColor(string:any) 
     {
         let hash = 0;
         let i;
@@ -34,7 +34,7 @@ const AvatarPicture = (props) =>
     function stringAvatar(name = '') 
     {   
         let my_name
-        let last_index_array = parseInt(name.split(' ').length) - 1
+        let last_index_array = name.split(' ').length - 1
 
         if(name == '')
         {

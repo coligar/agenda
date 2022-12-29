@@ -1,6 +1,6 @@
 import Style from './Bullet.module.css'
 
-const Bullet = (props) => 
+const Bullet = (props:any) => 
 {
     let size = (!props.size) ? "10px" : props.size
     let mr = (!props.mr) ? "0px" : props.mr

@@ -16,11 +16,11 @@ export async function getServerSideProps()
 {
   const users = await prisma.user.findMany()
   //const users = axios.get('http://localhost:3000/api/user/').then((res) => res.data)
-  const schedule = await prisma.schedule.findMany()
+  //const schedule = await prisma.schedule.findMany()
   const activity = await prisma.areaActivity.findMany()
   return{
     props:{
-      schedule: JSON.parse(JSON.stringify(schedule)),
+      //schedule: JSON.parse(JSON.stringify(schedule)),
       activity: JSON.parse(JSON.stringify(activity)),
       fallback:{
         '/api/user':JSON.stringify(users),
@@ -168,6 +168,7 @@ const Manager = (props:any, fallback:any) =>
     const getCandidateResume = (data:any) => 
     {
         //setResume(data['resume'])
+        console.log(data)
         setResume(data)
     }
 

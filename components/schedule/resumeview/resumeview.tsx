@@ -31,6 +31,8 @@ const Resumeview = (props:any) =>
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
+    console.log(props)
+
     const handleClick = (event:any) => 
     {
         setAnchorEl(event.currentTarget);
@@ -167,7 +169,7 @@ const Resumeview = (props:any) =>
                         <div className={style.candidate_resume_area}>
 
                             <div className={style.candidate_resume_area_status}>
-                                <Tag area={props.data.area_of_interest}/>
+                                <Tag area={props.data.area_activity.name}/>
                                 <StatusResume type={props.data.status_resume} time={props.data.date_status_resume}/>
                             </div>
 
@@ -213,17 +215,17 @@ const Resumeview = (props:any) =>
 
                     <div className={style.candidate_resume_body_line}>
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Data de nascimento:</strong> {props.data.birthdate}
+                            <strong>Data de nascimento:</strong> {(props.data.birth_date) ? new Date(props.data.birth_date).toLocaleDateString() : 'Sem data de nascimento'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>CPF:</strong> {props.data.cpf}
+                            <strong>CPF:</strong> {props.data.cpf ? props.data.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4") : 'Sem CPF'}
                         </div>       
                     </div>
 
                     <div className={style.candidate_resume_body_line}>
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Telefone:</strong> {props.data.telephone}
+                            <strong>Telefone:</strong> {props.data.phone_contact[0].phone ? props.data.phone_contact[0].phone : 'Sem telefone'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
@@ -233,41 +235,41 @@ const Resumeview = (props:any) =>
 
                     <div className={style.candidate_resume_body_line}>                                       
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Sexo:</strong> {props.data.gender}
+                            <strong>Sexo:</strong> {(props.data.sex === 'F')? 'Feminino' : 'Masculino'}
                         </div> 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>CEP:</strong> {props.data.zipcode}
+                            <strong>CEP:</strong> {(props.data.address.length > 0) ? props.data.address[0].zip : 'Sem cep'}
                         </div>
                     </div>
 
                     <div className={style.candidate_resume_body_line}>
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Endereço:</strong> {props.data.address}
+                            <strong>Endereço:</strong> {(props.data.address.length > 0) ? props.data.address[0].address : 'Sem endereço'}, {(props.data.address.length > 0) ? props.data.address[0].number : 'Sem número'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Bairro:</strong> {props.data.district}
+                            <strong>Bairro:</strong> {(props.data.address.length > 0) ? props.data.address[0].district : 'Sem bairro'}
                         </div>       
                     </div>
 
                     <div className={style.candidate_resume_body_line}>
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Cidade:</strong> {props.data.city}
+                            <strong>Cidade:</strong> {(props.data.address.length > 0) ? props.data.address[0].city : 'Sem cidade'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>UF:</strong> {props.data.uf}
+                            <strong>UF:</strong> {(props.data.address.length > 0) ? props.data.address[0].uf : 'Sem UF'}
                         </div>       
                     </div>
 
                     <div className={style.candidate_resume_body_line}>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Possui deficiência:</strong> {props.data.has_disability}
+                            <strong>Possui deficiência:</strong> {(props.data.have_desability) ? 'Sim' : 'Não'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Possui veículo próprio:</strong> {props.data.own_vehicle}
+                            <strong>Possui veículo próprio:</strong> {(props.data.own_car) ? 'Sim' : 'Não'}
                         </div>
 
                     </div>
@@ -279,7 +281,7 @@ const Resumeview = (props:any) =>
                         </div>
 
                         <div className={style.candidate_resume_body_line} style={{flexDirection:"column"}}>
-                            {props.data.summary}
+                            {(props.data.resume) ? props.data.resume.sumary : 'Sem sumário'}
                         </div>
 
                     </div>
@@ -293,11 +295,11 @@ const Resumeview = (props:any) =>
                     <div className={style.candidate_resume_body_line}>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Área de interesse:</strong> {props.data.area_of_interest}
+                            <strong>Área de interesse:</strong> {(props.data.area_activity) ? props.data.area_activity.name : 'Sem área de interesse'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Formação:</strong> {props.data.academic_education}
+                            <strong>Formação:</strong> {(props.data.scholarity) ? props.data.scholarity.name : 'Sem formação'}
                         </div>
 
                     </div>
@@ -311,7 +313,7 @@ const Resumeview = (props:any) =>
                     <div className={style.candidate_resume_body_line}>
 
                         <div className={style.candidate_resume_body_line_itens} style={{width: "100%"}}>
-                            <strong>Nome da última empresa:</strong> {props.data.last_company}
+                            <strong>Nome da última empresa:</strong> {(props.data.curriculo) ? props.data.curriculo.last_company : 'Sem última empresa'}
                         </div>
 
                     </div>
@@ -319,11 +321,11 @@ const Resumeview = (props:any) =>
                     <div className={style.candidate_resume_body_line}>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Data de admissão:</strong> {props.data.last_adminission_date}
+                            <strong>Data de admissão:</strong> {(props.data.curriculo) ? new Date(props.data.curriculo.last_admission).toLocaleDateString() : 'Sem data de admissão'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Data de demissão:</strong> {props.data.last_resignation_date}
+                            <strong>Data de demissão:</strong> {(props.data.curriculo) ? new Date(props.data.curriculo.last_resignation).toLocaleDateString() : 'Sem data de demissão'}
                         </div>
                         
                     </div>
@@ -333,7 +335,7 @@ const Resumeview = (props:any) =>
 
                         <strong><p>Atividades realizadas:</p></strong>
 
-                        {props.data.last_performed_activities}
+                        {(props.data.curriculo) ? props.data.curriculo.last_activity : 'Sem atividades'}
 
                     </div>
                     
@@ -342,7 +344,7 @@ const Resumeview = (props:any) =>
                     <div className={style.candidate_resume_body_line}>
 
                         <div className={style.candidate_resume_body_line_itens} style={{width: "100%"}}>
-                            <strong>Nome da penúltima empresa:</strong> {props.data.penultimate_company}
+                            <strong>Nome da penúltima empresa:</strong> {(props.data.curriculo) ? props.data.curriculo.penultimate_company : 'Sem última empresa'}
                         </div>
 
                     </div>
@@ -350,11 +352,11 @@ const Resumeview = (props:any) =>
                     <div className={style.candidate_resume_body_line}>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Data de admissão:</strong> {props.data.penultimate_adminission_date}
+                            <strong>Data de admissão:</strong> {(props.data.curriculo) ? new Date(props.data.curriculo.penultimate_admission).toLocaleDateString() : 'Sem data de admissão'}
                         </div>
 
                         <div className={style.candidate_resume_body_line_itens}>
-                            <strong>Data de demissão:</strong> {props.data.penultimate_resignation_date}
+                            <strong>Data de demissão:</strong> {(props.data.curriculo) ? new Date(props.data.curriculo.penultimate_resignation).toLocaleDateString() : 'Sem data de demissão'}
                         </div>
                         
                     </div>
@@ -362,7 +364,7 @@ const Resumeview = (props:any) =>
                     <div className={style.candidate_resume_body_line} style={{flexDirection:"column"}}>
 
                         <strong><p>Atividades realizadas:</p></strong>
-                        {props.data.penultimate_performed_activities}
+                        {(props.data.curriculo) ? props.data.curriculo.penultimate_activity : 'Sem atividades'}
 
                     </div>
 
@@ -379,8 +381,8 @@ const Resumeview = (props:any) =>
                             callback={doAnything}
                         />
                         <GoMap openWindow = {openPopupWithContent}/>
-                        <DoCall tel={props.data.telephone}/>
-                        <CallWhatsapp tel={props.data.telephone}/>
+                        <DoCall tel={props.data.phone_contact[0].phone ? props.data.phone_contact[0].phone : 'Sem telefone'}/>
+                        <CallWhatsapp tel={props.data.phone_contact[0].phone ? props.data.phone_contact[0].phone : 'Sem telefone'}/>
                         <SendMail mail={props.data.email}/>
                         <PrintContent data={props.data}/>
                         <DoComment 
