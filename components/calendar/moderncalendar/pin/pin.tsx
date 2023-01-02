@@ -5,7 +5,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import Box from '@mui/material/Box'
 import { useEffect, useState } from 'react'
 
-const Pin = (props) => 
+const Pin = (props:any) => 
 {
     
     let icon, bg, border, icon_color
@@ -13,9 +13,9 @@ const Pin = (props) =>
     let width = (props.width) ? props.width : '100%'
     let ml = (props.ml) ? props.ml : '0'
 
-    const[interviewprogress, setInterviewProgress] = useState ({variant:'indeterminate', progress:0})
+    const[interviewprogress, setInterviewProgress] = useState ({variant:"indeterminate", progress:0})
     const[opacity, setOpacity] = useState('1')
-    const[interviewcurrentduration, setInterviewCurrentDuration] = useState()
+    const[interviewcurrentduration, setInterviewCurrentDuration] = useState<string>('')
 
     let today = new Date().toLocaleDateString()
     var date = new Date()
@@ -31,8 +31,8 @@ const Pin = (props) =>
 
         if(actual_time.getTime() >= start_time.getTime() && actual_time.getTime() <= end_time.getTime() && today === props.day)
         {
-            let interview_duration =  Math.ceil((end_time-start_time)/(1000*60))
-            let interview_time = Math.ceil((Math.abs(actual_time - start_time)/(1000*60)))
+            let interview_duration =  Math.ceil(Number(end_time)-Number(start_time)/(1000*60))
+            let interview_time = Math.ceil((Math.abs(Number(actual_time) - Number(start_time))/(1000*60)))
             let percent_progress = Math.ceil((interview_time*100)/interview_duration)
 
             if(interview_time > 60)
@@ -87,7 +87,7 @@ const Pin = (props) =>
     {
         if(actual_time.getTime() < start_time.getTime() && today === props.day)
         {
-            let interview_time = Math.ceil((Math.abs(start_time - actual_time)/(1000*60)))
+            let interview_time = Math.ceil((Math.abs(Number(start_time) - Number(actual_time))/(1000*60)))
 
             let check_minutes =  interview_time%60 //pega o resto da divisão dos minutos dividido por 60(hora)
 
@@ -96,7 +96,7 @@ const Pin = (props) =>
             let interview_current_duration = ' ( -' + get_hours + ':' + interview_minutes +' ) '
 
             setInterviewCurrentDuration(interview_current_duration)
-            setInterviewProgress({variant:'indeterminate', progress:0, percent:0})
+            setInterviewProgress({variant:'indeterminate', progress:0})
         }
 
         if(start_time.getTime() === actual_time.getTime())
@@ -188,7 +188,7 @@ const Pin = (props) =>
                 </div>
                 <div className={style.time}>
                     <Box sx={{ width: '30%', marginRight:'10px' }}>
-                        <LinearProgress variant={interviewprogress.variant} color="inherit" style={{color: icon_color}} value={interviewprogress.progress}/>
+                        <LinearProgress variant="determinate" color="inherit" style={{color: icon_color}} value={interviewprogress.progress}/>
                     </Box>
                     <span style={{color:icon_color, marginRight:'7px'}}>
                         {interviewprogress.progress}% 
