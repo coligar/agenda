@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                 orderBy:{id:'desc'},
                 include:{
                     user: true,
-                    professional_experience: true
+                    experience: true
                 }
             })
         }
@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                 data:
                 {
                     sumary,
-                    professional_experience:
+                    experience:
                     {
                         create: professional_experience
                     },
