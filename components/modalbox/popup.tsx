@@ -39,7 +39,7 @@ const DialogModel = styled(Dialog)(( {theme}) =>
 }))
 
 
-function PaperComponent(props) 
+function PaperComponent(props:any) 
 {
   return (
     <Draggable
@@ -52,7 +52,7 @@ function PaperComponent(props)
 }
 
 
-const DialogModelTitle = (props) => 
+const DialogModelTitle = (props:any) => 
 {
     const { children, onClose, ...other } = props
   
@@ -85,7 +85,7 @@ DialogModelTitle.propTypes =
 }
 
 
-const Popup = (props) =>
+const Popup = (props:any) =>
 {
     const { title, children, openPopup, setOpenPopup } = props
     const maxWidth = (props.maxwidth) ? props.maxwidth : 'md'
@@ -101,14 +101,14 @@ const Popup = (props) =>
           aria-labelledby="draggable-dialog-title"
       >
           <DialogModelTitle onClose={() => setOpenPopup(false)}
-            id="draggable-dialog-title"
-            sx={{
+            //id="draggable-dialog-title"
+            /*sx={{
               cursor:'move',
               color:'#707070', 
               fontSize:'14px', 
               textTransform:'uppercase', 
               fontWeight:'500' 
-            }}
+            }}*/
           >
               <Typography variant='h6' component="div" style={{flexGrow:1, fontSize:'16px', padding: '0px'}}>
                   {title}

@@ -121,17 +121,8 @@ const Modal = (props:any)  =>
       >
 
         <BootstrapDialogTitle 
-          style={
-            { 
-              cursor: 'move', 
-              color:'#707070', 
-              fontSize:'14px', 
-              textTransform:'uppercase', 
-              fontWeight:'500' 
-            }
-          } 
-
-          id="draggable-dialog-title" onClose={handleClose}
+          //id="draggable-dialog-title" 
+          onClose={handleClose}
         >
           
           {props.title}

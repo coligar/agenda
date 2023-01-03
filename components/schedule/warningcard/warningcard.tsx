@@ -23,7 +23,7 @@ const WarningCard = (props:any) =>
     let x, colortype, type, reschedule, title
 
     const [notify, setNotify] = useState({isOpen: false, message:'', type:''})
-    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, maintitle:'', title: '', subTitle: '', type: ''})
+    
 
     const [openPopup, setOpenPopup] = useState(false)
     const [content, setContent] = useState()
@@ -56,6 +56,8 @@ const WarningCard = (props:any) =>
 
         closePopUp()
     }
+
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, maintitle:'', title: '', subTitle: '', type: '', onConfirm: doAnything})
 
     const closePopUp = () =>
     {
@@ -133,7 +135,7 @@ const WarningCard = (props:any) =>
                                 title: 'Tem certeza que deseja confirmar o reagendamento?',
                                 subTitle: 'Você não será capaz de desfazer esta operação',
                                 type: 'confirm',
-                                onConfirm: () => {doAnything(1)}
+                                onConfirm: () => {return doAnything(1)}
                             })
                         } 
                         className={style.confirm}>

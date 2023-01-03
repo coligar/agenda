@@ -41,7 +41,7 @@ import StoreIcon from '@mui/icons-material/Store'
 
 
 
-const ExpandMore = styled((props) => 
+const ExpandMore = styled((props:any) => 
 {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -54,7 +54,7 @@ const ExpandMore = styled((props) =>
 }));
 
 
-const Resume = (props) => 
+const Resume = (props:any) => 
 {
 
     const [expanded, setExpanded] = useState(false);
@@ -74,33 +74,33 @@ const Resume = (props) =>
         setWarning(warning)
     }
 
-    const handleEnableButtomClick = (event) =>
+    const handleEnableButtomClick = (event:any) =>
     {
         let enablebuttom = (!event.target.checked) ? <Button disabled variant="contained" size="small">cadastrar</Button> : <Button variant="contained" size="small">cadastrar</Button>
         setEnableButtom(enablebuttom)
     }
 
-    const handleDeficienciaClick = (event) => 
+    const handleDeficienciaClick = (event:any) => 
     {
         setDeficiencia(event.target.value);
     }
 
-    const handleSexoClick = (event) => 
+    const handleSexoClick = (event:any) => 
     {
         setSexo(event.target.value);
     }
 
-    const handleVeiculoClick = (event) => 
+    const handleVeiculoClick = (event:any) => 
     {
         setVeiculo(event.target.value);
     }
 
-    const handleJobClick = (event) => 
+    const handleJobClick = (event:any) => 
     {
         setJob(event.target.value);
     }
 
-    const handleFormacaoClick = (event) => 
+    const handleFormacaoClick = (event:any) => 
     {
         setFormacao(event.target.value);
     }
@@ -240,7 +240,7 @@ const Resume = (props) =>
                                             </InputAdornment>
                                             ),
                                             style:{fontSize:14},
-                                            pattern: '/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i',
+                                            //pattern: '/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i',
                                         }}
                                         InputLabelProps={{
                                             style:{fontSize:14},
@@ -520,7 +520,7 @@ const Resume = (props) =>
                         aria-expanded={expanded}
                         aria-label="veja mais"
                         >
-                            <ExpandMoreIcon color="#000" sx={{background:"#CCC", borderRadius:"50%"}}/>
+                            <ExpandMoreIcon sx={{background:"#CCC", borderRadius:"50%"}}/>
                         </ExpandMore>
 
                     </CardActions>
@@ -860,7 +860,6 @@ const Resume = (props) =>
                                     id="ciente"
                                     label="Estou ciente que meu currículo ficará em nossa base de dados por 2 meses" 
                                     labelPlacement="start" 
-                                    size="small"
                                     sx={{fontSize:0.85}}
                                     value= {enablebuttom}
                                     onChange= {handleEnableButtomClick}

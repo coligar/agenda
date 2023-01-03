@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Style from './scheduleinterview.module.css'
 
-import prisma from '../../../../db'
+import { prisma } from '../../../lib/prisma'
 
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import PersonIcon from '@mui/icons-material/Person'
@@ -13,13 +13,8 @@ import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 
 
-export async function getStaticProps(){
-    const prisma = new PrismaClient()
-    const interview = await prisma.schedule.findMany()
-    console.log(interview)
-}
 
-const ScheduleInterview = (props) => 
+const ScheduleInterview = (props:any) => 
 {
     
     const [interviewer, setInterviewer] = useState('')
@@ -32,8 +27,8 @@ const ScheduleInterview = (props) =>
     const [avatar, setAvatar] = useState('')
     const [form, setForm] = useState({order:0, name:'', interviewer:'',day:'', starttime:'', endtime:'', area:'', type:'', avatar:''})
 
-    const getInterviewer = (event) => {setInterviewer(event.target.value)}
-    const getDay = (event) => {setDay(event.target.value)}
+    const getInterviewer = (event:any) => {setInterviewer(event.target.value)}
+    const getDay = (event:any) => {setDay(event.target.value)}
 
 
     /*const submit = async () =>
@@ -226,7 +221,7 @@ const ScheduleInterview = (props) =>
                                     title: 'Tem certeza que deseja marcar o agendamento?',
                                     subTitle: 'Você não será capaz de desfazer esta operação',
                                     type: 'confirm',
-                                    onConfirm: () => {submit()}
+                                   //onConfirm: () => {submit()}
                                 })
                             } 
                     >

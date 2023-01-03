@@ -6,7 +6,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import IconButton from '@mui/material/IconButton'
 
 
-const SidebarMenu = (props) => 
+const SidebarMenu = (props:any) => 
 {
     function getMenuType(type = 'candidate')
     {

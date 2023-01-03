@@ -27,7 +27,7 @@ const SearchBar = (props:any) =>
       <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder= {placeholder}
-        inputProps={{ 'aria-label': {placeholder} }}
+        inputProps={{ 'aria-label': placeholder }}
         onChange={props.onChange}
       />
     

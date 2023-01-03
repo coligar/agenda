@@ -1,6 +1,6 @@
 import style from "./Welcome.module.css"
 
-const Welcome = (props) => {
+const Welcome = (props:any) => {
 
     return(
         <>

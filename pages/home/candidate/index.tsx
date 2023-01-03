@@ -10,7 +10,11 @@ import no_log_pick from '/public/images/system/no_log.jpg'
 import no_resume_pick from '/public/images/system/no_resume.jpg'
 import Resume from '../../../components/form/resumeold';
 
-
+interface IType 
+{
+    is_visible: undefined | boolean
+    id: Number
+}
 
 const Candidate = (props:any) => 
 {
@@ -52,7 +56,7 @@ const Candidate = (props:any) =>
 
     const [activeNotification, setActiveNotification] = useState(has_notification)
     const [activeLog, setActiveLog] = useState(is_active_log)
-    const [activeResume,  setActiveResume] = useState({})
+    const [activeResume,  setActiveResume] = useState<IType>({is_visible: undefined, id: 0})
 
  
     return(
@@ -110,14 +114,14 @@ const Candidate = (props:any) =>
                         <p className={style.description}>Aqui você deve cadastrar seu currículo para análise do nosso RH</p>
                     </div>
 
-                    {activeResume.is_vivible !== undefined &&
+                    {activeResume.is_visible !== undefined &&
                         <Resume id={activeResume.id}/>
                     }
-                    {activeResume.is_vivible === undefined &&
+                    {activeResume.is_visible === undefined &&
                         
                         <div className={style.noevent}>
                             <Image src={no_resume_pick} alt="imagem que indica que não há currículos cadastrados"/>
-                            <Button variant="contained" sx={{marginTop:3.8}} onClick={()=>setActiveResume(active_resume)}>cadastrar currículo</Button>
+                            <Button variant="contained" sx={{marginTop:3.8}} onClick={()=>setActiveResume({is_visible:false, id:1})}>cadastrar currículo</Button>
                         </div>
                     }
                        

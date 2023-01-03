@@ -10,7 +10,7 @@ import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 
 
-const ReScheduleInterview = (props) => 
+const ReScheduleInterview = (props:any) => 
 {
 
     return(
@@ -33,7 +33,7 @@ const ReScheduleInterview = (props) =>
                           
                     </div>
 
-                    <div className={Style.form_lines} sx={{marginBottom:'55px'}}>
+                    <div className={Style.form_lines}>
 
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas mattis quam eget ipsum facilisis  tincidunt. Pellentesque finibus elit scelerisque massa porta sodales. Donec sodales aliquam nisl, quis feugiat nisl sagittis vel.
                         <br/>

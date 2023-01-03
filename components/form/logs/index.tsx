@@ -48,7 +48,7 @@ const rows = [
 ];
 
 
-const Log = (props) => 
+const Log = (props:any) => 
 {
     return(
       <Box
@@ -67,7 +67,6 @@ const Log = (props) =>
               <DataGrid
                   rows={rows}
                   columns={columns}
-                  rowsPerPage={5}
                   pageSize={5}
                   rowsPerPageOptions={[5]}
               />
