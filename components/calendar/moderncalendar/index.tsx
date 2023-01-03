@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import style from './Moderncalendar.module.css'
+import style from './ModernCalendar.module.css'
 import SearchBar from '../../form/inputs/search/search'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
