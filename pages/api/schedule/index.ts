@@ -19,7 +19,9 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
             orderBy:{day:'asc'},
             where:{status:'ACTIVE'},
             include:{
-                user: true
+                user: true,
+                area_activity: true,
+                schedule_type: true,
             }
         })
         

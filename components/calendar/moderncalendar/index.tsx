@@ -5,6 +5,8 @@ import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 import Pin from './pin/pin'
 import Calendar from './calendar'
+import dayjs, { Dayjs } from 'dayjs'
+import 'dayjs/locale/pt-br'
 
 
 import TextField from '@mui/material/TextField';
@@ -29,8 +31,7 @@ const ModernCalendar = (props:any) =>
     var current = new Date()
 
     const getScheduleInterval = (days = 0, startDate = '') =>
-    {
-
+    {        
         let data = getInterviewPeriod(days, startDate)
 
         let filtered_schedule:any = [
@@ -41,7 +42,7 @@ const ModernCalendar = (props:any) =>
             }
         ]
 
-        setScheduleList(filtered_schedule);
+        setScheduleList(filtered_schedule)
     }
 
     const getInterviewPeriod = (days:any, startDate = '') =>
@@ -49,8 +50,8 @@ const ModernCalendar = (props:any) =>
         let period = addSubDays(days)
         let title = ''
 
-        let date = new Date('2022/01/01') //só retirar o período 
-        let current_day = date.setDate(date.getDate());
+        let date = new Date() //só retirar o período 
+        let current_day = date.setDate(date.getDate())
 
         if(days==0 && startDate != '')
         {
@@ -89,8 +90,9 @@ const ModernCalendar = (props:any) =>
     {
         try 
         {
-          let res = fetch('api/schedule')
+          let res = await fetch('api/schedule')
           .then((response) => {
+            console.log(response)
             return response.json()
           }) 
           .then((json) => 
@@ -98,7 +100,7 @@ const ModernCalendar = (props:any) =>
             const yesterday = json.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === last_day)
             const current = json.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === current_day)
             const tomorrow = json.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === next_day)
-
+            console.log(json)
 
             setSchedule(json)
 
@@ -196,7 +198,7 @@ const ModernCalendar = (props:any) =>
                     }               
                     else if(searchTerm.type === 'search') 
                     {
-                        return val.name.toLocaleLowerCase().includes(searchTerm.term.toLocaleLowerCase())
+                        return val.user.name.toLocaleLowerCase().includes(searchTerm.term.toLocaleLowerCase())
                     }
 
                 }).map((item:any, index:any) => (
@@ -209,7 +211,7 @@ const ModernCalendar = (props:any) =>
 
                         </div>
 
-                        <Pin name={item.name} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area} type={item.type} avatar={item.avatar} day={data.date}/>
+                        <Pin name={item.user.name + ' ' +item.user.lastname} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area_activity.name} type={item.schedule_type.type} avatar={item.user.avatar} day={data.date}/>
 
                     </div>
                 ))}   
@@ -272,24 +274,18 @@ const ModernCalendar = (props:any) =>
                                 sx={{ p: '4px', display: 'flex', alignItems: 'center', width: '191px', color: '#5A607F', backgroundColor: 'white', fontWeight: '400', textAlign: 'center', justifyContent: 'center',  margin:'0'}}
                                 elevation= {1}
                             >
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                                     <DatePicker
-                                        label="Data"
                                         value={dateValue}
                                         className={style.datepicker}
                                         onChange={(newValue:any) => {
                                             setDateValue(newValue);
                                             getScheduleInterval(0, newValue);
                                         }}
-                                        /*renderInput={({ inputRef, inputProps, InputProps }) => (
-                                            <Box sx={{ display: 'flex', alignItems: 'center', height: 40 }}>
-                                              <input ref={inputRef} {...inputProps} />
-                                              {InputProps?.endAdornment}
-                                            </Box>
-                                        )}*/
-                                        renderInput={(params) => <TextField {...params}/>}
+                                        renderInput={(params) => <TextField {...params} size="small"/>}
                                     />
                                 </LocalizationProvider>
+                               
                             </Paper>
 
                         </div>
@@ -320,38 +316,6 @@ const ModernCalendar = (props:any) =>
                     </div>
 
                 </div>
-
-
-                <div className={style.schedule_minimal}>
-
-                    <h3>Próximas entrevistas</h3>
-
-                    <Paper elevation={2} style={{padding: '10px', marginBottom:'25px'}}>
-                        <h4>Entrevistas para a semana</h4>
-                        <div className={style.counter_area}>
-                            <span className={style.number}>14</span> 
-                            <span className={style.description}>entrevisas agendadas para essa semana</span>
-                        </div>
-                        <div className={style.calendar_future}>
-                            <Calendar data={getInterviewPeriod(7)}/>
-                        </div>
-                        <div className={style.calendar_action}>ver todas as entrevistas</div>
-                    </Paper>
-
-                    <Paper elevation={2} style={{padding: '10px', marginBottom:'25px'}}>
-                        <h4>Entrevistas para o mês</h4>
-                        <div className={style.counter_area}>
-                            <span className={style.number}>25</span> 
-                            <span className={style.description}>entrevisas agendadas para esse mês</span>
-                        </div>
-                        <div className={style.calendar_future}>
-                            <Calendar data={getInterviewPeriod(14)}/>
-                        </div>
-                        <div className={style.calendar_action}>ver todas as entrevistas</div>
-                    </Paper>
-                                     
-                </div>
-
             </div>
         </>
     )

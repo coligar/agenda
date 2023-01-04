@@ -10,7 +10,7 @@
 {
     display: flex;
     flex-direction: column;
-    width: 65%;
+    width: 100%;
 }
 
 .schedule_minimal
@@ -227,7 +227,6 @@
 
 .datepicker {
     line-height: 0.8em !important;
-    height: 40px !important;
 }
 
 .datepicker label{

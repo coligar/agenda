@@ -24,6 +24,9 @@ const Pin = (props:any) =>
     let end_time = new Date('2020-01-01 ' + props.endtime)
     let actual_time = new Date('2020-01-01 ' + date.getHours()+':'+date.getMinutes())
 
+    let interview_start = new Date(props.starttime).toLocaleTimeString('pt-BR')
+    let interview_end = new Date(props.endtime).toLocaleTimeString('pt-BR')
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getCurrentInterview = () => 
@@ -131,7 +134,7 @@ const Pin = (props:any) =>
     },[getCurrentInterview, getFutureInterviews, getPastInterviews])
     
 
-    switch (props.area) 
+    switch (props.area.toString().toLocaleLowerCase()) 
     {
         case 'administrativo':
             icon_color = '#7472B5'
@@ -164,12 +167,12 @@ const Pin = (props:any) =>
     }
     
 
-    if(props.type === 'agendamentosolicitado')
+    if(props.type.toString().toLocaleLowerCase() === 'agendamentosolicitado')
     {
         border = 'dashed 2px #0B821F'
         icon = <Status type="agendamentosolicitado" ml="5px" size="20px" color={icon_color}/>
     }
-    else if(props.type === 'reagendamentosolicitado')
+    else if(props.type.toString().toLocaleLowerCase() === 'reagendamentosolicitado')
     {
         border = 'dashed 2px #dda44b'
         icon = <Status type="reagendamentosolicitado" ml="5px" size="20px" color={icon_color}/>
@@ -194,7 +197,7 @@ const Pin = (props:any) =>
                         {interviewprogress.progress}% 
                         {interviewcurrentduration}
                     </span>
-                    {props.starttime}-{props.endtime}               
+                    {interview_start}-{interview_end}               
                     {icon}
                 </div>
                 

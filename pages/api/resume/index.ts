@@ -1,8 +1,5 @@
-import { User } from './../../../node_modules/.prisma/client/index.d';
-import { AreaActivity } from '.prisma/client';
 import { prisma } from "../../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
-import { AdminPanelSettingsOutlined } from '@mui/icons-material';
 
 
 export default async function handler(req: NextApiRequest, resp: NextApiResponse)

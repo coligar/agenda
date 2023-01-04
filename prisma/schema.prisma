@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -19,14 +18,16 @@ model Schedule {
   updatedAt       DateTime       @updatedAt
   userId          String?
   status          StatusSchedule @default(ACTIVE)
-  interviewer     String?        @unique
-  schedule_typeId String?        @unique
-  area_activityId String?        @unique
+  interviewer     String?
+  schedule_typeId String?
+  area_activityId String?
   schedule_type   ScheduleType?  @relation(fields: [schedule_typeId], references: [id])
   area_activity   AreaActivity?  @relation(fields: [area_activityId], references: [id])
   user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([schedule_typeId])
+  @@index([area_activityId])
 }
 
 model User {
