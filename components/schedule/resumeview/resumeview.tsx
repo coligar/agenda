@@ -31,8 +31,6 @@ const Resumeview = (props:any) =>
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    console.log(props)
-
     const handleClick = (event:any) => 
     {
         setAnchorEl(event.currentTarget);

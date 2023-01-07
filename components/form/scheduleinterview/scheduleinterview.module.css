@@ -32,6 +32,25 @@
     margin-bottom:10px;
 }
 
+.space-5{
+    width: 5px;
+}
+.space-10{
+    width: 10px;
+}
+
+.form_double 
+{
+    display:flex;
+    padding:0px 12px;
+    width: 100%;
+    font-size: 14px;
+    line-height:22px;
+    margin-bottom:10px;
+    flex-direction: row;
+    gap: 15px;
+}
+
 .footer
 {
     display:flex;

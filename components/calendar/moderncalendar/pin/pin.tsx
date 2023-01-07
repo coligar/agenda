@@ -186,7 +186,7 @@ const Pin = (props:any) =>
                     <Avatar direction="row" name={props.name} width="28" avatar={avatar}/>
                     <div className={style.candidate_name}>
                         {props.name}
-                        <div className={style.interviewer}>{props.interviewer}</div>
+                        <div className={style.interviewer}>{props.interviewer} | {props.area}</div>
                     </div>
                 </div>
                 <div className={style.time}>
@@ -197,7 +197,7 @@ const Pin = (props:any) =>
                         {interviewprogress.progress}% 
                         {interviewcurrentduration}
                     </span>
-                    {interview_start}-{interview_end}               
+                    {interview_start} - {interview_end}               
                     {icon}
                 </div>
                 

@@ -11,7 +11,7 @@ datasource db {
 
 model Schedule {
   id              String         @id @default(cuid())
-  day             DateTime       @db.Date
+  day             DateTime       @db.DateTime(0)
   starttime       DateTime       @db.Time(0)
   endtime         DateTime       @db.Time(0)
   createdAt       DateTime       @default(now())
@@ -21,6 +21,7 @@ model Schedule {
   interviewer     String?
   schedule_typeId String?
   area_activityId String?
+  note            String?        @db.LongText
   schedule_type   ScheduleType?  @relation(fields: [schedule_typeId], references: [id])
   area_activity   AreaActivity?  @relation(fields: [area_activityId], references: [id])
   user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)

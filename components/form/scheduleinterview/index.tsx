@@ -6,77 +6,123 @@ import { prisma } from '../../../lib/prisma'
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import PersonIcon from '@mui/icons-material/Person'
 
-import TextField from '@mui/material/TextField'
-import MenuItem from '@mui/material/MenuItem'
-import InputAdornment from '@mui/material/InputAdornment'
-import Tooltip from '@mui/material/Tooltip'
-import Button from '@mui/material/Button'
+import {useForm, UseFormSetValue, Controller} from "react-hook-form"
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from "yup"
+import { toast } from 'react-toastify'
+
+import { useGetData } from '../../../hooks/useRequest'
+
+import { Input, TextField, Select, MenuItem, FormControl, InputLabel, Button, Tooltip, FormControlLabel, Paper, Switch, Divider, Box, Card, Collapse, CardContent, IconButton, CardHeader, InputAdornment, CardActions } from '@mui/material'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import 'dayjs/locale/pt-br'
+
+interface IFormInput 
+{
+    interviewer: string,
+    starttime: Date, 
+    endtime: Date,
+    day: Date,
+    note: string,
+    userId: string,
+    schedule_typeId: string,
+    area_activityId: string
+}
+
+const fieldvalidations = yup.object({
+
+    day: yup.string().required('Campo obrigatório'),
+    starttime: yup.date().required('Campo obrigatório'),
+    endtime: yup.date().required('Campo obrigatório'),
+    interviewer: yup.string().required('Campo obrigatório'),
+})
 
 
 
 const ScheduleInterview = (props:any) => 
 {
-    
-    const [interviewer, setInterviewer] = useState('')
-    const [name, setName] = useState('')
-    const [day, setDay] = useState('')
-    const [startTime, setStartTime] = useState('')
-    const [endtime, setEndTime] = useState('')
-    const [area, setArea] = useState('')
-    const [type, setType] = useState('')
-    const [avatar, setAvatar] = useState('')
-    const [form, setForm] = useState({order:0, name:'', interviewer:'',day:'', starttime:'', endtime:'', area:'', type:'', avatar:''})
+    const {data: users} = useGetData('api/user')
+    let interviewrs = users.filter((val:any) => val.role === 'ADMIN')
 
-    const getInterviewer = (event:any) => {setInterviewer(event.target.value)}
-    const getDay = (event:any) => {setDay(event.target.value)}
+    let userId = props.data.id
+    let schedule_typeId = 'clc6zshgr000e1yxw3u0gp328'
+    let area_activityId = props.data.area_activityId
 
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setError,
+        control,
+        reset,
+        setValue,
+        formState: { isSubmitting, errors }
+      } = useForm<IFormInput>(
+        {
+            resolver: yupResolver(fieldvalidations)
+        }
+    )
 
-    /*const submit = async () =>
+    async function saveFormData(data: IFormInput) 
     {
-       setName(props.data.name) 
-       setStartTime('08:00')
-       setEndTime('09:20')
-       setArea(props.data.area_of_interest)
-       setType('agendamentosolicitado')
-       setAvatar('https://www.google.com/imgres?imgurl=https%3A%2F%2Fogimg.infoglobo.com.br%2Fin%2F24907109-c86-bcf%2FFT1086A%2Favatar-a-lenda-de-aang.jpg&imgrefurl=https%3A%2F%2Foglobo.globo.com%2Fcultura%2Favatar-lenda-de-aang-24907115&tbnid=ImSuYogAxw_CCM&vet=12ahUKEwix5Zbs_5_7AhWuq5UCHbUhAI4QMygLegUIARD6AQ..i&docid=6KPIzy9KLakjjM&w=1086&h=652&q=avatar&ved=2ahUKEwix5Zbs_5_7AhWuq5UCHbUhAI4QMygLegUIARD6AQ')
+        return await fetch('api/schedule', 
+        {
+            body: JSON.stringify(data),
+            headers: {"Content-Type": "application/json"},
+            method: 'POST'
+        })
+    }
+
+    const onSubmit = async (data: IFormInput) => 
+    { 
+        try 
+        {
+            data['userId'] = userId
+            data['area_activityId'] = area_activityId
+            data['schedule_typeId'] = schedule_typeId
+            data['day'] = new Date(data.day)
+
+            const response = await saveFormData(data)
+            let resp = await response?.json()
+            console.log(response)
+            
+            if (response?.status === 400) 
+            {
+                const fieldToErrorMessage:{[fieldName: string]: string} = await response?.json()
+                for (const [fieldName, errorMessage] of Object.entries(fieldToErrorMessage)) 
+                {
+                    toast.error(`${errorMessage}`)
+                }
+            } 
+            else if (response?.ok) 
+            {
+                reset()
+                toast.success(resp.message, { hideProgressBar: false, autoClose: 2000 })
+            } 
+            props.closeWindow()
+        } 
+        catch (error) 
+        {
+            toast.error(`Erro ao criar agendamento. Tente novamente mais tarde.`)
+            console.log(error)
+        }
         
-        let dados =
-        {
-            order: 1,
-            name: name,
-            interviewer: interviewer,
-            day: day,
-            starttime: startTime,
-            endtime: endtime,
-            area: area,
-            type: type,
-            avatar: avatar
-        }
+    }
+    
 
-        try
-        {
-            fetch('http://localhost:3000/api/crreate',{
-                body: JSON.stringify(dados),
-                headers:{
-                    'Content-type': 'application/json'
-                },
-                method: 'POST'
-            }).then(() => setForm({order:0, name:'', interviewer:'',day:'', starttime:'', endtime:'', area:'', type:'', avatar:''}))
-        }
-        catch(err)
-        {
-            console.log(err)
-        }
+    //console.log(props.data)
+
+    
 
 
-    }*/
-
+    
     return(
 
         <>
-            <form onSubmit={ e => {
-                e.preventDefault()
-            }}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={Style.container}>
 
                     <div className={Style.colicon}>
@@ -91,7 +137,7 @@ const ScheduleInterview = (props:any) =>
 
                             Agendamento de entrevista para<br/>
 
-                            <strong>{props.data.name}</strong> - Área: <strong>{props.data.area_of_interest}</strong>
+                            <strong>{props.data.name}</strong> - Área: <strong>{props.data.area_activity.name}</strong>
                             
                         </div>
 
@@ -100,97 +146,115 @@ const ScheduleInterview = (props:any) =>
                             Entrevistador<br/>
                             
 
-                            <Tooltip title="Escolha o entrevistador" placement="top-start">
-                                <TextField 
-                                    id="Entrevistador" 
-                                    required
-                                    fullWidth
-                                    select
-                                    //label="Entrevistador" 
-                                    value={form.interviewer}
-                                    variant="outlined" 
-                                    size="small"
-                                    margin="dense"
-                                    onChange= {e => setForm({...form, interviewer: e.target.value})}
-                                    InputProps={{
-                                        startAdornment: (
-                                        <InputAdornment position="start">
-                                            <PersonIcon />
-                                        </InputAdornment>
-                                        ),
-                                        style:{fontSize:14},
-                                    }}
-                                    InputLabelProps={{
-                                        style:{fontSize:14},
-                                    }}
-                                    sx={{marginTop:'5px'}}
-                                >
-                                    <MenuItem value="Elisângela | Administrativo">Elisângela - Administrativo</MenuItem>
-                                    <MenuItem value="Elisângela | Comercial">Elisângela - Comercial</MenuItem>
-                                    <MenuItem value="Elisângela | Representante">Elisângela - Representante</MenuItem>
-                                    <MenuItem value="Elisângela | Produção">Elisângela - Produção</MenuItem>
-                                    <MenuItem value="Diego | TI">Diego - TI</MenuItem>
-                                </TextField>
-                            </Tooltip>
-
+                            <Controller
+                                name="interviewer"
+                                control={control}
+                                defaultValue=""
+                                rules={{ required: 'Campo obrigatório' }}
+                                render={({ field }) => 
+                                    <FormControl fullWidth size="small" required>
+                                        <Select {...field} variant="outlined">
+                                            <MenuItem disabled value=""><em>Selecione um entrevistador</em></MenuItem>
+                                            {interviewrs && interviewrs.map((item:any) => {
+                                                return <MenuItem key={item.id} value={item.name +' '+item.lastname}>{item.name +' '+item.lastname}</MenuItem>
+                                            })}   
+                                        </Select>
+                                    </FormControl>
+                                }
+                                
+                            />
+                            <p className='error'>{errors.interviewer?.message}</p>
                         </div>
 
                         <div className={Style.form_lines}>
+                            Data da entrevista<br/>
 
-                            Escolher data da entrevista<br/>
+                            <Controller
+                                name="day"
+                                control={control}
+                                rules={{ required: 'Campo obrigatório' }}
+                                render={({ field:{ ref, ...fieldProps } }) => 
+                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                        <DatePicker
+                                            {...fieldProps}
+                                            inputRef={ref}
+                                            renderInput={(params) => <TextField {...params} size="small" fullWidth/>}
+                                        />
+                                    </LocalizationProvider>
+                                }
+                            />
+                            <p className='error'>{errors.day?.message}</p>
+                        </div>
 
-                            <Tooltip title="Informe a data da entrevista. Utilizar o formato: dd/mm/aaaa. Exemplo: 01/01/1900" placement="top-start">
-                                <TextField 
-                                    id="interview_date" 
-                                    required
-                                    fullWidth
-                                    value = {form.day}
-                                    variant="outlined" 
-                                    onChange={e => setForm({...form, day: e.target.value})}
-                                    size="small"
-                                    margin="dense"
-                                    placeholder='Escolher data da entrevista'
-                                    InputProps={{
-                                        startAdornment: (
-                                        <InputAdornment position="start">
-                                            <DateRangeIcon />
-                                        </InputAdornment>
-                                        ),
-                                        style:{fontSize:14},
-                                    }}
-                                    InputLabelProps={{
-                                        style:{fontSize:14},
-                                    }}
-                                    sx={{marginTop:'5px', width:'100%'}}
+                        <div className={Style.form_double}>
+                            <div>
+                                Início da entrevista <br/>
+                                <Controller
+                                    name="starttime"
+                                    control={control}
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field:{ ref, ...fieldProps } }) => 
+                                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                            <TimePicker
+                                                {...fieldProps}
+                                                inputRef={ref}
+                                                renderInput={(params) => <TextField {...params} size="small"/>}
+                                            />
+                                        </LocalizationProvider>
+                                    }
                                 />
-                            </Tooltip>
+                                <p className='error'>{errors.starttime?.message}</p>
+                            </div>
+                            <div>
+                                Fim da entrevista <br/>
+                                <Controller
+                                    name="endtime"
+                                    control={control}
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field:{ ref, ...fieldProps } }) => 
+                                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                            <TimePicker
+                                                {...fieldProps}
+                                                inputRef={ref}
+                                                renderInput={(params) => <TextField {...params} size="small"/>}
+                                            />
+                                        </LocalizationProvider>
+                                    }
+                                />
+                                <p className='error'>{errors.starttime?.message}</p>
 
+                            </div>
                         </div>
 
                         <div className={Style.form_lines}>
 
                             Observação<br/>
+                            <Controller
+                                name="note"
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) => 
 
-                            <Tooltip title="Digite aqui alguma observação" placement="top-start">
-                                <TextField
-                                    id="interview_note"
-                                    required
-                                    fullWidth
-                                    size="small"
-                                    margin="dense"
-                                    rows={5}
-                                    label="Digite alguma observação aqui"
-                                    placeholder="Descreva aqui alguma nota que você deseja deixar ao candidato"
-                                    multiline
-                                    variant="outlined" 
-                                    InputProps={{
-                                        style:{fontSize:14},
-                                    }}
-                                    InputLabelProps={{
-                                        style:{fontSize:14},
-                                    }}
-                                />
-                            </Tooltip>
+                                    <TextField
+                                        {...field}
+                                        id="interview_note"
+                                        fullWidth
+                                        size="small"
+                                        margin="dense"
+                                        rows={5}
+                                        label="Digite alguma observação aqui"
+                                        placeholder="Descreva aqui alguma nota que você deseja deixar ao candidato"
+                                        multiline
+                                        variant="outlined" 
+                                        InputProps={{
+                                            style:{fontSize:14},
+                                        }}
+                                        InputLabelProps={{
+                                            style:{fontSize:14},
+                                        }}
+                                    />
+                                }
+                            />
 
                         </div>
 
@@ -212,7 +276,8 @@ const ScheduleInterview = (props:any) =>
                     <Button
                         variant="outlined"
                         size="small"
-                        onClick=
+                        type="submit"
+                        /*onClick=
                             {
                                 () => 
                                 props.dialog({
@@ -221,9 +286,9 @@ const ScheduleInterview = (props:any) =>
                                     title: 'Tem certeza que deseja marcar o agendamento?',
                                     subTitle: 'Você não será capaz de desfazer esta operação',
                                     type: 'confirm',
-                                   //onConfirm: () => {submit()}
+                                    onConfirm: () => {handleSubmit(onSubmit)}
                                 })
-                            } 
+                            } */
                     >
                         agendar entrevista
                     </Button>
