@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, resp: NextApiResponse)
 {
-    const { startdate, enddate } = req.query
+    const { id, limit } = req.query
     const { 
         interviewer,
         starttime, 
@@ -19,33 +19,22 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
 
     try 
     {
-        let response: any
+        let response
         let status_code: number = 200
-
-        if(req.method === 'PUT' || req.method === 'DELETE')
-        {
-            return resp.status(405).json({message:'Method not allowed'})
-        }
-
-
-        if(req.method === 'GET')
-        {
-            response = await prisma.schedule.findMany(
-            {
-                orderBy:{day:'asc'},
-                where:{status:'ACTIVE'},
-                include:{
-                    user: true,
-                    area_activity: true,
-                    schedule_type: true,
-                }
-            })
-        }
 
         if(req.method === 'POST')
         {
-            await prisma.schedule.create(
+            return resp.status(405).json({message:'Method not allowed'})
+        }
+        
+        if(req.method === 'PUT')
+        {
+            response = await prisma.schedule.update(
             {
+                where:
+                {
+                    id: id?.toString()
+                }, 
                 data:
                 {
                     interviewer,
@@ -58,14 +47,37 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     area_activityId
                 }
             })
-        
-            response = {message:'Agendamento criado com sucesso'}
-            status_code = 201
+
+            status_code = 202
+            response = {message : 'Entrevista atualizada com sucesso'}
+        }
+
+        if(req.method === 'GET')
+        {
+            response = await prisma.schedule.findUnique(
+            {
+                where:
+                {
+                    id: id?.toString()
+                }
+            })
+        }
+
+        if(req.method === 'DELETE')
+        {
+            response = await prisma.schedule.delete(
+            {
+                where:
+                {
+                    id: id?.toString()
+                }
+            })
+
+            status_code = 204
+            response = {message : 'Entrevista excluída com sucesso'}
         }
         
-        
         resp.status(status_code).json(response)
-        
     } 
     catch (error:any) 
     {

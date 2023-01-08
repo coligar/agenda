@@ -18,6 +18,8 @@ import Box from '@mui/material/Box';
 
 import Person from '@mui/icons-material/Person'
 
+import { useGetData } from '../../../hooks/useRequest'
+
 
 
 const ModernCalendar = (props:any) => 
@@ -27,8 +29,12 @@ const ModernCalendar = (props:any) =>
     const [schedule, setSchedule] = useState([])
     const [dataInterval, setDataInterval] = useState()
     const [dateValue, setDateValue] = useState(null)
+
+    const {data: getdata} = useGetData('api/schedule/?startdate=2023-01-04&enddate=2023-03-04')
+
+   
     
-    var current = new Date()
+    let current = new Date()
 
     const getScheduleInterval = (days = 0, startDate = '') =>
     {        
@@ -86,50 +92,35 @@ const ModernCalendar = (props:any) =>
     let week = new Date('2022/01/21')
 
 
-    const getData = useCallback(async () =>
+    const getData = () =>
     {
-        try 
-        {
-          let res = await fetch('api/schedule')
-          .then((response) => {
-            console.log(response)
-            return response.json()
-          }) 
-          .then((json) => 
-          {
-            const yesterday = json.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === last_day)
-            const current = json.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === current_day)
-            const tomorrow = json.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === next_day)
-            console.log(json)
+        setSchedule(getdata)
+        const yesterday = schedule.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === last_day)
+        const current = schedule.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === current_day)
+        const tomorrow = schedule.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === next_day)
 
-            setSchedule(json)
 
-            const schedule:any = [
-                {
-                    date_id: 1,
-                    date: last_day,
-                    data: yesterday,
-                },
-                {
-                    date_id: 2,
-                    date: current_day,
-                    data: current,
-                },
-                {
-                    date_id: 3,
-                    date: next_day,
-                    data: tomorrow,
-                },
-            ]
-            setScheduleList(schedule)
+        const schedulefilter:any = [
+            {
+                date_id: 1,
+                date: last_day,
+                data: yesterday,
+            },
+            {
+                date_id: 2,
+                date: current_day,
+                data: current,
+            },
+            {
+                date_id: 3,
+                date: next_day,
+                data: tomorrow,
+            },
+        ]
+        setScheduleList(schedulefilter)
+    }
 
-          });
-        } 
-        catch (error) 
-        {
-            console.log(error)
-        }
-    },[current_day, last_day, next_day])
+
 
 
     const doSchedule = useCallback(async () =>
@@ -172,7 +163,7 @@ const ModernCalendar = (props:any) =>
     {
         //doSchedule()
        // getData()
-    },[doSchedule, getData])
+    },[doSchedule])
 
 
     const schedule_list = scheduleList.map((data:any, index) => 

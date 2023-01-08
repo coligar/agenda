@@ -19,7 +19,7 @@
     "@mui/x-data-grid": "^5.17.16",
     "@mui/x-date-pickers": "^5.0.11",
     "@next/font": "latest",
-    "@prisma/client": "^4.8.0",
+    "@prisma/client": "^4.8.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
@@ -39,6 +39,6 @@
     "yup": "latest"
   },
   "devDependencies": {
-    "prisma": "^4.8.0"
+    "prisma": "^4.8.1"
   }
 }

@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import style from "./ResumeView.module.css"
 
 import Button from '@mui/material/Button'
@@ -26,10 +26,34 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import CommentIcon from '@mui/icons-material/Comment'
 import ContratadoIcon from '@mui/icons-material/StarRate';
 
+import { useGetData } from '../../../hooks/useRequest'
+
 const Resumeview = (props:any) => 
 {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [notify, setNotify] = useState({isOpen: false, message:'', type:''})
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, maintitle:'', title: '', subTitle: '', type: ''})
+
+    const [avaliableSchedule, setAvaliableSchedule] = useState <boolean>(true)
+    const [avaliablePhone, setAvaliablePhone] = useState <boolean>(false)
+    const [avaliableCellPhone, setAvaliableCellPhone] = useState <boolean>(false)
+    const [openPopup, setOpenPopup] = useState<boolean>(false)
+
+    const [schedule_type, setScheduleType] = useState<string>('')
+    const [schedule_date, setScheduleDate] = useState<string>('')
+    const [endRegisterPeriod, setEndRegisterPeriod] = useState<string>('')
+    const [width, setWidth] = useState('md')
+
+    const [content, setContent] = useState<any>()
+    const [popuptitle, setPopupTitle] = useState<any>()
+
+    const {data: scheduletype} = useGetData('api/scheduletype')
+    let schedule_t = scheduletype
+
     const open = Boolean(anchorEl);
+    let no_show: boolean = false
+
+    console.log(props)
 
     const handleClick = (event:any) => 
     {
@@ -41,13 +65,53 @@ const Resumeview = (props:any) =>
         setAnchorEl(null)
     }
 
-    const [notify, setNotify] = useState({isOpen: false, message:'', type:''})
-    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, maintitle:'', title: '', subTitle: '', type: ''})
-    const [width, setWidth] = useState('md')
 
-    const [openPopup, setOpenPopup] = useState(false)
-    const [content, setContent] = useState()
-    const [popuptitle, setPopupTitle] = useState()
+    const addSubDays = (date = new Date(), days = 0) =>
+    {
+        date.setDate(date.getDate() + days)
+        return date
+    }
+
+    
+    
+    useEffect(() => 
+    {
+        let userHasSchedule = props.data.schedule.filter((x:any) => new Date(x.day) >= new Date(Date.now()))
+        let hasPhone = props.data.phone_contact.filter((x:any) => x.contact_type !== 'PERSONAL')
+        let hasCellPhone = props.data.phone_contact.filter((x:any) => x.contact_type === 'PERSONAL')
+
+    
+        if(props.data.schedule.length === 0)
+        {
+            setAvaliableSchedule(true)
+            setScheduleType('')
+            setScheduleDate('')
+        }
+        else
+        {
+            if(userHasSchedule.length == 0)
+            {
+                setAvaliableSchedule(true)
+                setScheduleType('')
+                setScheduleDate('')
+            }
+            else
+            {
+                setAvaliableSchedule(false)
+                let scheduletype = schedule_t.filter((x:any) => x.id === userHasSchedule[0].schedule_typeId)
+                setScheduleType(scheduletype[0].type)
+                setScheduleDate(`${new Date(userHasSchedule[0].day).toLocaleDateString()} às ${new Date(userHasSchedule[0].starttime).toLocaleTimeString()}`)
+            }
+        }
+
+        (hasPhone.length > 0 && hasPhone[0].phone) ? setAvaliablePhone(true) : setAvaliablePhone(false);
+        (hasCellPhone.length > 0 && hasCellPhone[0].phone) ? setAvaliableCellPhone(true) : setAvaliableCellPhone(false);
+
+        let expires = addSubDays(new Date(props.data.createdAt), 60)
+        setEndRegisterPeriod(expires.toLocaleString())
+    
+    }, [props.data.createdAt, props.data.phone_contact, props.data.schedule, schedule_t])
+    
 
     const closePopUp = () =>
     {
@@ -102,51 +166,52 @@ const Resumeview = (props:any) =>
                     <h2>Análise de currículo</h2>
 
                     <div style={{display: 'flex', flexDirection: 'column'}}>
+                        {no_show &&
+                            <div>
 
-                        <div>
+                                <Button
+                                    id="basic-button"
+                                    aria-controls="basic-menu"
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                    onClick={handleClick}
+                                    sx={{textTransform: 'lowercase'}}
+                                >
+                                    <ExpandMoreIcon /> opções
+                                </Button>
 
-                            <Button
-                                id="basic-button"
-                                aria-controls="basic-menu"
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick}
-                                sx={{textTransform: 'lowercase'}}
-                            >
-                                <ExpandMoreIcon /> opções
-                            </Button>
-
-                            <Menu
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
-                                MenuListProps={{
-                                'aria-labelledby': 'basic-button',
-                                }}
-                                sx={{fontSize:"12px"}}
-                                
-                            >
-                                
-                                <MenuItem 
-                                    onClick=
-                                    { 
-                                        () => openPopupWithContent(<Comments data={props.data} closeWindow={closePopUp} dialog={setConfirmDialog} callback={doAnything}/>, 'Comentários') 
-                                    } 
-                                    sx={{fontSize:"12px"}} 
-                                    divider
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                    }}
+                                    sx={{fontSize:"12px"}}
+                                    
                                 >
                                     
-                                    <CommentIcon sx={{fontSize:"16px", marginRight:"3px", color:"#c83f15"}} /> 
-                                    Adicionar/ver comentários
+                                    <MenuItem 
+                                        onClick=
+                                        { 
+                                            () => openPopupWithContent(<Comments data={props.data} closeWindow={closePopUp} dialog={setConfirmDialog} callback={doAnything}/>, 'Comentários') 
+                                        } 
+                                        sx={{fontSize:"12px"}} 
+                                        divider
+                                    >
+                                        
+                                        <CommentIcon sx={{fontSize:"16px", marginRight:"3px", color:"#c83f15"}} /> 
+                                        Adicionar/ver comentários
 
-                                </MenuItem>
+                                    </MenuItem>
 
-                                <MenuItem onClick={handleClose} sx={{fontSize:"12px"}} divider><ContratadoIcon sx={{fontSize:"16px", marginRight:"3px", color:"#0176e7"}} /> Candidato contratado</MenuItem>
+                                    <MenuItem onClick={handleClose} sx={{fontSize:"12px"}} divider><ContratadoIcon sx={{fontSize:"16px", marginRight:"3px", color:"#0176e7"}} /> Candidato contratado</MenuItem>
 
-                            </Menu>
-                            
-                        </div>
+                                </Menu>
+                                
+                            </div>
+                        }
 
                     </div>
 
@@ -168,29 +233,41 @@ const Resumeview = (props:any) =>
 
                             <div className={style.candidate_resume_area_status}>
                                 <Tag area={props.data.area_activity.name}/>
-                                <StatusResume type={props.data.status_resume} time={props.data.date_status_resume}/>
+                                <StatusResume type={schedule_type} time={schedule_date}/>
                             </div>
 
                             <div className={style.candidate_resume_area_actions}>
-                                <DoInterview 
-                                    openWindow={openPopupWithContent} 
-                                    closeWindow={closePopUp} 
-                                    data={props.data} 
-                                    dialog={setConfirmDialog} 
-                                    callback={doAnything}
-                                />
-                                <GoMap openWindow = {openPopupWithContent}/>
-                                <DoCall tel={props.data.telephone}/>
-                                <CallWhatsapp tel={props.data.telephone}/>
+                                {avaliableSchedule &&
+                                    <DoInterview 
+                                        openWindow={openPopupWithContent} 
+                                        closeWindow={closePopUp} 
+                                        data={props.data} 
+                                        dialog={setConfirmDialog} 
+                                        callback={doAnything}
+                                    />
+                                }
+                                {no_show &&
+                                    <GoMap openWindow = {openPopupWithContent}/>
+                                }
+                                {avaliablePhone &&
+                                    <DoCall tel={props.data.phone_contact[0].phone}/>
+                                }
+                                {avaliableCellPhone &&
+                                    <CallWhatsapp tel={(props.data.phone_contact[0].phone) ? props.data.phone_contact[0].phone : '-'}/>
+                                }
                                 <SendMail mail={props.data.email}/>
-                                <PrintContent data={props.data} />
-                                <DoComment 
-                                    openWindow = {openPopupWithContent}
-                                    closeWindow={closePopUp} 
-                                    data={props.data} 
-                                    dialog={setConfirmDialog} 
-                                    callback={doAnything}
-                                />
+                                {no_show &&
+                                    <PrintContent data={props.data} />
+                                }
+                                {no_show &&
+                                    <DoComment 
+                                        openWindow = {openPopupWithContent}
+                                        closeWindow={closePopUp} 
+                                        data={props.data} 
+                                        dialog={setConfirmDialog} 
+                                        callback={doAnything}
+                                    />
+                                }
                             </div>
 
                         </div>
@@ -370,30 +447,42 @@ const Resumeview = (props:any) =>
 
                 <div className={style.candidate_resume_footer}>
 
-                    <div className={style.candidate_resume_footer_itens}>                      
-                        <DoInterview 
-                            openWindow = {openPopupWithContent} 
-                            closeWindow={closePopUp} 
-                            data={props.data} 
-                            dialog={setConfirmDialog} 
-                            callback={doAnything}
-                        />
-                        <GoMap openWindow = {openPopupWithContent}/>
-                        <DoCall tel={props.data.phone_contact[0].phone ? props.data.phone_contact[0].phone : 'Sem telefone'}/>
-                        <CallWhatsapp tel={props.data.phone_contact[0].phone ? props.data.phone_contact[0].phone : 'Sem telefone'}/>
+                    <div className={style.candidate_resume_footer_itens}> 
+                        {avaliableSchedule &&
+                            <DoInterview 
+                                openWindow={openPopupWithContent} 
+                                closeWindow={closePopUp} 
+                                data={props.data} 
+                                dialog={setConfirmDialog} 
+                                callback={doAnything}
+                            />
+                        }
+                        {no_show &&
+                            <GoMap openWindow = {openPopupWithContent}/>
+                        }
+                        {avaliablePhone &&
+                            <DoCall tel={props.data.phone_contact[0].phone}/>
+                        }
+                        {avaliableCellPhone &&
+                            <CallWhatsapp tel={(props.data.phone_contact[0].phone) ? props.data.phone_contact[0].phone : '-'}/>
+                        }
                         <SendMail mail={props.data.email}/>
-                        <PrintContent data={props.data}/>
-                        <DoComment 
-                            openWindow = {openPopupWithContent}
-                            closeWindow={closePopUp} 
-                            data={props.data} 
-                            dialog={setConfirmDialog} 
-                            callback={doAnything}
-                        />
+                        {no_show &&
+                            <PrintContent data={props.data} />
+                        }
+                        {no_show &&
+                            <DoComment 
+                                openWindow = {openPopupWithContent}
+                                closeWindow={closePopUp} 
+                                data={props.data} 
+                                dialog={setConfirmDialog} 
+                                callback={doAnything}
+                            />
+                        }
                     </div>
 
                     <div className={style.candidate_resume_footer_itens} style={{textAlign:"right"}}>
-                        Visto em: 27/08/2021 | Expira em: 01/09/2021 - 09:00
+                        Visto em: {new Date(Date.now()).toLocaleString()} | Expira em: {endRegisterPeriod}
                     </div>
 
                 </div>

@@ -23,9 +23,9 @@ import 'dayjs/locale/pt-br'
 interface IFormInput 
 {
     interviewer: string,
-    starttime: Date, 
-    endtime: Date,
-    day: Date,
+    starttime: Date | string, 
+    endtime: Date | string,
+    day: Date | string,
     note: string,
     userId: string,
     schedule_typeId: string,
@@ -76,10 +76,23 @@ const ScheduleInterview = (props:any) =>
         })
     }
 
+
     const onSubmit = async (data: IFormInput) => 
     { 
         try 
         {
+            if(new Date(data.day).toDateString() < new Date(Date.now()).toDateString())
+            {
+                toast.error(`A data da entrevista informada, não pode ser anterior ao dia de hoje.`, { hideProgressBar: false, autoClose: 2000 })
+                return
+            }
+
+            if(data.starttime >= data.endtime)
+            {
+                toast.error(`A hora de início não pode ser maior ou igual que a hora do fim da entrevista.`, { hideProgressBar: false, autoClose: 2000 })
+                return
+            }
+
             data['userId'] = userId
             data['area_activityId'] = area_activityId
             data['schedule_typeId'] = schedule_typeId
@@ -87,7 +100,6 @@ const ScheduleInterview = (props:any) =>
 
             const response = await saveFormData(data)
             let resp = await response?.json()
-            console.log(response)
             
             if (response?.status === 400) 
             {
@@ -107,16 +119,9 @@ const ScheduleInterview = (props:any) =>
         catch (error) 
         {
             toast.error(`Erro ao criar agendamento. Tente novamente mais tarde.`)
-            console.log(error)
         }
         
     }
-    
-
-    //console.log(props.data)
-
-    
-
 
     
     return(
@@ -173,6 +178,7 @@ const ScheduleInterview = (props:any) =>
                                 name="day"
                                 control={control}
                                 rules={{ required: 'Campo obrigatório' }}
+                                defaultValue=""
                                 render={({ field:{ ref, ...fieldProps } }) => 
                                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                                         <DatePicker
@@ -192,6 +198,7 @@ const ScheduleInterview = (props:any) =>
                                 <Controller
                                     name="starttime"
                                     control={control}
+                                    defaultValue=""
                                     rules={{ required: 'Campo obrigatório' }}
                                     render={({ field:{ ref, ...fieldProps } }) => 
                                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
@@ -210,6 +217,7 @@ const ScheduleInterview = (props:any) =>
                                 <Controller
                                     name="endtime"
                                     control={control}
+                                    defaultValue=""
                                     rules={{ required: 'Campo obrigatório' }}
                                     render={({ field:{ ref, ...fieldProps } }) => 
                                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">

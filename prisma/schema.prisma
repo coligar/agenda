@@ -101,6 +101,7 @@ model Curriculo {
   penultimate_resignation DateTime @db.Date
   penultimate_activity    String   @db.MediumText
   userId                  String   @unique
+  createdAt               DateTime @default(now())
   user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

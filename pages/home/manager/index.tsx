@@ -167,8 +167,6 @@ const Manager = (props:any, fallback:any) =>
 
     const getCandidateResume = (data:any) => 
     {
-        //setResume(data['resume'])
-        console.log(data)
         setResume(data)
     }
 
