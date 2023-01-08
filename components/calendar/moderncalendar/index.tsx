@@ -17,8 +17,8 @@ import Box from '@mui/material/Box';
 
 
 import Person from '@mui/icons-material/Person'
-
-import { useGetData } from '../../../hooks/useRequest'
+import axios from 'axios'
+import { date } from 'yup/lib/locale'
 
 
 
@@ -29,51 +29,54 @@ const ModernCalendar = (props:any) =>
     const [schedule, setSchedule] = useState([])
     const [dataInterval, setDataInterval] = useState()
     const [dateValue, setDateValue] = useState(null)
-
-    const {data: getdata} = useGetData('api/schedule/?startdate=2023-01-04&enddate=2023-03-04')
-
    
     
     let current = new Date()
 
-    const getScheduleInterval = (days = 0, startDate = '') =>
+    const getScheduleInterval = async (days = 0, startDate = '') =>
     {        
-        let data = getInterviewPeriod(days, startDate)
+        let data = await getInterviewPeriod(days, startDate)
 
         let filtered_schedule:any = [
             {
                 date_id: 1,
                 date: `${new Date(data.current_day).toLocaleDateString()} até o dia ${data.period.toLocaleDateString()}`,
-                data: data.filtered_data,
+                data: data.data,
             }
         ]
 
         setScheduleList(filtered_schedule)
     }
 
-    const getInterviewPeriod = (days:any, startDate = '') =>
+    const getInterviewPeriod = async (days:any, startDate = '') =>
     {
-        let period = addSubDays(days)
-        let title = ''
-
-        let date = new Date() //só retirar o período 
-        let current_day = date.setDate(date.getDate())
+        let enddate = addSubDays(days).toISOString().split('T')[0]
+        let startdate = new Date().toISOString().split('T')[0]
+        let new_startdate: string = ''
+        let res:any;
+        let start_period: Date = new Date()
+        let end_period: Date = addSubDays(days)
 
         if(days==0 && startDate != '')
         {
-            period = new Date(startDate)
+            new_startdate = new Date(startDate).toISOString().split('T')[0]
+
+            if(new_startdate > enddate)
+            {
+                startdate = new_startdate
+                enddate = new_startdate
+                start_period = new Date(startDate)
+                end_period = new Date(startDate)
+            }
         }
 
-        let filtered_data = schedule.filter((element:any, index:any) => 
-            new Date(element.day).toLocaleDateString() >= new Date(current_day).toLocaleDateString() && 
-            new Date(element.day).toLocaleDateString() <= period.toLocaleDateString()
-        )
+        res = await axios.get(`api/schedule/?startdate=${startdate}&enddate=${enddate}`).then(res => res.data)
 
         let data = 
         {
-            current_day: current_day,
-            period: period,
-            filtered_data: filtered_data
+            current_day: start_period,
+            period: end_period,
+            data: res
         }
 
         return data
@@ -92,78 +95,47 @@ const ModernCalendar = (props:any) =>
     let week = new Date('2022/01/21')
 
 
-    const getData = () =>
+    const getData = useCallback(async (days:number = 2) =>
     {
-        setSchedule(getdata)
-        const yesterday = schedule.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === last_day)
-        const current = schedule.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === current_day)
-        const tomorrow = schedule.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === next_day)
+        let enddate = addSubDays(days).toISOString().split('T')[0]
+        let startdate = new Date().toISOString().split('T')[0]
 
+        let current_day = addSubDays(-1).toLocaleDateString()
+        let next_day = addSubDays(0).toLocaleDateString()
+        let future_day = addSubDays(1).toLocaleDateString()
+
+        let res = await axios.get(`api/schedule/?startdate=${startdate}&enddate=${enddate}`).then(res => res.data)
+        
+        const current = res.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === current_day)
+        const tomorrow = res.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === next_day)
+        const future = res.filter((element:any, index:any) => new Date(element.day).toLocaleDateString() === future_day)
 
         const schedulefilter:any = [
             {
                 date_id: 1,
-                date: last_day,
-                data: yesterday,
-            },
-            {
-                date_id: 2,
                 date: current_day,
                 data: current,
             },
             {
-                date_id: 3,
+                date_id: 2,
                 date: next_day,
                 data: tomorrow,
             },
+            {
+                date_id: 3,
+                date: future_day,
+                data: future,
+            },
         ]
         setScheduleList(schedulefilter)
-    }
+    },[])
 
-
-
-
-    const doSchedule = useCallback(async () =>
-    {
-        try 
-        {
-            const response = await fetch('http://localhost:3000/api/schedule/create',
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    order: '5',
-                    name: 'Marcelo Bombonato',
-                    interviewer: 'Representante | Elisângela',
-                    day: new Date(current.getTime()),
-                    starttime: '14:00',
-                    endtime: '15:00',
-                    area: 'representante',
-                    type: '',
-                    avatar: 'https://www.thewrap.com/wp-content/uploads/2016/05/Top-Gun-Tom-Cruise.png'
-                }),
-                headers:
-                {
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            })
-            //console.log('passou aqui', response)
-            if(!response.ok)
-            {
-                throw new Error(response.statusText)
-            }
-        } 
-        catch (error) 
-        {
-            console.log(error)
-        }
-    },[current])
 
 
     useEffect(() => 
     {
-        //doSchedule()
-       // getData()
-    },[doSchedule])
+       getData()
+    },[getData])
 
 
     const schedule_list = scheduleList.map((data:any, index) => 
@@ -198,7 +170,7 @@ const ModernCalendar = (props:any) =>
 
                         <div className={style.column_a}>
 
-                            {item.order}º
+                            {item.index}º
 
                         </div>
 

@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, resp: NextApiResponse)
 {
-    const { startdate, enddate } = req.query
+    const { startdate, enddate, name } = req.query
     const { 
         interviewer,
         starttime, 
@@ -40,6 +40,73 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     schedule_type: true,
                 }
             })
+
+            if(startdate || enddate || name)
+            {
+                let res:any;
+
+                if(startdate!==undefined && enddate !== undefined && name !== undefined)
+                {
+                    res = await prisma.schedule.findMany({
+                        where:{
+                            day: {
+                                lte: new Date(`${enddate}`).toISOString(),
+                                gte: new Date(`${startdate}`).toISOString()
+                            },
+                            user:{
+                                name:{
+                                    contains: `${name}`
+                                }
+                            }
+                        },
+                        include:{
+                            user: true,
+                            area_activity: true,
+                            schedule_type: true,
+                        },
+                        orderBy:{day:'asc'}
+                    })
+                }
+
+                if(startdate !== undefined && enddate !== undefined)
+                {
+                    res = await prisma.schedule.findMany({
+                        where:{
+                            day: {
+                                lte: new Date(`${enddate}`).toISOString(),
+                                gte: new Date(`${startdate}`).toISOString()
+                            }
+                        },
+                        include:{
+                            user: true,
+                            area_activity: true,
+                            schedule_type: true,
+                        },
+                        orderBy:{day:'asc'}
+                    })
+                }
+
+                if(name !== undefined)
+                {
+                    res = await prisma.schedule.findMany({
+                        where:{
+                            user:{
+                                name:{
+                                    contains: `${name}`
+                                }
+                            }
+                        },
+                        include:{
+                            user: true,
+                            area_activity: true,
+                            schedule_type: true,
+                        },
+                        orderBy:{day:'asc'},
+                    })
+                }
+
+                response = res
+            }
         }
 
         if(req.method === 'POST')
