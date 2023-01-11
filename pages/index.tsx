@@ -3,7 +3,7 @@ import LayoutMain from "../components/layouts/main"
 
 const Main = () =>
 {
-  const user_level = "manager"
+  const user_level = "candidate"
 
   return (
     <>

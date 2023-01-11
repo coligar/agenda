@@ -3,15 +3,12 @@ import React, {useState, useEffect} from 'react'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
-import TextField from '@mui/material/TextField'
-import MenuItem from '@mui/material/MenuItem'
 import InputAdornment from '@mui/material/InputAdornment'
 import Paper from '@mui/material/Paper'
 import Divider from '@mui/material/Divider'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
+
 
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
@@ -39,6 +36,22 @@ import SchoolIcon from '@mui/icons-material/School'
 import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns'
 import StoreIcon from '@mui/icons-material/Store'
 
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from "yup"
+import { toast } from "react-toastify"
+
+import { mutate } from 'swr'
+import { useGetData } from '../../../hooks/useRequest'
+import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Tooltip } from '@mui/material'
+import { DateTimePickerTabsClasses } from '@mui/x-date-pickers'
+import { Controller, UseFormSetValue, useForm } from 'react-hook-form'
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import 'dayjs/locale/pt-br'
+
 
 
 const ExpandMore = styled((props:any) => 
@@ -53,9 +66,128 @@ const ExpandMore = styled((props:any) =>
   }),
 }));
 
+interface IFormPersonalDataInput 
+{
+    name: string, 
+    lastname: string,
+    avatar: string | null, 
+    birth_date: Date, 
+    cpf: string, 
+    rg: string, 
+    sex: string, 
+    area_activityId: string,
+    have_desability: boolean,
+    own_car: boolean,
+    scholarity_id: string,
+    zip: string,
+    address: string,
+    number: string,
+    complement: string | null,
+    district: string,
+    city: string,
+    uf: string,
+    phone: string,
+    email: string, 
+}
+
+
+interface IFormResume
+{
+    sumary: string,
+    last_company: string,
+    last_admission: Date,
+    last_resignation: Date,
+    last_activity: string,
+    penultimate_company: string,
+    penultimate_admission: Date,
+    penultimate_resignation: Date,
+    penultimate_activity: string,
+}
+
+
+const fieldvalidations = yup.object({
+    name: yup.string().required('Campo obrigatório').max(100,'Permitido no máximo 100 caracteres'),
+    lastname: yup.string().required('Campo obrigatório').max(100, 'Permitido no máximo 100 caracteres'),
+    email: yup.string().email('Email inválido').required('Campo obrigatório'),
+    sex: yup.string().required('Campo obrigatório'),
+    area_activityId: yup.boolean().required('Campo obrigatório'),
+    birth_date: yup.string().required('Campo obrigatório'),
+    cpf: yup.string().required('Campo obrigatório'),
+    rg: yup.string().required('Campo obrigatório'),
+    have_desability: yup.boolean().required('Campo obrigatório'),
+    scholarity_id: yup.string().required('Campo obrigatório'),
+    zip: yup.string().required('Campo obrigatório'),
+    address: yup.string().required('Campo obrigatório'),
+    number: yup.string().required('Campo obrigatório'),
+    complement: yup.string().required('Campo obrigatório'),
+    district: yup.string().required('Campo obrigatório'),
+    city: yup.string().required('Campo obrigatório'),
+    uf: yup.string().required('Campo obrigatório'),
+    phone: yup.string().required('Campo obrigatório'),
+    sumary: yup.string().required('Campo obrigatório'),
+    last_company: yup.string().required('Campo obrigatório'),
+    last_admission: yup.date().required('Campo obrigatório'),
+    last_resignation: yup.date().required('Campo obrigatório'),
+    last_activity: yup.string().required('Campo obrigatório'),
+    penultimate_company: yup.string().required('Campo obrigatório'),
+    penultimate_admission: yup.date().required('Campo obrigatório'),
+    penultimate_resignation: yup.date().required('Campo obrigatório'),
+    penultimate_activity: yup.string().required('Campo obrigatório'),
+})
+
+const setInputPersonalDataValues = (data:any, setValue:UseFormSetValue<IFormPersonalDataInput>) =>
+{
+    //console.log(data)
+    if(data || data !== undefined)
+    {
+        setValue("name", data.name);
+        setValue("lastname", data.lastname)
+        setValue("email", data.email)
+        setValue("sex", data.sex)
+        setValue("area_activityId", data.area_activityId)
+        setValue("birth_date", data.birth_date)
+        setValue("cpf", data.cpf)
+        setValue("rg", data.rg)
+        setValue("rg", data.rg)
+        setValue("have_desability", data.have_desability)
+        setValue("scholarity_id", data.scholarity_id)
+        setValue("zip", data.zip)
+        setValue("address", data.address)
+        setValue("number", data.number)
+        setValue("complement", data.complement)
+        setValue("district", data.district)
+        setValue("city", data.city)
+        setValue("uf", data.uf)
+        setValue("phone", data.phone)
+        setValue("phone", data.phone)
+    }
+}
+
+
+const setInputResumelDataValues = (data:any, setValue:UseFormSetValue<IFormResume>) =>
+{
+    //console.log(data)
+    if(data || data !== undefined)
+    {
+        setValue("sumary", data.sumary);
+        setValue("last_company", data.last_company)
+        setValue("last_admission", data.last_admission)
+        setValue("last_resignation", data.last_resignation)
+        setValue("last_activity", data.last_activity)
+        setValue("penultimate_company", data.birth_date)
+        setValue("penultimate_admission", data.penultimate_admission)
+        setValue("penultimate_resignation", data.penultimate_resignation)
+        setValue("penultimate_activity", data.penultimate_activity)
+    }
+}
+
+
+
 
 const Resume = (props:any) => 
 {
+    const {data: areas} = useGetData('api/activity')
+    const {data: scholarity} = useGetData('api/scholarity')
 
     const [expanded, setExpanded] = useState(false);
     const [deficiencia, setDeficiencia] = useState('');
@@ -63,14 +195,32 @@ const Resume = (props:any) =>
     const [veiculo, setVeiculo] = useState('');
     const [job, setJob] = useState('');
     const [formacao, setFormacao] = useState('');
-    const [warning, setWarning] = useState('Clique na seta para visualizar os demais campos do currículo');
+    const [warning, setWarning] = useState('Clique na seta para visualizar o seu currículo');
     const [enablebuttom, setEnableButtom] = useState(<Button disabled variant="contained" size="small">cadastrar</Button>)
+
+    let button_name = 'Enviar'
+
+    const 
+    {
+        register, 
+        handleSubmit, 
+        watch, 
+        setError, 
+        control,
+        reset, 
+        setValue, 
+        formState: { isSubmitting, errors }
+    } = useForm<any>(
+        {
+            resolver: yupResolver(fieldvalidations)
+        }
+    )
 
 
     const handleExpandClick = () => 
     {
         setExpanded(!expanded)
-        let warning = (!expanded) ? 'Clique na seta para ocultar os demais campos do currículo' : 'Clique na seta para visualizar os demais campos do currículo'
+        let warning = (!expanded) ? 'Clique na seta para ocultar o currículo' : 'Clique na seta para visualizar o seu currículo'
         setWarning(warning)
     }
 
@@ -80,30 +230,37 @@ const Resume = (props:any) =>
         setEnableButtom(enablebuttom)
     }
 
-    const handleDeficienciaClick = (event:any) => 
+    async function saveFormData(data:IFormPersonalDataInput | IFormResume, type:string = 'PUT', url:string='', id: string) 
     {
-        setDeficiencia(event.target.value);
+        if(type === 'POST')
+        {
+            return await fetch(url, 
+            {
+                body: JSON.stringify(data),
+                headers: {"Content-Type": "application/json"},
+                method: type
+            })
+        }
+        else
+        {            
+            return await fetch(`${url}/${id}`, 
+            {
+                body: JSON.stringify(data),
+                headers: {"Content-Type": "application/json"},
+                method: type
+            })
+        }
     }
 
-    const handleSexoClick = (event:any) => 
+    const onSubmitPersonalData = async (data: IFormPersonalDataInput) => 
     {
-        setSexo(event.target.value);
     }
 
-    const handleVeiculoClick = (event:any) => 
+
+    const onSubmitResumeData = async (data: IFormResume) => 
     {
-        setVeiculo(event.target.value);
     }
 
-    const handleJobClick = (event:any) => 
-    {
-        setJob(event.target.value);
-    }
-
-    const handleFormacaoClick = (event:any) => 
-    {
-        setFormacao(event.target.value);
-    }
 
     const margin_fields = 
     {
@@ -137,376 +294,559 @@ const Resume = (props:any) =>
                         subheader="Informe seus dados pessoais abaixo"
                     />
 
-                    <CardContent >
+                    <form onSubmit={handleSubmit(onSubmitPersonalData)}>
+                        <CardContent >
 
-                        <Paper>
+                            <Paper>
 
-                            <div className={style.form_lines}>
+                                <div className={style.form_lines}>
+                                <Controller
+                                    name="name"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            id="nome" 
+                                            required
+                                            fullWidth
+                                            label="Nome"
+                                            placeholder="Informe seu nome"
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <PersonIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                    }
+                                />
                                 
-                                <Tooltip title="Informe seu nome" placement="top-start">
-                                    <TextField 
-                                        id="nome" 
-                                        required
-                                        fullWidth
-                                        label="Nome"
-                                        placeholder="Informe seu nome"
-                                        variant="outlined" 
-                                        size="small"
-                                        margin="dense"
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <PersonIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
 
-                                <Tooltip title="Informe sua data de nascimento no formato: dd/mm/aaaa. Exemplo: 22/12/1900" placement="top-start">
-                                    <TextField 
-                                        id="datanascimento" 
-                                        required
-                                        fullWidth
-                                        label="Data de nascimento" 
-                                        variant="outlined" 
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Data de nascimento'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <DateRangeIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
+                                <Controller
+                                    name="birth_date"
+                                    control={control}
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    defaultValue=""
+                                    render={({ field:{ ref, ...fieldProps } }) => 
+                                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                            <DatePicker
+                                                {...fieldProps}
+                                                inputRef={ref}
+                                                renderInput={(params) =>
+                                                <TextField 
+                                                    {...params}
+                                                    id="datanascimento" 
+                                                    required
+                                                    fullWidth
+                                                    label="Data de nascimento" 
+                                                    variant="outlined" 
+                                                    size="small"
+                                                    margin="dense"
+                                                    placeholder='Data de nascimento'
+                                                    sx={margin_fields}
+                                                />}
+                                            />
+                                        </LocalizationProvider>
+                                    }
+                                />
+                                 <Controller
+                                    name="cpf"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            id="cpf" 
+                                            required
+                                            fullWidth
+                                            label="CPF" 
+                                            variant="outlined"
+                                            size="small"
+                                            margin="dense"
+                                            placeholder='Informe seu CPF'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <PinIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                    }
+                                />
 
-                                <Tooltip title="Informe o número do seu CPF. Utilizar apenas números." placement="top-start">
-                                    <TextField 
-                                        id="cpf" 
-                                        required
-                                        fullWidth
-                                        label="CPF" 
-                                        variant="outlined"
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Informe seu CPF'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <PinIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
-
-                            </div>
+                                </div>
 
 
-                            <div className={style.form_lines}>
+                                <div className={style.form_lines}>
+                                <Controller
+                                    name="email"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            id="email" 
+                                            required
+                                            fullWidth
+                                            label="E-mail" 
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            placeholder='Informe seu e-mail'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <MailOutlineIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                                //pattern: '/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i',
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                    }
+                                />
+                                <Controller
+                                    name="phone"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) =>    
+                                        <TextField 
+                                            {...field}
+                                            id="celular" 
+                                            required
+                                            fullWidth
+                                            label="Telefone celular" 
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            placeholder='Número do celular'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <LocalPhoneIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                    }
+                                />
 
-                                <Tooltip title="Informe o seu e-mail para contato" placement="top-start">
-                                    <TextField 
-                                        id="email" 
-                                        required
-                                        fullWidth
-                                        label="E-mail" 
-                                        variant="outlined" 
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Informe seu e-mail'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <MailOutlineIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                            //pattern: '/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i',
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
+                                <Controller
+                                    name="zip"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
+                                    
+                                        <TextField 
+                                            {...field}
+                                            id="cep" 
+                                            required
+                                            fullWidth
+                                            label="CEP" 
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            placeholder='Informe seu CEP'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <GpsFixedIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                    }
+                                />
+
+                                </div>
+
                                 
-                                <Tooltip title="Informe número do seu celular para contato" placement="top-start">
-                                    <TextField 
-                                        id="celular" 
-                                        required
-                                        fullWidth
-                                        label="Telefone celular" 
-                                        variant="outlined" 
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Número do celular'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <LocalPhoneIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
+                                <div className={style.form_lines}>
+                                    <Controller
+                                        name="address"
+                                        control={control}
+                                        defaultValue=""
+                                        rules={{ required: 'Campo obrigatório' }}
+                                        render={({ field }) => 
+                                        <TextField 
+                                            {...field}
+                                            id="endereco" 
+                                            required
+                                            fullWidth
+                                            label="Endereço" 
+                                            variant="outlined"
+                                            size="small"
+                                            margin="dense"
+                                            placeholder='Seu endereço'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <RoomIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                        }
                                     />
-                                </Tooltip>
+
+                                    <Controller
+                                        name="district"
+                                        control={control}
+                                        defaultValue=""
+                                        rules={{ required: 'Campo obrigatório' }}
+                                        render={({ field }) => 
+                                            
+                                        <TextField 
+                                            {...field}
+                                            id="bairro" 
+                                            required
+                                            fullWidth
+                                            label="Bairro" 
+                                            variant="outlined"
+                                            size="small"
+                                            margin="dense"
+                                            placeholder='Seu bairro'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <ApartmentIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                        }
+                                    />
+
+                                    <Controller
+                                        name="city"
+                                        control={control}
+                                        defaultValue=""
+                                        rules={{ required: 'Campo obrigatório' }}
+                                        render={({ field }) => 
+
+                                        <TextField 
+                                            {...field}
+                                            id="cidade" 
+                                            required
+                                            fullWidth
+                                            label="Cidade" 
+                                            variant="outlined"
+                                            size="small"
+                                            margin="dense"
+                                            placeholder='Cidade'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <ApartmentIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                        }
+                                    />
+
+                                <Controller
+                                    name="uf"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) =>                  
+                                        <TextField
+                                            {...field} 
+                                            id="uf"
+                                            required
+                                            fullWidth
+                                            label="UF" 
+                                            placeholder="UF"
+                                            variant="outlined" 
+                                            size="small"
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <PublicIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        />
+                                    }
+                                />
+                                    
+                                </div>
+
+
+                                <div className={style.form_lines}>
+                                <Controller
+                                    name="have_desability"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
                                 
-                                <Tooltip title="Informe o número do cep de sua residência" placement="top-start">
-                                    <TextField 
-                                        id="cep" 
-                                        required
-                                        fullWidth
-                                        label="CEP" 
-                                        variant="outlined" 
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Informe seu CEP'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <GpsFixedIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
+                                        <TextField 
+                                            {...field}
+                                            id="deficiencia"
+                                            fullWidth 
+                                            required
+                                            select
+                                            label="Possui deficiência?"
+                                            placeholder="Informe se você tem deficiência"
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            value= {deficiencia}
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <AccessibleIcon />
+                                                </InputAdornment>
+                                                ),
+                                                placeholder: "Informe se você tem deficiência",
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        >
+                                            <MenuItem value="true">Sim</MenuItem>
+                                            <MenuItem value="false">Não</MenuItem>
+                                        </TextField>
+                                    }
+                                />
 
-                            </div>
-
-                            
-                            <div className={style.form_lines}>
-                               
-                                <Tooltip title="Informe o endereço de sua residência" placement="top-start">
-                                    <TextField 
-                                        id="endereco" 
-                                        required
-                                        fullWidth
-                                        label="Endereço" 
-                                        variant="outlined"
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Seu endereço'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <RoomIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
-                                        
-                                <Tooltip title="Informe o seu bairro" placement="top-start">
-                                    <TextField 
-                                        id="bairro" 
-                                        required
-                                        fullWidth
-                                        label="Bairro" 
-                                        variant="outlined"
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Seu bairro'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <ApartmentIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
-
-                                <Tooltip title="Informe a sua cidade" placement="top-start">                    
-                                    <TextField 
-                                        id="cidade" 
-                                        required
-                                        fullWidth
-                                        label="Cidade" 
-                                        variant="outlined"
-                                        size="small"
-                                        margin="dense"
-                                        placeholder='Cidade'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <ApartmentIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
-
-                                <Tooltip title="Informe a UF de sua cidade. Ex: Se você mora em São Paulo, utilize SP. Se mora em Brasília, utilize DF" placement="top-start">                    
-                                    <TextField 
-                                        id="uf"
-                                        required
-                                        fullWidth
-                                        label="UF" 
-                                        placeholder="UF"
-                                        variant="outlined" 
-                                        size="small"
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <PublicIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    />
-                                </Tooltip>
-                                
-                            </div>
-
-
-                            <div className={style.form_lines}>
-                               
-                                <Tooltip title="Informe se você possui alguma deficiência" placement="top-start"> 
-                                    <TextField 
-                                        id="deficiencia"
-                                        fullWidth 
-                                        required
-                                        select
-                                        label="Possui deficiência?"
-                                        placeholder="Informe se você tem deficiência"
-                                        variant="outlined" 
-                                        size="small"
-                                        margin="dense"
-                                        value= {deficiencia}
-                                        onChange= {handleDeficienciaClick}
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <AccessibleIcon />
-                                            </InputAdornment>
-                                            ),
-                                            placeholder: "Informe se você tem deficiência",
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    >
-                                        <MenuItem value="Sim">Sim</MenuItem>
-                                        <MenuItem value="Não">Não</MenuItem>
-                                    </TextField>
-                                </Tooltip>
-                                                              
-                                <Tooltip title="Informe seu sexo" placement="top-start">
-                                    <TextField 
-                                        id="sexo" 
-                                        required
-                                        fullWidth
-                                        select
-                                        label="Sexo" 
-                                        variant="outlined" 
-                                        size="small"
-                                        margin="dense"
-                                        value= {sexo}
-                                        onChange= {handleSexoClick}
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <GroupIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    >
-                                        <MenuItem value="Feminino">Feminino</MenuItem>
-                                        <MenuItem value="Masculino">Masculino</MenuItem>
-                                        <MenuItem value="Outro">Outro</MenuItem>
-                                    </TextField>
-                                </Tooltip>
-                                
-                                <Tooltip title="Informe se você possui veículo próprio" placement="top-start">
-                                    <TextField 
-                                        id="veiculo" 
-                                        required
-                                        fullWidth
-                                        select
-                                        label="Possui veículo próprio?" 
-                                        variant="outlined"
-                                        size="small"
-                                        margin="dense"
-                                        value= {veiculo}
-                                        onChange= {handleVeiculoClick}
-                                        placeholder='Informe se você tem veículo próprio'
-                                        InputProps={{
-                                            startAdornment: (
-                                            <InputAdornment position="start">
-                                                <DirectionsCarIcon />
-                                            </InputAdornment>
-                                            ),
-                                            style:{fontSize:14},
-                                        }}
-                                        InputLabelProps={{
-                                            style:{fontSize:14},
-                                        }}
-                                        sx={margin_fields}
-                                    >
-                                        <MenuItem value="Sim">Sim</MenuItem>
-                                        <MenuItem value="Não">Não</MenuItem>
-                                    </TextField>
-                                </Tooltip>
+                                <Controller
+                                    name="sex"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
                                                                 
-                            </div>
+                                        <TextField 
+                                            {...field}
+                                            id="sexo" 
+                                            required
+                                            fullWidth
+                                            select
+                                            label="Sexo" 
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            value= {sexo}
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <GroupIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        >
+                                            <MenuItem value='F'>Feminino</MenuItem>
+                                            <MenuItem value='M'>Masculino</MenuItem>
+                                        </TextField>
+                                    }
+                                />
 
-                        </Paper>
+                                <Controller
+                                    name="own_car"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
+                                    
+                                        <TextField 
+                                            {...field}
+                                            id="veiculo" 
+                                            required
+                                            fullWidth
+                                            select
+                                            label="Possui veículo próprio?" 
+                                            variant="outlined"
+                                            size="small"
+                                            margin="dense"
+                                            value= {veiculo}
+                                            placeholder='Informe se você tem veículo próprio'
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <DirectionsCarIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        >
+                                            <MenuItem value="Sim">Sim</MenuItem>
+                                            <MenuItem value="Não">Não</MenuItem>
+                                        </TextField>
+                                    }
+                                />
+                                                                    
+                                </div>
 
-                    </CardContent>
+                            </Paper>
+
+                        </CardContent>
+
+                        <CardContent>
+
+                            <Paper sx={{marginBottom:2}}>
+
+                                <div className={style.title}>
+                                    <span>Área de interesse e formação</span>
+                                    <span className={style.subtitle}>Defina sua área de interesse e formação</span>
+                                </div>
+
+                                <div className={style.form_lines_center}>
+
+                                <Controller
+                                    name="area_activityId"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: 'Campo obrigatório' }}
+                                    render={({ field }) => 
+
+                                        <TextField 
+                                            {...field}
+                                            id="job" 
+                                            required
+                                            fullWidth
+                                            select
+                                            label="Escolha sua área de interesse"
+                                            placeholder="Informe se você tem deficiência"
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            value= {job}
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <FollowTheSignsIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        >
+                                            {areas && areas.map((item:any) => {
+                                                return <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                            })} 
+                                        </TextField>
+                                    }
+                                />
+
+                                    <Divider orientation="vertical" flexItem variant="middle" sx={{marginRight:2, marginLeft:2}}/>
+                                    <Controller
+                                        name="scholarity_id"
+                                        control={control}
+                                        defaultValue=""
+                                        rules={{ required: 'Campo obrigatório' }}
+                                        render={({ field }) =>     
+                                        <TextField 
+                                            {...field}
+                                            id="formacao" 
+                                            required
+                                            fullWidth
+                                            select
+                                            label="Escolha sua formação" 
+                                            variant="outlined" 
+                                            size="small"
+                                            margin="dense"
+                                            value= {formacao}
+                                            InputProps={{
+                                                startAdornment: (
+                                                <InputAdornment position="start">
+                                                    <SchoolIcon />
+                                                </InputAdornment>
+                                                ),
+                                                style:{fontSize:14},
+                                            }}
+                                            InputLabelProps={{
+                                                style:{fontSize:14},
+                                            }}
+                                            sx={margin_fields}
+                                        >
+                                            {scholarity && scholarity.map((item:any) => {
+                                                return <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                            })} 
+                                        </TextField>
+                                        }
+                                    />
+
+                                </div>
+                                <Button type="submit" variant="contained" sx={{ mt: 3 }} disabled={isSubmitting}>
+                                    {isSubmitting ? "salvando..." : `${button_name}`}
+                                </Button>
+
+                                </Paper>
+
+                        </CardContent>
+                    </form>
 
                     <CardActions disableSpacing>
                         
@@ -529,88 +869,7 @@ const Resume = (props:any) =>
                         
                         <CardContent>
                             
-                            <Paper sx={{marginBottom:2}}>
-
-                                <div className={style.title}>
-                                    <span>Área de interesse e formação</span>
-                                    <span className={style.subtitle}>Defina sua área de interesse e formação</span>
-                                </div>
-
-                                <div className={style.form_lines_center}>
-
-                                    <Tooltip title="Escolha a sua área de interesse" placement="top-start">
-                                        <TextField 
-                                            id="job" 
-                                            required
-                                            fullWidth
-                                            select
-                                            label="Escolha sua área de interesse"
-                                            placeholder="Informe se você tem deficiência"
-                                            variant="outlined" 
-                                            size="small"
-                                            margin="dense"
-                                            value= {job}
-                                            onChange= {handleJobClick}
-                                            InputProps={{
-                                                startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <FollowTheSignsIcon />
-                                                </InputAdornment>
-                                                ),
-                                                style:{fontSize:14},
-                                            }}
-                                            InputLabelProps={{
-                                                style:{fontSize:14},
-                                            }}
-                                            sx={margin_fields}
-                                        >
-                                            <MenuItem value="Administrativo">Administrativo</MenuItem>
-                                            <MenuItem value="Comercial">Comercial</MenuItem>
-                                            <MenuItem value="Representante">Representante</MenuItem>
-                                            <MenuItem value="Produção">Produção</MenuItem>
-                                            <MenuItem value="RH">RH</MenuItem>
-                                        </TextField>
-                                    </Tooltip>
-
-                                    <Divider orientation="vertical" flexItem variant="middle" sx={{marginRight:2, marginLeft:2}}/>
-                                    
-                                    <Tooltip title="Informe a sua escolaridade." placement="top-start">
-                                        <TextField 
-                                            id="formacao" 
-                                            required
-                                            fullWidth
-                                            select
-                                            label="Escolha sua formação" 
-                                            variant="outlined" 
-                                            size="small"
-                                            margin="dense"
-                                            value= {formacao}
-                                            onChange= {handleFormacaoClick}
-                                            InputProps={{
-                                                startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <SchoolIcon />
-                                                </InputAdornment>
-                                                ),
-                                                style:{fontSize:14},
-                                            }}
-                                            InputLabelProps={{
-                                                style:{fontSize:14},
-                                            }}
-                                            sx={margin_fields}
-                                        >
-                                            <MenuItem value="Ensino Fundamental">Ensino Fundamental</MenuItem>
-                                            <MenuItem value="Ensino Médio">Ensino Médio</MenuItem>
-                                            <MenuItem value="Superior Incompleto">Superior Incompleto</MenuItem>
-                                            <MenuItem value="Superior Completo">Superior Completo</MenuItem>
-                                            <MenuItem value="Pós Graduação">Pós Graduação</MenuItem>
-                                            <MenuItem value="PHD">PHD</MenuItem>
-                                        </TextField>
-                                    </Tooltip>
-                           
-                                </div>
-
-                            </Paper>
+                            
 
                             <Paper sx={{marginBottom:2}}>
 
@@ -618,14 +877,49 @@ const Resume = (props:any) =>
                                     <span>Experiência profissional</span>
                                     <span className={style.subtitle}>Descreva abaixo as suas últimas duas experiências profissionais</span>
                                 </div>
+                                <div className={style.form_lines_nopadding}>
+                                        <Controller
+                                            name="sumary"
+                                            control={control}
+                                            defaultValue=""
+                                            rules={{ required: 'Campo obrigatório' }}
+                                            render={({ field }) => 
+                                                <TextField
+                                                    id="sumary"
+                                                    required
+                                                    fullWidth
+                                                    size="small"
+                                                    margin="dense"
+                                                    maxRows={5}
+                                                    label="Fale sobre você"
+                                                    placeholder="Fale um pouco sobre você. Quais são suas habilidades, no que você é bom..."
+                                                    multiline
+                                                    variant="outlined" 
+                                                    sx={margin_fields}
+                                                    InputProps={{
+                                                        style:{fontSize:14},
+                                                    }}
+                                                    InputLabelProps={{
+                                                        style:{fontSize:14},
+                                                    }}
+                                                />
+                                            }
+                                            />
+
+                                        </div>
 
                                 <div className={style.form_lines_center}>
+                                
 
                                     <div className={style.form_lines_col}>
 
                                         <div className={style.form_lines_nopadding}>
-                                            
-                                            <Tooltip title="Nome da última empresa" placement="top-start">
+                                        <Controller
+                                        name="last_company"
+                                        control={control}
+                                        defaultValue=""
+                                        rules={{ required: 'Campo obrigatório' }}
+                                        render={({ field }) =>  
                                                 <TextField 
                                                     id="ultima_empresa" 
                                                     required
@@ -648,68 +942,89 @@ const Resume = (props:any) =>
                                                     }}
                                                     sx={margin_fields}
                                                 />
-                                            </Tooltip>
+                                                }
+                                        />
 
                                         </div>
 
                                         <div className={style.form_lines_nopadding}>
-                                            
-                                            <Tooltip title="Informe a data em que você foi contratado(a) na última empresa. Utilizar o formato: dd/mm/aaaa. Exemplo: 01/01/1900" placement="top-start">
-                                                <TextField 
-                                                    id="dataadmissao_ultima_empresa" 
-                                                    required
-                                                    fullWidth
-                                                    label="Data admissão" 
-                                                    variant="outlined" 
-                                                    size="small"
-                                                    margin="dense"
-                                                    placeholder='Data da admissão na última empresa'
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <DateRangeIcon />
-                                                        </InputAdornment>
-                                                        ),
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    InputLabelProps={{
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    sx={margin_fields}
+                                       
+                                            <Controller
+                                                name="last_admission"
+                                                control={control}
+                                                rules={{ required: 'Campo obrigatório' }}
+                                                defaultValue=""
+                                                render={({ field:{ ref, ...fieldProps } }) => 
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                                        <DatePicker
+                                                            {...fieldProps}
+                                                            inputRef={ref}
+                                                            renderInput={(params) =>
+                                                            <TextField 
+                                                                {...params}
+                                                                id="dataadmissao_ultima_empresa" 
+                                                                required
+                                                                fullWidth
+                                                                label="Data admissão" 
+                                                                variant="outlined" 
+                                                                size="small"
+                                                                margin="dense"
+                                                                placeholder='Data da admissão na última empresa'
+                                                                
+                                                                InputLabelProps={{
+                                                                    style:{fontSize:14},
+                                                                }}
+                                                                sx={margin_fields}
+                                                            />}
+                                                        />
+                                                    </LocalizationProvider>
+                                                    }
+                                            />
+
+                                            <Controller
+                                                name="last_resignation"
+                                                control={control}
+                                                rules={{ required: 'Campo obrigatório' }}
+                                                defaultValue=""
+                                                render={({ field:{ ref, ...fieldProps } }) => 
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                                        <DatePicker
+                                                            {...fieldProps}
+                                                            inputRef={ref}
+                                                            renderInput={(params) =>
+                                                            <TextField 
+                                                                {...params}
+                                                                id="datademissao_ultima_empresa" 
+                                                                required
+                                                                fullWidth
+                                                                label="Data demissão" 
+                                                                variant="outlined" 
+                                                                size="small"
+                                                                margin="dense"
+                                                                placeholder='Data da deissão na última empresa'
+                                                                
+                                                                InputLabelProps={{
+                                                                    style:{fontSize:14},
+                                                                }}
+                                                                sx={margin_fields}
+                                                            />}
+                                                        />
+                                                    </LocalizationProvider>
+                                                    }
                                                 />
-                                            </Tooltip>
-                                            
-                                            <Tooltip title="Informe a data em que você foi demitido(a) na última empresa. Utilizar o formato: dd/mm/aaaa. Exemplo: 01/01/1900" placement="top-start">
-                                                <TextField 
-                                                    id="datademissao_ultima_empresa" 
-                                                    required
-                                                    fullWidth
-                                                    label="Data demissão" 
-                                                    variant="outlined" 
-                                                    size="small"
-                                                    margin="dense"
-                                                    placeholder='Data de demissão da última empresa'
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <DateRangeIcon />
-                                                        </InputAdornment>
-                                                        ),
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    InputLabelProps={{
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    sx={margin_fields}
-                                                />
-                                            </Tooltip>
 
                                         </div>
 
                                         <div className={style.form_lines_nopadding}>
+                                        <Controller
+                                            name="last_activity"
+                                            control={control}
+                                            defaultValue=""
+                                            rules={{ required: 'Campo obrigatório' }}
+                                            render={({ field }) => 
 
-                                            <Tooltip title="Descreva as suas principais atividades na última empresa" placement="top-start">
                                                 <TextField
+                                                    {...field}
                                                     id="desc_ultima_empresa"
                                                     required
                                                     fullWidth
@@ -728,7 +1043,8 @@ const Resume = (props:any) =>
                                                         style:{fontSize:14},
                                                     }}
                                                 />
-                                            </Tooltip>
+                                        }
+                                        />
 
                                         </div>
 
@@ -739,9 +1055,14 @@ const Resume = (props:any) =>
                                     <div className={style.form_lines_col}>
 
                                         <div className={style.form_lines_nopadding}>
-
-                                            <Tooltip title="Informe o nome de sua penúltima empresa" placement="top-start">
+                                        <Controller
+                                            name="penultimate_company "
+                                            control={control}
+                                            defaultValue=""
+                                            rules={{ required: 'Campo obrigatório' }}
+                                            render={({ field }) => 
                                                 <TextField 
+                                                    {...field}
                                                     id="penultima_empresa" 
                                                     required
                                                     fullWidth
@@ -763,67 +1084,86 @@ const Resume = (props:any) =>
                                                     }}
                                                     sx={margin_fields}
                                                 />
-                                            </Tooltip>
+                                            }
+                                            />
 
                                         </div>
 
                                         <div className={style.form_lines_nopadding}>
 
-                                            <Tooltip title="Informe a data em que você foi contratado(a) na penúltima empresa. Utilizar o formato: dd/mm/aaaa. Exemplo: 01/01/1900" placement="top-start">
-                                                <TextField 
-                                                    id="dataadmissao_penultima_empresa" 
-                                                    required
-                                                    fullWidth
-                                                    label="Data admissão" 
-                                                    variant="outlined" 
-                                                    size="small"
-                                                    margin="dense"
-                                                    placeholder='Data da admissão na penúltima empresa'
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <DateRangeIcon />
-                                                        </InputAdornment>
-                                                        ),
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    InputLabelProps={{
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    sx={margin_fields}
-                                                />
-                                            </Tooltip>
+                                        <Controller
+                                                name="penultimate_admission"
+                                                control={control}
+                                                rules={{ required: 'Campo obrigatório' }}
+                                                defaultValue=""
+                                                render={({ field:{ ref, ...fieldProps } }) => 
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                                        <DatePicker
+                                                            {...fieldProps}
+                                                            inputRef={ref}
+                                                            renderInput={(params) =>
+                                                            <TextField 
+                                                                {...params}
+                                                                id="dataadmissao_penultima_empresa" 
+                                                                required
+                                                                fullWidth
+                                                                label="Data admissão" 
+                                                                variant="outlined" 
+                                                                size="small"
+                                                                margin="dense"
+                                                                placeholder='Data da admissão na penúltima empresa'
+                                                                
+                                                                InputLabelProps={{
+                                                                    style:{fontSize:14},
+                                                                }}
+                                                                sx={margin_fields}
+                                                            />}
+                                                        />
+                                                    </LocalizationProvider>
+                                                    }
+                                            />
 
-                                            <Tooltip title="Informe a data em que você foi demitido(a) na penúltima empresa. Utilizar o formato: dd/mm/aaaa. Exemplo: 01/01/1900" placement="top-start">
-                                                <TextField 
-                                                    id="datademissao_penultima_empresa" 
-                                                    required
-                                                    fullWidth
-                                                    label="Data demissão" 
-                                                    variant="outlined" 
-                                                    size="small"
-                                                    margin="dense"
-                                                    placeholder='Data de demissão da penúltima empresa'
-                                                    InputProps={{
-                                                        startAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <DateRangeIcon />
-                                                        </InputAdornment>
-                                                        ),
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    InputLabelProps={{
-                                                        style:{fontSize:14},
-                                                    }}
-                                                    sx={margin_fields}
+                                            <Controller
+                                                name="penultimate_resignation"
+                                                control={control}
+                                                rules={{ required: 'Campo obrigatório' }}
+                                                defaultValue=""
+                                                render={({ field:{ ref, ...fieldProps } }) => 
+                                                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                                                        <DatePicker
+                                                            {...fieldProps}
+                                                            inputRef={ref}
+                                                            renderInput={(params) =>
+                                                            <TextField 
+                                                                {...params}
+                                                                id="datademissao_penultima_empresa" 
+                                                                required
+                                                                fullWidth
+                                                                label="Data demissão" 
+                                                                variant="outlined" 
+                                                                size="small"
+                                                                margin="dense"
+                                                                placeholder='Data da deissão na penúltima empresa'
+                                                                
+                                                                InputLabelProps={{
+                                                                    style:{fontSize:14},
+                                                                }}
+                                                                sx={margin_fields}
+                                                            />}
+                                                        />
+                                                    </LocalizationProvider>
+                                                    }
                                                 />
-                                            </Tooltip>
 
                                         </div>
 
                                         <div className={style.form_lines_nopadding}>
-                                            
-                                            <Tooltip title="Descreva as suas principais atividades na penúltima empresa" placement="top-start">
+                                        <Controller
+                                            name="penultimate_activity"
+                                            control={control}
+                                            defaultValue=""
+                                            rules={{ required: 'Campo obrigatório' }}
+                                            render={({ field }) => 
                                                 <TextField
                                                     id="desc_penultima_empresa"
                                                     required
@@ -843,7 +1183,8 @@ const Resume = (props:any) =>
                                                         style:{fontSize:14},
                                                     }}
                                                 />
-                                            </Tooltip>
+                                            }
+                                            />
 
                                         </div>
 

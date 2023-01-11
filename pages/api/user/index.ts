@@ -16,13 +16,9 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
         sex, 
         password, 
         area_activityId,
-        zip,
-        address,
-        number,
-        complement,
-        district,
-        city,
-        uf,
+        have_desability,
+        own_car,
+        scholarity_id,
         phone,
     } = req.body
 
@@ -75,6 +71,9 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     sex,
                     password,
                     area_activityId,
+                    have_desability,
+                    own_car,
+                    scholarity_id,
                     email_contact:
                     {
                         create:
@@ -89,6 +88,26 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                         {
                             phone,
                             is_default_phone: true,
+                        }
+                    },
+                    address:{
+                        create:
+                        {
+                           complement: '' 
+                        }
+                    },
+                    curriculo:
+                    {
+                        create:
+                        {
+                            sumary: ''
+                        }
+                    },
+                    resume:
+                    {
+                        create:
+                        {
+                           sumary: '' 
                         }
                     }
                 }

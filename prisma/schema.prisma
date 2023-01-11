@@ -90,19 +90,19 @@ model ProfessionalExperience {
 }
 
 model Curriculo {
-  id                      String   @id @default(cuid())
-  sumary                  String?  @db.Text
-  last_company            String   @db.VarChar(255)
-  last_admission          DateTime @db.Date
-  last_resignation        DateTime @db.Date
-  last_activity           String   @db.MediumText
-  penultimate_company     String   @db.VarChar(255)
-  penultimate_admission   DateTime @db.Date
-  penultimate_resignation DateTime @db.Date
-  penultimate_activity    String   @db.MediumText
-  userId                  String   @unique
-  createdAt               DateTime @default(now())
-  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                      String    @id @default(cuid())
+  sumary                  String?   @db.Text
+  last_company            String?   @db.VarChar(255)
+  last_admission          DateTime? @db.Date
+  last_resignation        DateTime? @db.Date
+  last_activity           String?   @db.MediumText
+  penultimate_company     String?   @db.VarChar(255)
+  penultimate_admission   DateTime? @db.Date
+  penultimate_resignation DateTime? @db.Date
+  penultimate_activity    String?   @db.MediumText
+  userId                  String    @unique
+  createdAt               DateTime  @default(now())
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model AreaActivity {

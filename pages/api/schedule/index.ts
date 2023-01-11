@@ -64,7 +64,10 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                             area_activity: true,
                             schedule_type: true,
                         },
-                        orderBy:{day:'asc'}
+                        orderBy:[
+                            {day: 'asc'},
+                            {starttime:'asc'}
+                        ]
                     })
                 }
 
@@ -82,7 +85,10 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                             area_activity: true,
                             schedule_type: true,
                         },
-                        orderBy:{day:'asc'}
+                        orderBy:[
+                            {day: 'asc'},
+                            {starttime:'asc'}
+                        ]
                     })
                 }
 
@@ -101,7 +107,10 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                             area_activity: true,
                             schedule_type: true,
                         },
-                        orderBy:{day:'asc'},
+                        orderBy:[
+                            {day: 'asc'},
+                            {starttime:'asc'}
+                        ]
                     })
                 }
 
