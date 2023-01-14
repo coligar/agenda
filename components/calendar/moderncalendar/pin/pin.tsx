@@ -24,8 +24,8 @@ const Pin = (props:any) =>
     let end_time = new Date('2020-01-01 ' + props.endtime)
     let actual_time = new Date('2020-01-01 ' + date.getHours()+':'+date.getMinutes())
 
-    let interview_start = new Date(props.starttime).toLocaleTimeString('pt-BR')
-    let interview_end = new Date(props.endtime).toLocaleTimeString('pt-BR')
+    let interview_start = new Date(props.starttime).toLocaleTimeString('pt-BR').substring(0,5)
+    let interview_end = new Date(props.endtime).toLocaleTimeString('pt-BR').substring(0,5)
 
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

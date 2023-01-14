@@ -48,7 +48,6 @@ const fieldvalidations = yup.object({
 
 const setInputValues = (data:any, setValue:UseFormSetValue<IFormResume>) =>
 {
-    //console.log(data)
     if(data || data !== undefined)
     {
         setValue("sumary", data.curriculo.sumary)
@@ -93,7 +92,7 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
         }
     )
 
-
+    watch('sumary')
     useEffect(() =>
     {
         setInputValues(dados, setValue)
@@ -119,9 +118,7 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
             })
         }
         else
-        {   
-            console.log(data)
-            
+        {               
             return await fetch(`${url}/${dados.curriculo.id}`, 
             {
                 body: JSON.stringify(data),
@@ -193,6 +190,7 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
                                 rules={{ required: 'Campo obrigatório' }}
                                 render={({ field }) => 
                                     <TextField
+                                        {...field} 
                                         required
                                         fullWidth
                                         size="small"
@@ -225,7 +223,7 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
                                     rules={{ required: 'Campo obrigatório' }}
                                     render={({ field }) =>  
                                         <TextField 
-                                            id="ultima_empresa" 
+                                            {...field}  
                                             required
                                             fullWidth
                                             label="Nome da última empresa"
@@ -314,7 +312,6 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
                                     defaultValue=""
                                     rules={{ required: 'Campo obrigatório' }}
                                     render={({ field }) => 
-
                                         <TextField
                                             {...field}
                                             id="desc_ultima_empresa"
@@ -352,7 +349,8 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
                                     defaultValue=""
                                     rules={{ required: 'Campo obrigatório' }}
                                     render={({ field }) =>  
-                                        <TextField 
+                                        <TextField
+                                            {...field} 
                                             required
                                             fullWidth
                                             label="Nome da penúltima empresa"
@@ -441,7 +439,6 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
                                     defaultValue=""
                                     rules={{ required: 'Campo obrigatório' }}
                                     render={({ field }) => 
-
                                         <TextField
                                             {...field}
                                             id="desc_ultima_empresa"
@@ -475,23 +472,23 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
 
                 <div className={style.form_footer}>
 
-                                    <FormControlLabel 
-                                        control={<Switch />}
-                                        id="ciente"
-                                        label="Estou ciente que meu currículo ficará em nossa base de dados por 2 meses" 
-                                        labelPlacement="start" 
-                                        sx={{fontSize:0.85}}
-                                        value= {enablebuttom}
-                                        onChange= {handleEnableButtomClick}
-                                    />
+                    <FormControlLabel 
+                        control={<Switch />}
+                        id="ciente"
+                        label="Estou ciente que meu currículo ficará em nossa base de dados por 2 meses" 
+                        labelPlacement="start" 
+                        sx={{fontSize:0.85}}
+                        value= {enablebuttom}
+                        onChange= {handleEnableButtomClick}
+                    />
 
-                                    <Divider orientation="vertical" flexItem variant="middle" sx={{marginRight:2, marginLeft:2}}/>
-                                    
-                                    <Button type="submit" variant="contained" sx={{ mt: 3 }} disabled={isSubmitting}>
-                                        {isSubmitting ? "salvando..." : `enviar`}
-                                    </Button>
+                    <Divider orientation="vertical" flexItem variant="middle" sx={{marginRight:2, marginLeft:2}}/>
+                    
+                    <Button type="submit" variant="contained" sx={{ mt: 3 }} disabled={isSubmitting}>
+                        {isSubmitting ? "salvando..." : `enviar`}
+                    </Button>
 
-                                </div>
+                </div>
             </CardContent>
 
 

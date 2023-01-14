@@ -1,5 +1,5 @@
 import style from './Candidate.module.css'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider';
 import Confirmation from '../../../components/notifications/confirmation'
@@ -9,11 +9,12 @@ import no_schedule_pick from '/public/images/system/no_schedule.jpg'
 import no_log_pick from '/public/images/system/no_log.jpg'
 import no_resume_pick from '/public/images/system/no_resume.jpg'
 import Resume from '../../../components/form/resumeold';
+import { useGetData } from '../../../hooks/useRequest';
+import axios from 'axios';
 
 interface IType 
 {
     is_visible: undefined | boolean
-    id: Number
 }
 
 const Candidate = (props:any) => 
@@ -40,8 +41,6 @@ const Candidate = (props:any) =>
     const has_notification =
     {
         has_notification: status,
-        id: 1,
-        component: <Confirmation/>
     }
 
     /**
@@ -56,9 +55,26 @@ const Candidate = (props:any) =>
 
     const [activeNotification, setActiveNotification] = useState(has_notification)
     const [activeLog, setActiveLog] = useState(is_active_log)
-    const [activeResume,  setActiveResume] = useState<IType>({is_visible: undefined, id: 0})
+    const [activeResume,  setActiveResume] = useState<IType>({is_visible: undefined})
+    const {data: user} = useGetData('api/user/clcqwlzeo00011y7eaxr2w5mi')
 
- 
+   
+
+    if (!user) return <div>Loading...</div>
+
+    if(user)
+    {
+        activeResume.is_visible = true
+        if(user.schedule.length > 0){
+            has_notification.has_notification = true
+        }
+        else
+        {
+            has_notification.has_notification = false
+        }      
+    }
+
+
     return(
         <div className={style.container}>
             <div className={style.info_area}>
@@ -70,10 +86,10 @@ const Candidate = (props:any) =>
                         <p className={style.description}>Aqui ficam os agendamentos para entrevistas que serão feitas pelo nosso RH</p>
                     </div>
 
-                    {activeNotification.has_notification !== false &&
-                        activeNotification.component
+                    {has_notification.has_notification &&
+                        <Confirmation dados={user}/>
                     }
-                    {activeNotification.has_notification === false &&
+                    {!has_notification.has_notification &&
                         <div className={style.noevent}>
                             <Image src={no_schedule_pick} alt="imagem que indica que não há agendamentos"/>
                         </div>
@@ -114,14 +130,14 @@ const Candidate = (props:any) =>
                         <p className={style.description}>Aqui você deve cadastrar seu currículo para análise do nosso RH</p>
                     </div>
 
-                    {activeResume.is_visible !== undefined &&
-                        <Resume id={activeResume.id}/>
+                    {activeResume &&
+                        <Resume dados={user}/>
                     }
-                    {activeResume.is_visible === undefined &&
+                    {!activeResume &&
                         
                         <div className={style.noevent}>
                             <Image src={no_resume_pick} alt="imagem que indica que não há currículos cadastrados"/>
-                            <Button variant="contained" sx={{marginTop:3.8}} onClick={()=>setActiveResume({is_visible:false, id:1})}>cadastrar currículo</Button>
+                            <Button variant="contained" sx={{marginTop:3.8}} onClick={()=>setActiveResume({is_visible:false})}>cadastrar currículo</Button>
                         </div>
                     }
                        
