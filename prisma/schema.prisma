@@ -42,7 +42,7 @@ model User {
   account_verified      Boolean       @default(false)
   account_verified_date DateTime?
   birth_date            DateTime?     @db.Date
-  cpf                   String?       @db.VarChar(14)
+  cpf                   String?       
   have_desability       Boolean       @default(false)
   lastname              String?
   own_car               Boolean       @default(false)

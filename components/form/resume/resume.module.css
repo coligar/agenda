@@ -1,0 +1,88 @@
+.card{
+    width: 100%;
+}
+
+.form_lines {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:12px;
+    width: 100%;
+}
+
+.form_lines_nopadding {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.form_lines_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:12px;
+    width: 100%;
+}
+
+.form_lines_col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.title{
+    padding:12px 12px 6px 12px !important;
+    margin: 0 0 5px 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.subtitle{
+    font-weight: 200;
+    font-size: 14px;
+    padding: 5px 0;
+}
+
+.form_footer {
+    display: flex;
+    font-size: 10px !important;
+    justify-content:flex-end;
+}
+
+.form_footer .css-ahj2mt-MuiTypography-root
+{
+    font-size: 0.8rem !important;
+}
+
+
+@media screen and (max-width: 540px) 
+{
+    .form_lines, .form_lines_center, .form_footer
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 12px;
+    }
+}
+
+
+
+@media screen and (max-width: 414px) 
+{
+    .form_lines, .form_lines_center, .form_footer
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 12px;
+    }
+
+}

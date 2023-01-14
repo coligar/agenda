@@ -19,6 +19,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
         own_car,
         status,
         area_activity,
+        scholarity_id, 
     } = req.body
 
     try 
@@ -53,6 +54,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     own_car,
                     status,
                     area_activity,
+                    scholarity_id,
                 }
             })
 

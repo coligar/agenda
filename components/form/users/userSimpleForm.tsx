@@ -15,6 +15,7 @@ interface IFormInput
     email: string
     role: string | null
     sex: string | null
+    teste: string
     area_activityId : string | null
 }
 
@@ -75,7 +76,7 @@ const UserSimpleForm: NextPage<Props> = (props) =>
             resolver: yupResolver(fieldvalidations)
         }
     )
-
+        watch('name')
     useEffect(() =>
     {
         setInputValues(dados, setValue)
@@ -84,6 +85,7 @@ const UserSimpleForm: NextPage<Props> = (props) =>
     
     async function saveFormData(data: IFormInput) 
     {
+        console.log(data)
         if(type === 'POST')
         {
             return await fetch(url, 
