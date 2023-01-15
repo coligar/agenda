@@ -21,6 +21,7 @@ import CurriculoForm from '../components/form/curriculo/curriculoForm';
 import FullUserForm from '../components/form/users/fullUserForm';
 import ScheduleTypeForm from '../components/form/scheduletype/scheduleTypeForm';
 import ScheduleTypeFormList from '../components/form/scheduletype/schedumeTypeFormList';
+import LoginForm from '../components/form/login/loginForm';
 
 
 interface IUser
@@ -235,6 +236,26 @@ export default function Home(props:any, fallback:any)
        }}>
         <Paper>
         <FullUserForm type='POST'/>
+        </Paper>
+        
+      </Box>
+
+      <Box sx={{ 
+        flexGrow: 1,
+        boxShadow: 0,
+        bgcolor: 'background.paper',
+        m: 1,
+        borderRadius:2,
+        overflow: 'hidden',
+        width: '100%',
+       }}>
+        <Paper>
+          <Grid item xs={4}>
+            <Paper>
+              <h2>Login</h2>
+              <LoginForm url='api/user/login' type='POST'/>
+            </Paper>
+          </Grid>
         </Paper>
         
       </Box>
