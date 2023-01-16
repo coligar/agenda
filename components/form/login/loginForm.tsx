@@ -107,9 +107,9 @@ const LoginForm: NextPage<Props> = (props) =>
             window.localStorage.setItem('lastname', resp.lastname)
             window.localStorage.setItem('role', resp.role)
             window.localStorage.setItem('userData', resp)
+
+            console.log
             mutate("role", resp.role)
-            mutate("userData", {id:resp.id, avatar: resp.avatar, role:resp.role})
-            mutate("is_logged", resp.is_logged)
             
             if (response.status === 400 || response.status === 500) 
             {
@@ -143,6 +143,7 @@ const LoginForm: NextPage<Props> = (props) =>
         catch (error) 
         {
             toast.error(`O usuário informado não existe para atualização.`)
+            console.log(error)
         }
         
     }
