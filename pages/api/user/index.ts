@@ -91,20 +91,16 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                         }
                     },
                     address:{
-                        create:
-                        {
+                        create:{
                            complement: '' 
                         }
                     },
-                    curriculo:
-                    {
-                        create:
-                        {
+                    curriculo:{
+                        create:{
                             sumary: 'Uma breve descrição sobre você aqui'
                         }
                     },
-                    resume:
-                    {
+                    resume:{
                         create:
                         {
                            sumary: '' 
