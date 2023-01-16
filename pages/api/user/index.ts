@@ -95,17 +95,17 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                            complement: '' 
                         }
                     },
-                    curriculo:{
-                        create:{
-                            sumary:null,
-                        }
-                    },
                     resume:{
                         create:
                         {
                            sumary: '' 
                         }
-                    }
+                    },
+                    curriculo:{
+                        create:{
+                            sumary: 'Teste currículo',
+                        }
+                    },
                 }
             })
         
