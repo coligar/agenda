@@ -100,7 +100,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     {
                         create:
                         {
-                            sumary: ''
+                            sumary: 'Uma breve descrição sobre você aqui'
                         }
                     },
                     resume:

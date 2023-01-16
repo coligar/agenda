@@ -99,7 +99,8 @@ const Resumeview = (props:any) =>
             {
                 setAvaliableSchedule(false)
                 let scheduletype = schedule_t.filter((x:any) => x.id === userHasSchedule[0].schedule_typeId)
-                setScheduleType(scheduletype[0].type)
+                //setScheduleType(scheduletype[0].type)
+                setScheduleType('agendamentosolicitado')
                 setScheduleDate(`${new Date(userHasSchedule[0].day).toLocaleDateString()} às ${new Date(userHasSchedule[0].starttime).toLocaleTimeString()}`)
             }
         }

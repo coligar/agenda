@@ -177,6 +177,11 @@ const Pin = (props:any) =>
         border = 'dashed 2px #dda44b'
         icon = <Status type="reagendamentosolicitado" ml="5px" size="20px" color={icon_color}/>
     }
+    else
+    {
+        border = 'dashed 2px #0B821F'
+        icon = <Status type="agendamentosolicitado" ml="5px" size="20px" color={icon_color}/>
+    }
     
 
     return(

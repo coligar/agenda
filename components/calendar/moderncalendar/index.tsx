@@ -174,7 +174,7 @@ const ModernCalendar = (props:any) =>
 
                         </div>
 
-                        <Pin name={item.user.name + ' ' +item.user.lastname} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area_activity.name} type={item.schedule_type.type} avatar={item.user.avatar} day={data.date}/>
+                        <Pin name={item.user.name + ' ' +item.user.lastname} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area_activity.name} type={'agendamentosolicitado'} avatar={item.user.avatar} day={data.date}/>
 
                     </div>
                 ))}   

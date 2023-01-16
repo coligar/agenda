@@ -189,7 +189,7 @@ export default function Home(props:any, fallback:any)
           <Grid item xs={4}>
             <Paper>
               <h2>Cadastrar usuários</h2>
-              <UserSimpleForm url='api/user' type='POST' role='USER'/>
+              <UserSimpleForm url='api/user' type='POST' role='ADMIN'/>
             </Paper>
           </Grid>
           <Grid item xs={4}>

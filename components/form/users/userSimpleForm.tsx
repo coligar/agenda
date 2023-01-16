@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import { mutate } from 'swr'
 import { useGetData } from '../../../hooks/useRequest'
 import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Tooltip } from '@mui/material'
+import { useRouter } from 'next/router'
 
 interface IFormInput 
 {
@@ -59,6 +60,7 @@ const UserSimpleForm: NextPage<Props> = (props) =>
 {
     const {data: areas} = useGetData('api/activity')
     const { url, type, role, dados} = props
+    const router = useRouter()
 
     let button_name: string = (type === 'POST') ? 'Cadastrar' : 'Atualizar'
 
@@ -141,6 +143,10 @@ const UserSimpleForm: NextPage<Props> = (props) =>
 
                 toast.success(resp.message, { hideProgressBar: false, autoClose: 2000 })
                 mutate('/api/user');
+                if(role==='USER')
+                {
+                    router.push('login')
+                }
             } 
             else 
             {

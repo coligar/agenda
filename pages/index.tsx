@@ -3,11 +3,11 @@ import LayoutMain from "../components/layouts/main"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 import { useGridApiEventHandler } from "@mui/x-data-grid"
+import { useRouter } from 'next/router'
 
 const Main = () =>
 {
-  const user_level = 'manager'
-  const [userLevel, setUserLevel] = useState(null) 
+  const router = useRouter()
 
   const { data: currentLevel } = useSWR("role", async key => {
     await new Promise(resolve => setTimeout(resolve, 2000))
@@ -22,7 +22,11 @@ const Main = () =>
     return !!value ? JSON.parse(value) : undefined;
   });
 
+  useEffect(() => {
+    if(!currentLevel) router.push('login')
+  });
 
+  
   if (!currentLevel) return <div>Loading...</div>
 
   return (
