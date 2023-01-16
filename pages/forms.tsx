@@ -189,7 +189,7 @@ export default function Home(props:any, fallback:any)
           <Grid item xs={4}>
             <Paper>
               <h2>Cadastrar usuários</h2>
-              <UserSimpleForm url='api/user' type='POST'/>
+              <UserSimpleForm url='api/user' type='POST' role='USER'/>
             </Paper>
           </Grid>
           <Grid item xs={4}>
@@ -203,7 +203,7 @@ export default function Home(props:any, fallback:any)
           <Grid item xs={4}>
             <Paper>
               <h2>Editar usuários</h2>
-              <UserSimpleForm url='api/user' type='PUT' dados={dataUser}/>
+              <UserSimpleForm url='api/user' type='PUT' dados={dataUser} role='USER'/>
             </Paper>
           </Grid>
         </Grid>

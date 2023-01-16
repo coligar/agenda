@@ -13,6 +13,8 @@ import Logo from '../../logotipo'
 
 const LayoutMain = (props:any) => 
 {
+    let user_name = localStorage.getItem('name') + ' ' + localStorage.getItem('lastname')
+    let avatar_image = localStorage.getItem('avatar')
     return (
         <>
             <div className={style.header_wrapper}>
@@ -39,17 +41,17 @@ const LayoutMain = (props:any) =>
                 <div className={style.nav}>
 
                     <div className={style.notifications}>
-                        <Notifications badgevalue="3"/>
+                        <Notifications badgevalue="0"/>
                     </div>
 
                     <div className={style.avatar}>
                         <IconButton aria-label="cart">
-                            <Avatar direction="row" name="Alexandre Henrique da Silva Corrêa" width="36" avatar="https://heloisatolipan.com.br/imagens/2021/01/20210121-imagem.jpg"/>
+                            <Avatar direction="row" name={user_name} width="36" avatar={avatar_image}/>
                         </IconButton>
                     </div>
 
                     <div className={style.welcome}>
-                        <Welcome username="Alexandre Corrêa"/>
+                        <Welcome username={user_name}/>
                     </div>
 
                     <div className={style.chat}>
@@ -78,7 +80,7 @@ const LayoutMain = (props:any) =>
                     <IconButton aria-label="menu">
                         <DehazeIcon sx={{color: 'white', margin: '0 0 26px 0'}}/>
                     </IconButton>
-                    <Avatar direction="column" name="Alexandre Henrique da Silva Corrêa" width="42" border avatar="https://heloisatolipan.com.br/imagens/2021/01/20210121-imagem.jpg"/>
+                    <Avatar direction="column" name={user_name} width="42" border avatar={avatar_image}/>
                 </div>
 
                 <MenuSideBar type={props.type}/>

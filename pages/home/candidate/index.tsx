@@ -56,9 +56,8 @@ const Candidate = (props:any) =>
     const [activeNotification, setActiveNotification] = useState(has_notification)
     const [activeLog, setActiveLog] = useState(is_active_log)
     const [activeResume,  setActiveResume] = useState<IType>({is_visible: undefined})
-    const {data: user} = useGetData('api/user/clcqwlzeo00011y7eaxr2w5mi')
+    const {data: user} = useGetData(`api/user/${localStorage.getItem('id')}`)
 
-   
 
     if (!user) return <div>Loading...</div>
 

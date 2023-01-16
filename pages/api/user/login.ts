@@ -59,6 +59,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     avatar: response[0].avatar,
                     name: response[0].name,
                     lastname: response[0].lastname,
+                    is_logged: true
                 }
                 status_code = 202
             }

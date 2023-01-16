@@ -15,13 +15,14 @@ interface IFormInput
     email: string
     role: string | null
     sex: string | null
-    teste: string
+    password: string
     area_activityId : string | null
 }
 
 interface Props 
 {
     url: string
+    role: string
     type: string
     dados?: any | null
 }
@@ -31,8 +32,8 @@ const fieldvalidations = yup.object({
     name: yup.string().required('Campo obrigatório').max(100,'Permitido no máximo 100 caracteres'),
     lastname: yup.string().required('Campo obrigatório').max(100, 'Permitido no máximo 100 caracteres'),
     email: yup.string().email('Email inválido').required('Campo obrigatório'),
-    role: yup.string().required('Campo obrigatório'),
     sex: yup.string().required('Campo obrigatório'),
+    password: yup.string().required('Campo obrigatório'),
     area_activityId: yup.string().required('Campo obrigatório')
 })
 
@@ -47,8 +48,8 @@ const setInputValues = (data:any, setValue:UseFormSetValue<IFormInput>) =>
         setValue("name", data.name);
         setValue("lastname", data.lastname)
         setValue("email", data.email)
-        setValue("role", data.role)
         setValue("sex", data.sex)
+        setValue("password", data.password)
         setValue("area_activityId", data.area_activityId)
     }
 }
@@ -57,7 +58,7 @@ const setInputValues = (data:any, setValue:UseFormSetValue<IFormInput>) =>
 const UserSimpleForm: NextPage<Props> = (props) => 
 {
     const {data: areas} = useGetData('api/activity')
-    const { url, type, dados} = props
+    const { url, type, role, dados} = props
 
     let button_name: string = (type === 'POST') ? 'Cadastrar' : 'Atualizar'
 
@@ -76,7 +77,6 @@ const UserSimpleForm: NextPage<Props> = (props) =>
             resolver: yupResolver(fieldvalidations)
         }
     )
-        watch('name')
     useEffect(() =>
     {
         setInputValues(dados, setValue)
@@ -85,7 +85,8 @@ const UserSimpleForm: NextPage<Props> = (props) =>
     
     async function saveFormData(data: IFormInput) 
     {
-        console.log(data)
+        data['role'] = role
+
         if(type === 'POST')
         {
             return await fetch(url, 
@@ -132,8 +133,8 @@ const UserSimpleForm: NextPage<Props> = (props) =>
                         name:'',
                         lastname:'',
                         email:'',
-                        role: '',
                         sex: '',
+                        password: '',
                         area_activityId: ''
                     })
                 }
@@ -166,7 +167,8 @@ const UserSimpleForm: NextPage<Props> = (props) =>
                 <TextField {...field} 
                     variant="outlined" 
                     label='Nome' 
-                    size='small' 
+                    size='small'
+                    fullWidth
                     required 
                     helperText={errors ? errors.name?.message : null} 
                     placeholder="Informe seu nome"
@@ -181,9 +183,7 @@ const UserSimpleForm: NextPage<Props> = (props) =>
                 defaultValue=""
                 rules={{ required: 'First name required' }}
                 render={({ field }) => 
-                <Tooltip title="Informe o sobrenome." placement="top-start">
-                    <TextField {...field} variant="outlined" label='Sobrenome' size='small' required/>
-                </Tooltip>
+                    <TextField {...field} variant="outlined" label='Sobrenome' fullWidth size='small' required/>
                 }
             />
             <p className='error'>{errors.lastname?.message}</p>
@@ -194,33 +194,21 @@ const UserSimpleForm: NextPage<Props> = (props) =>
                 defaultValue=""
                 rules={{ required: 'First name required' }}
                 render={({ field }) => 
-                    <Tooltip title="Informe o e-mail." placement="top-start">
-                        <TextField {...field} variant="outlined" label='E-mail' size='small' type='email' required/>
-                    </Tooltip>
+                    <TextField {...field} variant="outlined" label='E-mail' fullWidth size='small' type='email' required/>
                 }
             />
             <p className='error'>{errors.email?.message}</p>
 
             <Controller
-                name="role"
+                name="password"
                 control={control}
                 defaultValue=""
                 rules={{ required: 'First name required' }}
                 render={({ field }) => 
-                    <Tooltip title="Escolha o tipo de usuário." placement="top-start">
-                        <FormControl sx={{ minWidth: 220 }} size="small" required>
-                            <InputLabel id="labelage">Tipo de Usuário</InputLabel>
-                            <Select {...field} variant="outlined" label='Tipo de Usuário' labelId="labelage" fullWidth>
-                                <MenuItem disabled value=""><em>Selecione uma opção</em></MenuItem>
-                                <MenuItem value='USER'>Usuário</MenuItem>
-                                <MenuItem value='ADMIN'>Administrador</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Tooltip>
+                    <TextField {...field} variant="outlined" label='Senha' fullWidth size='small' required type="password"/>
                 }
-                
             />
-            <p className='error'>{errors.role?.message}</p>
+            <p className='error'>{errors.password?.message}</p>
 
             <Controller
                 name="sex"
@@ -228,16 +216,14 @@ const UserSimpleForm: NextPage<Props> = (props) =>
                 defaultValue=""
                 rules={{ required: 'First name required' }}
                 render={({ field }) => 
-                    <Tooltip title="Escolha o sexo." placement="top-start">
-                        <FormControl sx={{ minWidth: 220 }} size="small" required>
-                            <InputLabel id="labelsex">Sexo</InputLabel>
-                            <Select {...field} variant="outlined" label='Sexo' labelId="labelsex">
-                                <MenuItem disabled value=""><em>Selecione uma opção</em></MenuItem>
-                                <MenuItem value='F'>Feminino</MenuItem>
-                                <MenuItem value='M'>Masculino</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Tooltip>
+                    <FormControl fullWidth size="small" required>
+                        <InputLabel id="labelsex">Sexo</InputLabel>
+                        <Select {...field} variant="outlined" label='Sexo' labelId="labelsex">
+                            <MenuItem disabled value=""><em>Selecione uma opção</em></MenuItem>
+                            <MenuItem value='F'>Feminino</MenuItem>
+                            <MenuItem value='M'>Masculino</MenuItem>
+                        </Select>
+                    </FormControl>
                 }
                 
             />
@@ -248,19 +234,17 @@ const UserSimpleForm: NextPage<Props> = (props) =>
                 control={control}
                 defaultValue=""
                 render={({ field }) => 
-                <Tooltip title="Escolhasua área de interesse." placement="top-start">
-                    <FormControl sx={{ minWidth: 220 }} size="small" required>
-                        <InputLabel id="labelarea">Área de interesse</InputLabel>
-                        <Select {...field} variant="outlined" label='Área de interesse' labelId="labelarea">
-                            <MenuItem disabled value=""><em>Selecione uma opção</em></MenuItem>
-                            
-                             {areas && areas.map((item:any) => {
-                                return <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                             })}   
-                            
-                        </Select>
-                    </FormControl>
-                </Tooltip>
+                <FormControl fullWidth size="small" required>
+                    <InputLabel id="labelarea">Área de interesse</InputLabel>
+                    <Select {...field} variant="outlined" label='Área de interesse' labelId="labelarea">
+                        <MenuItem disabled value=""><em>Selecione uma opção</em></MenuItem>
+                        
+                            {areas && areas.map((item:any) => {
+                            return <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                            })}   
+                        
+                    </Select>
+                </FormControl>
                 }
                 
             />
