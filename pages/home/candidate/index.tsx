@@ -67,7 +67,7 @@ const Candidate = (props:any) =>
     const {data: user} = useGetData(`api/user/${id}`)
 
 
-    if (!user) return <div>Loading...</div>
+    if (!user && !id) return <div>Loading...</div>
 
     if(user)
     {

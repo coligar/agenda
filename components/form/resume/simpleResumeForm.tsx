@@ -29,6 +29,7 @@ interface IFormResume
     penultimate_admission: Date | string,
     penultimate_resignation: Date | string,
     penultimate_activity: string,
+    userId?:string,
 }
 
 interface Props 
@@ -48,7 +49,7 @@ const fieldvalidations = yup.object({
 
 const setInputValues = (data:any, setValue:UseFormSetValue<IFormResume>) =>
 {
-    if(data || data !== undefined)
+    if(data.curriculo)
     {
         setValue("sumary", data.curriculo.sumary)
         setValue("last_activity", data.curriculo.last_activity)
@@ -108,32 +109,30 @@ const SimpleResumeForm: NextPage<Props> = (props) =>
     
     async function saveFormData(data: IFormResume) 
     {
-        if(type === 'POST')
-        {
+        if(!dados.curriculo)
+        {   data['userId'] = dados.id 
             return await fetch(url, 
             {
                 body: JSON.stringify(data),
                 headers: {"Content-Type": "application/json"},
-                method: type
+                method: 'POST'
             })
         }
         else
-        {               
+        {   
             return await fetch(`${url}/${dados.curriculo.id}`, 
             {
                 body: JSON.stringify(data),
                 headers: {"Content-Type": "application/json"},
                 method: type
             })
-
-            
         }
     }
 
 
     const onSubmit = async (data: IFormResume) => 
     {
-
+    
         try 
         {
             const response = await saveFormData(data)
