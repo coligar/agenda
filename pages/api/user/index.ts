@@ -101,11 +101,11 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                            sumary: '' 
                         }
                     },
-                    curriculo:{
+                   /* curriculo:{
                         create:{
                             sumary: 'Teste currículo',
                         }
-                    },
+                    },*/
                 }
             })
         
