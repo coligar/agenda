@@ -73,6 +73,7 @@ const LoginForm: NextPage<Props> = (props) =>
     
     async function saveFormData(data: IFormInput) 
     {
+        console.log(data)
         if(type === 'POST')
         {
             return await fetch(url, 

@@ -46,6 +46,8 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
 
             let login_response: any
 
+            console.log(response)
+
             if(response.length === 0)
             {
                 status_code = 404
