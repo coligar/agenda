@@ -11,6 +11,7 @@ import no_resume_pick from '/public/images/system/no_resume.jpg'
 import Resume from '../../../components/form/resumeold';
 import { useGetData } from '../../../hooks/useRequest';
 import axios from 'axios';
+import useSWR from "swr"
 
 interface IType 
 {
@@ -53,10 +54,17 @@ const Candidate = (props:any) =>
         id: 1
     }
 
+    const { data: id } = useSWR("id", async key => {
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        const value = localStorage.getItem(key);
+        return !!value ? value : undefined;
+      });
+
+
     const [activeNotification, setActiveNotification] = useState(has_notification)
     const [activeLog, setActiveLog] = useState(is_active_log)
     const [activeResume,  setActiveResume] = useState<IType>({is_visible: undefined})
-    const {data: user} = useGetData(`api/user/${localStorage.getItem('id')}`)
+    const {data: user} = useGetData(`api/user/${id}`)
 
 
     if (!user) return <div>Loading...</div>
