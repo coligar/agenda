@@ -1,8 +1,7 @@
 import Home from "../pages/home"
 import LayoutMain from "../components/layouts/main"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import useSWR from "swr"
-import { useGridApiEventHandler } from "@mui/x-data-grid"
 import { useRouter } from 'next/router'
 
 const Main = () =>
@@ -15,18 +14,10 @@ const Main = () =>
     return !!value ? value : undefined;
   });
 
-  const { data: name } = useSWR("name", async key => {
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    const value:any = localStorage.getItem(key);
-    console.log(value)
-    return !!value ? JSON.parse(value) : undefined;
-  });
-
   useEffect(() => {
     if(!currentLevel) router.push('login')
   });
 
-  
   if (!currentLevel) return <div>Loading...</div>
 
   return (

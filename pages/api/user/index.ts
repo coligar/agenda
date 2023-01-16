@@ -1,4 +1,3 @@
-import { AreaActivity } from './../../../node_modules/.prisma/client/index.d';
 import { prisma } from "../../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 

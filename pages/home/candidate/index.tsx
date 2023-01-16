@@ -1,5 +1,5 @@
 import style from './Candidate.module.css'
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState} from 'react'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider';
 import Confirmation from '../../../components/notifications/confirmation'
@@ -10,7 +10,6 @@ import no_log_pick from '/public/images/system/no_log.jpg'
 import no_resume_pick from '/public/images/system/no_resume.jpg'
 import Resume from '../../../components/form/resumeold';
 import { useGetData } from '../../../hooks/useRequest';
-import axios from 'axios';
 import useSWR from "swr"
 
 interface IType 

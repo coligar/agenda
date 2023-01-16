@@ -1,26 +1,17 @@
 import type {NextPage} from 'next'
 import style from './users.module.css'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import { styled } from '@mui/material/styles'
 import InputAdornment from '@mui/material/InputAdornment'
 import Paper from '@mui/material/Paper'
 import Divider from '@mui/material/Divider'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import {useForm, UseFormSetValue, Controller} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup"
 import { toast } from "react-toastify"
 import { useEffect } from 'react'
-import { mutate } from 'swr'
 import { useGetData } from '../../../hooks/useRequest'
-import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Tooltip } from '@mui/material'
-import IconButton from '@mui/material/IconButton'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { TextField, MenuItem, Button } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
-import DateRangeIcon from '@mui/icons-material/DateRange'
 import PinIcon from '@mui/icons-material/Pin'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone'
@@ -33,12 +24,10 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import RoomIcon from '@mui/icons-material/Room'
 import SchoolIcon from '@mui/icons-material/School'
 import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns'
-import StoreIcon from '@mui/icons-material/Store'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import 'dayjs/locale/pt-br'
 
 
