@@ -97,7 +97,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     },
                     curriculo:{
                         create:{
-                            sumary: 'Uma breve descrição sobre você aqui'
+                            sumary:null,
                         }
                     },
                     resume:{
