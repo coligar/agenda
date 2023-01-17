@@ -8,6 +8,7 @@ interface IUser
   name: string
   role?: string
   avatar?: string
+  area_activityId?: string;
 }
 
 interface IGetUserData
@@ -25,21 +26,22 @@ const UsersSimpleList = (props: IGetUserData) =>
     {
         await axios.get(`api/user/${id}`).then(res => res.data).then((res)=>
         {
-        let dados = 
-        {
-            id: res.id,
-            name: res.name,
-            lastname: res.lastname,
-            email: res.email,
-            role: res.role,
-            sex: res.sex
-        }
+            let dados = 
+            {
+                id: res.id,
+                name: res.name,
+                lastname: res.lastname,
+                email: res.email,
+                role: res.role,
+                sex: res.sex,
+                area_activityId: res.area_activityId
+            }
 
-        props.onClick(dados)
+            props.onClick(dados)
 
         }).catch((error) => 
         {
-        toast.error(error, { hideProgressBar: false, autoClose: 2000 })
+            toast.error(error, { hideProgressBar: false, autoClose: 2000 })
         })
     }
 

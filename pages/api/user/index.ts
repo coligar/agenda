@@ -3,7 +3,23 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, resp: NextApiResponse)
 {
-    const { email, name, lastname, role, avatar, birth_date, cpf, rg, sex, password} = req.body
+    const { 
+        email, 
+        name, 
+        lastname, 
+        role, 
+        avatar, 
+        birth_date, 
+        cpf, 
+        rg, 
+        sex, 
+        password, 
+        area_activityId,
+        have_desability,
+        own_car,
+        scholarity_id,
+        phone,
+    } = req.body
 
     try 
     {
@@ -20,7 +36,20 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
             response = await prisma.user.findMany(
             {
                 orderBy:{role:'desc'},
-                include:{address:true}
+                include:{
+                    address:true,
+                    email_contact:true,
+                    area_activity: true,
+                    phone_contact: true,
+                    resume:{
+                        include:{
+                            experience: true,
+                        },
+                    },
+                    schedule: true,
+                    curriculo: true,
+                    scholarity: true,
+                }
             })
         }
 
@@ -39,7 +68,43 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     cpf,
                     rg,
                     sex,
-                    password
+                    password,
+                    area_activityId,
+                    have_desability,
+                    own_car,
+                    scholarity_id,
+                    email_contact:
+                    {
+                        create:
+                        {
+                            email: email,
+                            is_default_email: true,
+                        }
+                    },
+                    phone_contact:
+                    {
+                        create:
+                        {
+                            phone,
+                            is_default_phone: true,
+                        }
+                    },
+                    address:{
+                        create:{
+                           complement: '' 
+                        }
+                    },
+                    resume:{
+                        create:
+                        {
+                           sumary: '' 
+                        }
+                    },
+                   /* curriculo:{
+                        create:{
+                            sumary: 'Teste currículo',
+                        }
+                    },*/
                 }
             })
         

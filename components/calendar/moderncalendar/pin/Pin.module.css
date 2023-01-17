@@ -1,0 +1,49 @@
+.schedule_pin
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4px 6px;
+    margin: 14px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #040E28;
+    align-items: center;
+    border-radius:28px;
+    overflow: hidden;
+    margin: 7px 10px;
+}
+
+.schedule_pin .data,  .schedule_pin .time
+{
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+.date{
+    width: 50%;
+}
+
+.time{
+    width: 50%;
+    justify-content: flex-end;
+}
+
+.data .candidate_name
+{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    font-weight: 600;
+}
+.interviewer
+{
+    font-size: 10px;
+    text-transform: none;
+}
+
+.schedule_pin .data
+{
+    margin-right: 20px;
+    font-weight: 600;
+}

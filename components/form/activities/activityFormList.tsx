@@ -27,10 +27,10 @@ const ActivityFormList = (props: IGetActivityAreas) =>
             toast.success('Área de atuação excluída com sucesso', { hideProgressBar: false, autoClose: 2000 })
         }).catch((error) =>
         {
-        toast.error(error, { hideProgressBar: false, autoClose: 2000 })
+            toast.error(error, { hideProgressBar: false, autoClose: 2000 })
         }).then(() => 
         {
-        mutate('/api/activity')
+            mutate('/api/activity')
         })
     }
 

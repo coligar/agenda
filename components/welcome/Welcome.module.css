@@ -1,0 +1,10 @@
+.welcome_message{
+    font-weight:light;
+    color: gray;
+    font-size:12px;
+}
+
+.username{
+    font-weight:500;
+    color:gray;
+}

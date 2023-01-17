@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -12,24 +11,29 @@ datasource db {
 
 model Schedule {
   id              String         @id @default(cuid())
-  day             DateTime       @db.Date
+  day             DateTime       @db.DateTime(0)
   starttime       DateTime       @db.Time(0)
   endtime         DateTime       @db.Time(0)
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
-  userId          String?        @unique
+  userId          String?
   status          StatusSchedule @default(ACTIVE)
-  interviewer     String?        @unique
-  schedule_typeId String?        @unique
-  area_activityId String?        @unique
+  interviewer     String?
+  schedule_typeId String?
+  area_activityId String?
+  note            String?        @db.LongText
   schedule_type   ScheduleType?  @relation(fields: [schedule_typeId], references: [id])
   area_activity   AreaActivity?  @relation(fields: [area_activityId], references: [id])
-  user            User?          @relation(fields: [userId], references: [id])
+  user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([schedule_typeId])
+  @@index([area_activityId])
 }
 
 model User {
   id                    String        @id @default(cuid())
-  email                 String        @unique
+  email                 String
   name                  String
   role                  Role          @default(USER)
   avatar                String?
@@ -38,7 +42,7 @@ model User {
   account_verified      Boolean       @default(false)
   account_verified_date DateTime?
   birth_date            DateTime?     @db.Date
-  cpf                   String?
+  cpf                   String?       @unique
   have_desability       Boolean       @default(false)
   lastname              String?
   own_car               Boolean       @default(false)
@@ -46,50 +50,129 @@ model User {
   rg                    String?
   sex                   Sex?
   status                StatusUser    @default(NOTVERIFIED)
-  area_activityId       String?       @unique
+  area_activityId       String?
+  scholarity_id         String?
+  schedule              Schedule[]
   area_activity         AreaActivity? @relation(fields: [area_activityId], references: [id])
-  schedule              Schedule?
+  scholarity            Scholarity?   @relation(fields: [scholarity_id], references: [id])
+  resume                Resume?
+  curriculo             Curriculo?
   address               Address[]
-  contact               Contact[]
+  email_contact         Email[]
+  phone_contact         Phone[]
+
+  @@index([area_activityId])
+  @@index([scholarity_id])
+}
+
+model Resume {
+  id         String                   @id @default(cuid())
+  sumary     String?                  @db.Text
+  userId     String                   @unique
+  createdAt  DateTime                 @default(now())
+  updatedAt  DateTime                 @updatedAt
+  user       User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  experience ProfessionalExperience[]
+}
+
+model ProfessionalExperience {
+  id          String   @id @default(cuid())
+  company     String   @db.VarChar(255)
+  admission   DateTime @db.Date
+  resignation DateTime @db.Date
+  activity    String   @db.MediumText
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  resumeId    String
+  resume      Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@index([resumeId])
+}
+
+model Curriculo {
+  id                      String    @id @default(cuid())
+  sumary                  String?   @db.Text
+  last_company            String?   @db.VarChar(255)
+  last_admission          DateTime? @db.Date
+  last_resignation        DateTime? @db.Date
+  last_activity           String?   @db.MediumText
+  penultimate_company     String?   @db.VarChar(255)
+  penultimate_admission   DateTime? @db.Date
+  penultimate_resignation DateTime? @db.Date
+  penultimate_activity    String?   @db.MediumText
+  userId                  String    @unique
+  createdAt               DateTime  @default(now())
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model AreaActivity {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  color    String    @unique
-  schedule Schedule?
-  user     User?
+  id       String     @id @default(cuid())
+  name     String     @unique
+  color    String     @unique
+  schedule Schedule[]
+  user     User[]
 }
 
 model Address {
-  id         String  @id @default(cuid())
-  zip        String
-  address    String
-  number     String
+  id         String   @id @default(cuid())
+  zip        String?
+  address    String?
+  number     String?
   complement String?
-  district   String
-  city       String
-  uf         String
+  district   String?
+  city       String?
+  uf         String?
   userId     String
-  user       User    @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
-model Contact {
-  id                 String      @id @default(cuid())
-  email              String?     @unique
-  phone              String?
-  userId             String
-  contact_type       ContactType @default(RESIDENTIAL)
-  is_default_contact Boolean     @default(false)
-  user               User        @relation(fields: [userId], references: [id])
+model Email {
+  id               String      @id @default(cuid())
+  email            String?     @unique
+  userId           String
+  contact_type     ContactType @default(PERSONAL)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  is_default_email Boolean     @default(false)
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Phone {
+  id               String      @id @default(cuid())
+  phone            String?     @unique
+  userId           String
+  contact_type     ContactType @default(RESIDENTIAL)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  is_default_phone Boolean     @default(false)
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Scholarity {
+  id   String @id @default(cuid())
+  name String
+  user User[]
 }
 
 model ScheduleType {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  icon     String    @unique
-  color    String    @unique
-  schedule Schedule?
+  id        String     @id @default(cuid())
+  name      String     @unique
+  icon      String     @unique
+  color     String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  type      String
+  schedule  Schedule[]
 }
 
 enum StatusUser {
@@ -104,6 +187,8 @@ enum StatusSchedule {
   RESCHEDULED
   CANCELED
   FINISHED
+  WAITING
+  CONFIRMED
 }
 
 enum Role {
@@ -119,4 +204,5 @@ enum Sex {
 enum ContactType {
   RESIDENTIAL
   COMMERCIAL
+  PERSONAL
 }

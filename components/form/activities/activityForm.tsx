@@ -19,7 +19,7 @@ interface Props
 {
     url: string
     type: string
-    dados: any
+    dados?: any
 }
 
 
@@ -42,6 +42,8 @@ const setInputValues = (data:any, setValue:UseFormSetValue<IFormInput>) =>
 const ActivityForm: NextPage<Props> = (props) => 
 {
     const { url, type, dados } = props
+
+    let button_name: string = (type === 'POST') ? 'Cadastrar' : 'Atualizar'
 
     const {
         register,
@@ -78,48 +80,56 @@ const ActivityForm: NextPage<Props> = (props) =>
             })
         }
         else
-        {           
+        {     
             return await fetch(`${url}/${dados.id}`, 
             {
                 body: JSON.stringify(data),
                 headers: {"Content-Type": "application/json"},
                 method: type
-            })
+            }) 
         }
 
     }
 
 
     const onSubmit = async (data: IFormInput) => 
-    {
-        const response = await saveFormData(data)
-        let resp = await response.json()
-        
-        if (response.status === 400) 
+    { 
+        try 
         {
-            const fieldToErrorMessage:{[fieldName: string]: string} = await response.json()
-            for (const [fieldName, errorMessage] of Object.entries(fieldToErrorMessage)) 
+            const response = await saveFormData(data)
+            let resp = await response?.json()
+            
+            if (response?.status === 400) 
             {
-                toast.error(`Erro: ${errorMessage} `)
-            }
-        } 
-        else if (response.ok) 
-        {
-            if(type === 'POST')
+                const fieldToErrorMessage:{[fieldName: string]: string} = await response?.json()
+                for (const [fieldName, errorMessage] of Object.entries(fieldToErrorMessage)) 
+                {
+                    toast.error(`${errorMessage}`)
+                }
+            } 
+            else if (response?.ok) 
             {
-                reset({
-                    name:'',
-                    color:'',
-                })
-            }
+                if(type === 'POST')
+                {
+                    reset({
+                        name:'',
+                        color:'',
+                    })
+                }
 
-            toast.success(resp.message, { hideProgressBar: false, autoClose: 2000 })
-            mutate('/api/activity');
+                toast.success(resp.message, { hideProgressBar: false, autoClose: 2000 })
+                mutate('/api/activity');
+            } 
+            else 
+            {
+                toast.error(resp.message, { hideProgressBar: false, autoClose: 2000 })
+            }
         } 
-        else 
+        catch (error) 
         {
-            toast.error(resp.message, { hideProgressBar: false, autoClose: 2000 })
+            toast.error(`A área de atuação informada não existe para atualização.`)
         }
+        
     }
 
 
@@ -145,7 +155,7 @@ const ActivityForm: NextPage<Props> = (props) =>
                 <p className='error'>{errors.color?.message}</p>
                 
                 <Button type="submit" variant="contained" sx={{ mt: 3 }} disabled={isSubmitting}>
-                    {isSubmitting ? "salvando..." : "Cadastrar"}
+                    {isSubmitting ? "salvando..." : `${button_name}`}
                 </Button>
             
         </form>

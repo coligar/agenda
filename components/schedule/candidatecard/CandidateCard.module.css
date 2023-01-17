@@ -1,0 +1,83 @@
+.candidate_tag
+{
+    display: flex;
+    flex-direction: row;
+    width:100%;
+    padding: 15px 10px;
+    border-bottom: 1px solid #eee;
+    transition: 0.2s;
+}
+
+.candidate_tag:hover
+{
+    background-color: #eee;
+    cursor: pointer;
+}
+
+.candidate_img
+{
+    display: flex;
+    padding: 0px 5px;
+    justify-content:center;
+    align-items: center;
+}
+
+.candidate_content
+{
+    display: flex;
+    flex-direction:column;
+    width: 100%;
+    overflow: hidden;
+}
+
+.candidate_content_header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: space;
+    width: 100%;
+    align-items: center;
+}
+
+
+.candidate_name, .candidate_date
+{
+    flex-direction: row;
+}
+.candidate_bullet
+{
+    display: flex;
+}
+
+.candidate_name
+{
+    text-overflow: ellipsis;
+    justify-content: left;
+    align-items: center;
+    padding-right: 2px;
+    color: #6f6e76;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width:55%;
+}
+
+.candidate_date
+{
+    font-size: 10px;
+    justify-content: right;
+    align-items: center;
+    display: flex;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.candidate_description
+{
+    padding:4px 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width:98%;
+}

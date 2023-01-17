@@ -1,0 +1,63 @@
+.container
+{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.colicon
+{
+    display:flex;
+    flex-direction: row;
+    color: #3B92E7;
+    padding: 0px 20px 0px 15px;
+    font-size:45px
+}
+
+.colform
+{
+    display:flex;
+    flex-direction:column;
+    color: #707070;
+    width: 90%;
+}
+
+.form_lines 
+{
+    display:block;
+    padding:0px 12px;
+    width: 100%;
+    font-size: 14px;
+    line-height:22px;
+    margin-bottom:10px;
+}
+
+.space-5{
+    width: 5px;
+}
+.space-10{
+    width: 10px;
+}
+
+.form_double 
+{
+    display:flex;
+    padding:0px 12px;
+    width: 100%;
+    font-size: 14px;
+    line-height:22px;
+    margin-bottom:10px;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.footer
+{
+    display:flex;
+    border-top: solid 1px rgba(112, 112, 112, 0.14);
+    flex: 1;
+    padding: 10px 5px 0px 5px;
+    justify-content: flex-end;
+    margin-top: 15px;
+    font-size: 14px;
+}

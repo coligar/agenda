@@ -1,0 +1,66 @@
+.container
+{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.colicon
+{
+    display:flex;
+    flex-direction: row;
+    color: #3B92E7;
+    padding: 0px 10px 0px 0px;
+}
+
+.userinfo
+{
+    display:flex;
+    flex-direction:column;
+    color: #707070;
+    width: 100%;
+}
+
+.userinfohead
+{
+    display:flex;
+    flex-direction:column;
+    border-bottom: solid 2px rgba(112, 112, 112, 0.14);
+    padding: 0px 0px 5px 0px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.commentarea
+{
+    display:flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 300px;
+    margin-bottom: 15px;
+}
+
+
+
+.form_lines 
+{
+    display:flex;
+    flex-direction:row;
+    padding:10px;
+    width: 100%;
+    font-size: 14px;
+    line-height:22px;
+    margin-bottom:10px;
+    border-bottom: dashed 1px rgba(112, 112, 112, 0.14);
+}
+
+.footer
+{
+    display:flex;
+    border-top: solid 1px rgba(112, 112, 112, 0.14);
+    flex: 1;
+    padding: 10px 5px 0px 5px;
+    justify-content: flex-end;
+    margin-top: 15px;
+    font-size: 14px;
+}

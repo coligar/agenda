@@ -18,7 +18,8 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
         have_desability, 
         own_car,
         status,
-        area_activityId 
+        area_activity,
+        scholarity_id, 
     } = req.body
 
     try 
@@ -52,7 +53,8 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     have_desability, 
                     own_car,
                     status,
-                    area_activityId 
+                    area_activity,
+                    scholarity_id,
                 }
             })
 
@@ -68,9 +70,18 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
                     id: id?.toString()
                 },
                 include:{
-                    address: true,
-                    contact: true,
+                    address:true,
+                    email_contact:true,
+                    area_activity: true,
+                    phone_contact: true,
+                    resume:{
+                        include:{
+                            experience: true,
+                        },
+                    },
                     schedule: true,
+                    curriculo: true,
+                    scholarity: true,
                 }
             })
         }

@@ -1,0 +1,203 @@
+.logomobile,
+.menumobile
+{
+    visibility:hidden;
+    display:none;
+}
+
+.header_wrapper, 
+.logo, 
+.nav_left,
+.content_nav_left, 
+.nav,
+.chat,
+.sidebar,
+.side_profiler,
+.content
+{
+    display:flex;
+}
+
+.header_wrapper
+{
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background-color:#F5F5F5;
+    position:fixed;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    max-height: 65px;
+    z-index: 2;
+}
+
+.header_wrapper .logo, .header_wrapper .nav_left, .header_wrapper .nav
+{   
+    align-items: center;
+    flex: 1;
+}
+
+.header_wrapper .logo
+{   
+    justify-content: center;
+    padding: 3px;
+}
+
+.header_wrapper .nav_left
+{   
+    justify-content: left;
+}
+
+.header_wrapper .nav_left .content_nav_left{
+    padding-left: 60px;
+}
+
+.header_wrapper .nav_left .content_nav_left .item
+{
+    padding: 0 6px;
+}
+
+.header_wrapper .nav
+{
+    justify-content:right;
+}
+
+.header_wrapper .nav .avatar, .header_wrapper .nav .notifications
+{
+    padding:4px;
+}
+
+.header_wrapper .nav .welcome
+{
+    padding:2px 10px 5px 2px;
+}
+
+.header_wrapper .nav .chat
+{
+    background-color: #2C2C2C;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    color: "#AAAAAA";
+    padding:10px;
+    margin-left: 20px;
+    height:100vh;
+}
+
+.sidebar
+{
+    background-color: #FAFAFA;
+    border-right: solid 1px #E2DFDF;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: 55px;
+    min-width: 55px;
+    position: fixed;
+    height: 100%;
+    z-index: 2;
+}
+
+.sidebar .side_profiler
+{
+    background-color: #2C2C2C;
+    width:100%;
+    color:white;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 0 43px 0;
+    margin-bottom: 37px;
+}
+
+.content_wrapper
+{
+    background-color: white;
+    height: 100vh;
+}
+
+.content_wrapper .content
+{
+    padding: 75px 35px 5px 90px;
+}
+
+
+@media screen and (max-width: 768px) 
+{
+    .header_wrapper .nav .welcome
+    {
+        visibility: hidden;
+        display: none;
+    }
+    .header_wrapper .nav .chat
+    {
+        margin-left: 5px;
+    }
+
+    .content_wrapper .content
+    {
+        padding: 75px 10px 5px 65px;
+    }
+}
+
+
+@media screen and (max-width: 540px) 
+{
+    .logo, 
+    .item, 
+    .sidebar, 
+    .side,
+    .chatdesktop
+    {
+        visibility: hidden;
+        display: none;
+    }
+
+    .logomobile, .menumobile
+    {
+        visibility: visible;
+        display: flex;
+    }
+
+    .header_wrapper .nav_left .content_nav_left
+    {
+        padding-left: 5px;
+    }
+
+    .header_wrapper .nav_left
+    {   
+        align-items: center;
+        flex: 1;
+    }
+
+    .header_wrapper .nav
+    {   
+        align-items: center;
+        flex: 3;
+    }
+
+    .content_wrapper .content
+    {
+        padding: 75px 10px 5px 10px;
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width: 414px) 
+{
+
+    .header_wrapper .nav
+    {   
+        align-items: center;
+        flex: 2;
+    }
+    .header_wrapper .logo
+    {   
+        justify-content: right;
+        padding: 3px;
+    }
+
+}

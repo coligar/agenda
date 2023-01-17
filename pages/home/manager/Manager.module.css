@@ -1,0 +1,650 @@
+
+.container
+{
+    display: flex;
+    flex-direction: column;
+    flex:1;
+}
+
+
+.manager_schedule_area
+{
+    flex:1;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-top: 1px solid #EBEBEB;
+}
+
+.main_title{
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+}
+
+.manager_resume_area 
+{
+    display: 'flex';
+    flex-direction: column;
+    border-right: 1px solid #EBEBEB;
+    padding-top: 45px;
+    width: 100%;
+    padding-right: 25px;
+}
+
+.manager_warning_area
+{
+    display: flex;
+    flex-direction: column;
+    padding-top: 45px;
+    width: 35%;
+}
+
+.manager_schedule_area h2
+{
+    flex-direction: column;
+    margin: 0 0 1px 0;
+    font-weight: 600;
+    color:rgb(0, 0, 0, 0.6);
+    font-size:16px;
+    text-transform:uppercase;
+}
+
+.manager_schedule_area p
+{
+    color: #707070;
+    font-size: 13px;
+    padding: 0;
+    margin: 2px 0 25px 0;
+}
+
+.manager_schedule_area span.feature
+{
+    color:#3B92E7;
+}
+
+.schedule
+{
+    display: flex;
+    width: 100%;
+    box-shadow: 0 0.1em 0.4em rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.entrance, .candidate_list,  .candidate_resume, .warning_area
+{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/*Menu principal*/
+
+.candidate_resume
+{
+    height:100%;
+}
+
+.entrance
+{
+    width: 15%;
+    border-right: 1px solid #eee;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.header
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    height:90px;
+    width: 100%;
+    background-color: #001c0e;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+}
+
+.header_candidate_area
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:97px;
+    width: 100%;
+    border-bottom: solid 1px #eee;
+    padding: 0 20px;
+}
+
+.sidebar_left_menu
+{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overflow-y: auto;
+    width: 100%;
+    height:100vh;
+}
+
+.areas
+{
+    display: flex;
+    flex-direction:column;
+    padding: 30px 0;
+    border-bottom: solid 1px #eee;
+    height:90px;
+    width: 100%;
+    height: auto;
+    font-size:14px;
+    padding-bottom: 30px;
+}
+
+.area_name .area_title, .area_name .area_count, .areas_total, .areas_title
+{
+    display: flex;
+    align-items: center;
+}
+
+.itens
+{
+    display: flex;
+    padding: 15px 0 6px 0;
+    flex-direction: column;
+    width: 100%;
+    line-height: 25px;
+    border-bottom: solid 1px #eee;
+    margin-bottom: 3px;
+    white-space: nowrap;
+}
+
+.areas_title
+{
+    padding: 0 15px;
+}
+
+.areas_total
+{
+    justify-content: space-between;
+    padding: 1px 15px 0px 15px;
+    font-size: 13px;
+}
+
+.noevent
+{
+    flex-direction:row;
+    align-items:center;
+    justify-content: center;
+    width: 100%;
+    height:100vh;
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(77,79,92, 0.45);
+    text-transform: uppercase;
+}
+
+/*Listagem de candidatos*/
+
+.manager_schedule_area .candidate_list
+{
+    width: 25%;
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+    margin-left: -1px;
+    border-collapse: collapse;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.candidate
+{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overflow-y:auto;
+    max-height: 100vh;
+    font-size:13px;
+}
+
+
+/*Área de gerenciamento de currículos*/
+.manager_schedule_area .candidate_resume
+{
+    width:60%;
+}
+
+
+/*Área de avisos*/
+
+.warning_area{
+    display: flex;
+    width: 100%;
+    max-height: 100%;
+}
+
+.schedule_changes
+{
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #EBEBEB;
+    padding: 10px 10px 15px 25px;
+    width: auto;
+    max-height: 410px;
+    overflow: hidden;
+    overflow-y: auto;
+    align-items: center;
+}
+
+
+@media screen and (max-width:1366px) 
+{
+
+    .entrance
+    {
+        width: 17%;
+        height: auto;
+    }
+
+    .sidebar_left_menu
+    {
+        height:auto;
+    }
+
+    .header_candidate_area
+    {
+        padding: 12px 0;
+        height: 97px;
+    }
+
+    .manager_schedule_area .candidate_list
+    {
+        height: 90vh;
+        width: 28%;
+    }
+
+    .manager_schedule_area .candidate_resume
+    {
+        width:55%;
+    }
+
+    .schedule
+    {
+        height: auto;
+    }
+
+    .candidate
+    {
+        height: 100%;
+    }
+
+
+    .schedule_changes
+    {
+        max-height: 410px;
+    }
+}
+
+@media screen and (max-width:1024px) 
+{
+
+    .entrance
+    {
+        width: 17%;
+        height: auto;
+    }
+
+    .header_candidate_area
+    {
+        padding: 12px 0;
+        height: 90px;
+    }
+
+    .sidebar_left_menu
+    {
+        height:auto;
+    }
+
+    .manager_schedule_area .candidate_list
+    {
+        height: 100%;
+        width: 28%;
+    }
+
+    .manager_schedule_area .candidate_resume
+    {
+        width:55%;
+    }
+
+    .schedule
+    {
+        height: auto;
+    }
+
+    .candidate
+    {
+        height: 100%;
+    }
+
+    .schedule_changes
+    {
+        max-height: 410px;
+    }
+}
+
+
+@media screen and (max-width: 812px) 
+{
+
+    .schedule
+    {
+        flex-direction: column;
+        padding: 0;
+        margin-left: 6px;
+    }
+
+    .entrance
+    {
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+        height: 50vh;
+        overflow: hidden;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        font-size:16px;
+    }
+
+    .manager_schedule_area .candidate_list
+    {
+        width: 100%;
+        max-height: 55vh;
+        overflow: hidden;
+        margin-bottom: 42px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .candidate
+    {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        overflow-y:auto;
+        max-height: 42vh;
+        font-size:13px;
+    }
+
+    .manager_schedule_area
+    {
+        flex-direction: column;
+    }
+
+    .manager_warning_area
+    {
+        padding-top: 45px;
+        width: 730px;
+    }
+
+    .manager_resume_area 
+    {
+        border-right: none;
+        padding-right: 0;
+    }
+
+    .schedule_changes
+    {
+        max-height: 410px;
+    }
+
+}
+
+@media screen and (max-width: 768px) 
+{
+
+    .schedule
+    {
+        flex-direction: column;
+        padding: 0;
+        margin-left: 6px;
+    }
+
+    .entrance
+    {
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+        height: 50vh;
+        overflow: hidden;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        font-size:16px;
+    }
+
+    .header
+    {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 10px 0;
+    }
+
+    .manager_schedule_area
+    {
+        width:100%;
+    }
+
+    .manager_schedule_area .candidate_list
+    {
+        width: 100%;
+        max-height: 55vh;
+        overflow: hidden;
+        margin-bottom: 42px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .candidate
+    {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        overflow-y:auto;
+        max-height: 42vh;
+        font-size:13px;
+    }
+
+    .manager_schedule_area .candidate_resume
+    {
+        width:100%;
+    }
+
+    .manager_warning_area
+    {
+        padding-top: 45px;
+        width: 730px;
+    }
+
+    .manager_resume_area 
+    {
+        border-right: none;
+        padding-right: 0;
+    }
+
+    .header_candidate_area
+    {
+        background-color:#eee;
+        padding: 10px 0;
+    }
+
+    .schedule_changes
+    {
+        max-height: 410px;
+    }
+
+}
+
+@media screen and (max-width: 540px) 
+{
+    .schedule
+    {
+        flex-direction: column;
+        padding: 0;
+        margin-left: 6px;
+    }
+
+    .entrance
+    {
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+        height: 30vh;
+        overflow: hidden;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+    }
+
+    .header
+    {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 10px 0;
+    }
+
+    .manager_schedule_area
+    {
+        width:100%;
+    }
+
+    .manager_schedule_area .candidate_list
+    {
+        width: 100%;
+        max-height: 42vh;
+        overflow: hidden;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .candidate
+    {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        overflow-y:auto;
+        max-height: 42vh;
+        font-size:13px;
+    }
+
+    .manager_schedule_area .candidate_resume
+    {
+        width:100%;
+    }
+
+
+    .manager_warning_area
+    {
+        padding-top: 45px;
+        width: 100%;
+    }
+
+    .manager_resume_area 
+    {
+        border-right: none;
+        padding-right: 0;
+    }
+    
+}
+
+@media screen and (max-width: 414px) 
+{
+    .container
+    {
+        display: flex;
+        flex-direction: column;
+        width: 200%;
+    }
+    .schedule
+    {
+        flex-direction: column;
+        padding: 0;
+        margin-left: 6px;
+        width: 100%;
+    }
+
+    .entrance
+    {
+        width: 100%;
+        border-bottom: 1px solid #ccc;
+        height: 30vh;
+        overflow: hidden;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+    }
+
+    .header
+    {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 10px 0;
+    }
+
+    .manager_schedule_area
+    {
+        width:100%;
+    }
+
+    .manager_schedule_area .candidate_list
+    {
+        width: 100%;
+        max-height: 37vh;
+        overflow: hidden;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .candidate
+    {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        overflow-y:auto;
+        max-height: 37vh;
+        font-size:13px;
+    }
+
+    .manager_schedule_area .candidate_resume
+    {
+        width:100%;
+    }
+    
+    .manager_resume_area 
+    {
+        border-right: none;
+        padding-right: 0;
+    }
+    
+    .manager_warning_area
+    {
+        padding-top: 45px;
+        padding-left: 10px;
+        width: 470px;
+    }
+
+    .warning_area
+    {
+        display: flex;
+        width: 470px;
+        max-height: 100%;
+    }
+
+    .schedule_changes
+    {
+        border-bottom: 1px solid #EBEBEB;
+        width: 460px;
+        max-height: 410px;
+        overflow: hidden;
+        overflow-y: auto;
+        align-items: center;
+        margin-right: 15px;
+    }
+
+}
