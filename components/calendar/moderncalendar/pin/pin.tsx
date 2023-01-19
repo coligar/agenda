@@ -133,8 +133,9 @@ const Pin = (props:any) =>
         }
     },[getCurrentInterview, getFutureInterviews, getPastInterviews])
     
-
-    switch (props.area.toString().toLocaleLowerCase()) 
+    icon_color = props.cor
+    bg = props.cor
+    /*switch (props.area.toString().toLocaleLowerCase()) 
     {
         case 'administrativo':
             icon_color = '#7472B5'
@@ -164,7 +165,7 @@ const Pin = (props:any) =>
         default:
             bg = '#eee'
             break
-    }
+    }*/
     
 
     if(props.type.toString().toLocaleLowerCase() === 'agendamentosolicitado')

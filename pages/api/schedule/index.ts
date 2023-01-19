@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
         area_activityId
     } = req.body
 
-    console.log(req.query)
+    console.log(req.query, req.body)
 
     try 
     {

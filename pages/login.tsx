@@ -1,14 +1,5 @@
-import Home from "../pages/home"
-import LayoutMain from "../components/layouts/main"
-import { useEffect, useState } from "react"
-import useSWR from "swr"
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
 import LoginForm from "../components/form/login/loginForm"
-import Link from "next/link";
 import { useRouter } from 'next/router'
 import { Button } from "@mui/material";
 

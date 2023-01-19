@@ -108,7 +108,7 @@ const LoginForm: NextPage<Props> = (props) =>
             window.localStorage.setItem('role', resp.role)
             window.localStorage.setItem('userData', resp)
 
-            console.log
+            console.time()
             mutate("role", resp.role)
             
             if (response.status === 400 || response.status === 500) 

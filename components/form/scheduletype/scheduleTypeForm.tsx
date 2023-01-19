@@ -81,7 +81,7 @@ const ScheduleTypeForm: NextPage<Props> = (props) =>
             {
                 body: JSON.stringify(data),
                 headers: {"Content-Type": "application/json"},
-                method: type
+                method: 'POST'
             })
         }
         else
@@ -102,9 +102,7 @@ const ScheduleTypeForm: NextPage<Props> = (props) =>
         try 
         {
             const response = await saveFormData(data)
-            let resp = await response?.json()
-
-            console.log(response)
+            let resp = await response.json()
             
             if (response?.status === 400) 
             {
@@ -134,9 +132,11 @@ const ScheduleTypeForm: NextPage<Props> = (props) =>
                 toast.error(resp.message, { hideProgressBar: false, autoClose: 2000 })
             }
         } 
-        catch (error) 
+        catch (error:any) 
         {
-            toast.error(`O tipo de agendamento informado não existe para atualização.`)
+            console.log(error)
+            //toast.error(`O tipo de agendamento informado não existe para atualização.`)
+            toast.error(JSON.stringify(error.message))
         }
         
     }
