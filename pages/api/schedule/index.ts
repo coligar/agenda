@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
         {
             response = await prisma.schedule.findMany(
             {
-                orderBy:{day:'asc'},
+                orderBy:{day:'desc'},
                 where:{status:'ACTIVE'},
                 include:{
                     user: true,
