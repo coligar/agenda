@@ -2,6 +2,9 @@ import { useRouter } from "next/router";
 import LayoutMain from "../../components/layouts/main"
 import useSWR from "swr";
 import { useEffect } from "react";
+import Grid from '@mui/material/Grid';
+import { Button } from "@mui/material";
+import UserSimpleForm from "../../components/form/users/userSimpleForm";
 
 const Users = () => 
 {
@@ -30,7 +33,22 @@ const Users = () =>
     return (
         <>   
             <LayoutMain>
-                <h1>Users</h1>
+                
+                <Grid
+                  container
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
+                  style={{ minHeight: '100vh' }}
+                  >
+                  <h1>Catastrar usuário</h1>
+                  <Grid item xs={3}>
+                      <h2>Login</h2>
+                      <UserSimpleForm url='api/user' type='POST' role='ADMIN'/>
+                  </Grid>   
+                  
+                  </Grid> 
             </LayoutMain>
         </>
     )

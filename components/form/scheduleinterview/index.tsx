@@ -81,7 +81,10 @@ const ScheduleInterview = (props:any) =>
     { 
         try 
         {
-            if(Number(new Date(data.day)) < Number(new Date()))
+            let schedule_date = new Date(data.day);
+            let current_date = new Date();
+            
+            if(Number(schedule_date.getDate()) < Number( current_date.getDate()))
             {
                 toast.error(`A data da entrevista informada, não pode ser anterior ao dia de hoje.`, { hideProgressBar: false, autoClose: 2000 })
                 return

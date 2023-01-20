@@ -187,24 +187,26 @@ const Pin = (props:any) =>
 
     return(
         <>
-            <div className={style.schedule_pin} style={{backgroundColor: bg, outline: border, border:'solid 2px #EEE', width: width, marginLeft: ml, opacity:opacity}}>
+            <div className={style.schedule_pin} style={{backgroundColor: bg, outline: border, border:'solid 2px #EEE', width: width, marginLeft: ml, opacity:opacity, color: 'white'}}>
                 <div className={style.data}>
                     <Avatar direction="row" name={props.name} width="28" avatar={avatar}/>
-                    <div className={style.candidate_name}>
+                    <div className={style.candidate_name} style={{opacity:0.8, color: 'white'}}>
                         {props.name}
                         <div className={style.interviewer}>{props.interviewer} | {props.area}</div>
                     </div>
                 </div>
                 <div className={style.time}>
                     <Box sx={{ width: '30%', marginRight:'10px' }}>
-                        <LinearProgress variant="determinate" color="inherit" style={{color: icon_color}} value={interviewprogress.progress}/>
+                        <LinearProgress variant="determinate" color="inherit" value={interviewprogress.progress}/>
                     </Box>
-                    <span style={{color:icon_color, marginRight:'7px'}}>
+                    <span style={{marginRight:'7px', opacity:0.7, color: 'white'}}>
                         {interviewprogress.progress}% 
                         {interviewcurrentduration}
                     </span>
-                    {interview_start} - {interview_end}               
-                    {icon}
+                    <span style={{marginBottom:'7px',opacity:0.7, color: 'white'}}>
+                        {interview_start} - {interview_end}               
+                        {icon}
+                    </span>
                 </div>
                 
             </div>       

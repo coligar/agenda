@@ -231,7 +231,7 @@ const Resumeview = (props:any) =>
                         <div className={style.candidate_resume_area}>
 
                             <div className={style.candidate_resume_area_status}>
-                                <Tag area={props.data.area_activity.name}/>
+                                <Tag area={props.data.area_activity.name} color={props.data.area_activity.color}/>
                                 <StatusResume type={schedule_type} time={schedule_date}/>
                             </div>
 

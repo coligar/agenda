@@ -47,7 +47,7 @@ const Manager = (props:any, fallback:any) =>
     let profiles: any[] = []
     
     //dado mocado. Ver como inserir quantidades de registros
-    const [menuInterviews, setMenuInterviews] = useState(
+    /*const [menuInterviews, setMenuInterviews] = useState(
         [
             {
                 id: 1,
@@ -76,19 +76,19 @@ const Manager = (props:any, fallback:any) =>
             {
                 id: 5,
                 label: "Cancel. Solicitados",
-                quantity: 13,
+                quantity: 0,
                 type: "cancelamentosolicitado"
             },
             {
                 id: 6,
                 label: "Reagen. Solicitados",
-                quantity: 5,
+                quantity: 0,
                 type: "reagendamentosolicitado"
             },
             {
                 id: 7,
                 label: "Agen. Solicitados",
-                quantity: 5,
+                quantity: 0,
                 type: "agendamentosolicitado"
             },
         ]
@@ -105,11 +105,11 @@ const Manager = (props:any, fallback:any) =>
             {
                 id: 2,
                 label: "Visualizados",
-                quantity: 775,
+                quantity: 0,
                 type: "visualizados"
             }
         ]
-    )
+    )*/
 
     if(activity && activity !== undefined)
     {
@@ -121,8 +121,8 @@ const Manager = (props:any, fallback:any) =>
         profiles = scheduletype.filter((item:any) => item.type === 'visualizados' || item.type === 'contratado')
     }
     
-    let total_interviews = menuInterviews.reduce((total, currentValue) => total = total + (currentValue.quantity) ? currentValue.quantity : 0, 0)
-    let total_profiles = menuProfile.reduce((total, currentValue) => total = total + (currentValue.quantity) ? currentValue.quantity : 0, 0)
+    //let total_interviews = menuInterviews.reduce((total, currentValue) => total = total + (currentValue.quantity) ? currentValue.quantity : 0, 0)
+    //let total_profiles = menuProfile.reduce((total, currentValue) => total = total + (currentValue.quantity) ? currentValue.quantity : 0, 0)
     
     if(users && users !== undefined)
     {
@@ -156,10 +156,10 @@ const Manager = (props:any, fallback:any) =>
                     key = {candidate.id}
                     name= {candidate.name + ' ' + candidate.lastname}
                     border= {candidate.area_activity.color} 
-                    img= {candidate.img}
+                    img= {candidate.avatar}
                     status= {candidate.status}
                     date= {candidate.date}
-                    description = 'Uma breve descrição'//{candidate.description} //alterar para descrição do atributo resume
+                    description = 'Descrição'//{candidate.curriculo?.sumary}
                     onClick = {() => getCandidateResume(candidate)}
                 /> 
         ))
@@ -252,7 +252,7 @@ const Manager = (props:any, fallback:any) =>
 
                                     <div className={style.areas_total}>
                                         <div>Total</div>
-                                        <div>{total_interviews}</div>
+                                        <div>0</div>
                                     </div>
 
                                 </div>
@@ -281,7 +281,7 @@ const Manager = (props:any, fallback:any) =>
 
                                     <div className={style.areas_total}>
                                         <div>Total</div>
-                                        <div>{total_profiles}</div>
+                                        <div>0</div>
                                     </div>
 
                                 </div>
