@@ -17,7 +17,8 @@ const Confirmation: NextPage<Props> = (props) =>
 {
     let show_confirm_buttons: boolean = false
     let user_info = props.dados
-    let user_schedule = props.dados.schedule.sort((a:any ,b: any) => (b.day - a.day))[0]
+    let user_schedule = props.dados.schedule.slice(-1)[0]
+
     return(
           
           <>  

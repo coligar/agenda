@@ -152,7 +152,6 @@ const ModernCalendar = (props:any) =>
 
             
                 {
-
                     data.data.filter((val:any, index:any) => {
 
                     if(searchTerm.type == '')
@@ -165,7 +164,7 @@ const ModernCalendar = (props:any) =>
                     }
 
                 }).map((item:any, index:any) => (
-
+                   
                     <div key={item.id} className={style.schedule_area_candidate_content_line}>
 
                         <div className={style.column_a}>
@@ -174,7 +173,7 @@ const ModernCalendar = (props:any) =>
 
                         </div>
 
-                        <Pin name={item.user.name + ' ' +item.user.lastname} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area_activity.name} type={'agendamentosolicitado'} avatar={item.user.avatar} day={data.date}/>
+                        <Pin name={item.user.name + ' ' +item.user.lastname} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area_activity.name} cor={item.area_activity.color} type={'agendamentosolicitado'} avatar={item.user.avatar} day={data.date}/>
 
                     </div>
                 ))}   

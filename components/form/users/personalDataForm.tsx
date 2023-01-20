@@ -41,8 +41,8 @@ interface IFormPersonalDataInput
     rg: string, 
     sex: string, 
     area_activityId: string,
-    have_desability: boolean,
-    own_car: boolean,
+    have_desability: boolean | string,
+    own_car: boolean | string,
     scholarity_id: string,
     zip: string,
     address: string,
@@ -97,8 +97,8 @@ const setInputValues = (data:any, setValue:UseFormSetValue<IFormPersonalDataInpu
         setValue("birth_date", (data.birth_date) ? data.birth_date : '')
         setValue("cpf", (data.cpf) ? data.cpf : '')
         setValue("rg", (data.rg) ? data.rg : '')
-        setValue("own_car", (data.own_car) ? data.own_car : 'N')
-        setValue("have_desability", (data.have_desability) ? data.have_desability : false)
+        setValue("own_car", (data.own_car) ? 'S' : 'N')
+        setValue("have_desability", (data.have_desability) ? 'S' : 'N')
         setValue("scholarity_id", (data.scholarity_id) ? data.scholarity_id : '')
         setValue("phone", (data.phone) ? data.phone : '')
         setValue("zip", (data.address.length > 0) ? data.address[0].zip : '')
@@ -150,6 +150,9 @@ const PersonalDataForm: NextPage<Props> = (props) =>
     
     async function saveFormData(data: IFormPersonalDataInput) 
     {
+        data['have_desability'] = (data.have_desability === 'S') ? true : false
+        data['own_car'] = (data.own_car === 'S') ? true : false
+
         if(type === 'POST')
         {
             return await fetch(url, 
@@ -708,8 +711,8 @@ const PersonalDataForm: NextPage<Props> = (props) =>
                                     }}
                                     sx={margin_fields}
                                 >
-                                    <MenuItem value={true as any}>Sim</MenuItem>
-                                    <MenuItem value={false as any}>Não</MenuItem>
+                                    <MenuItem value='S'>Sim</MenuItem>
+                                    <MenuItem value='N'>Não</MenuItem>
                                 </TextField>
                             }
                         />
@@ -781,8 +784,8 @@ const PersonalDataForm: NextPage<Props> = (props) =>
                                     }}
                                     sx={margin_fields}
                                 >
-                                    <MenuItem value={true as any}>Sim</MenuItem>
-                                    <MenuItem value={false as any}>Não</MenuItem>
+                                    <MenuItem value='S'>Sim</MenuItem>
+                                    <MenuItem value='N'>Não</MenuItem>
                                 </TextField>
                             }
                         />

@@ -47,6 +47,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
             let login_response: any
 
             console.log(response)
+            console.time()
 
             if(response.length === 0)
             {

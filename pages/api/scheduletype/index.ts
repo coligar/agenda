@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
 {
 
     const { name, icon, color, type } = req.body
-    
+    console.log(req.body)
     try 
     {
         let response: any
@@ -29,7 +29,10 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
             {
                 data:
                 {
-                    name, icon, color, type
+                    name,
+                    icon,
+                    color,
+                    type
                 }
             })
         
@@ -39,8 +42,15 @@ export default async function handler(req: NextApiRequest, resp: NextApiResponse
 
         resp.status(status_code).json(response)
     }
-    catch(error)
+    catch(error:any)
     {
-
+        if(error.code == 'P2002')
+        {
+            resp.status(400).json({message:'Não é possíel cadastrar um tipo de agenda utilizando o mesmo nome, ícone e cor'})
+            //resp.status(400).statusMessage='Não é possíel cadastrar um tipo de agenda utilizando o mesmo nome, ícone e cor'
+        }
+        else{
+            resp.status(error.code).json({message:error})
+        }
     }
 }
