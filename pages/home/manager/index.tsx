@@ -159,7 +159,7 @@ const Manager = (props:any, fallback:any) =>
                     img= {candidate.avatar}
                     status= {candidate.status}
                     date= {candidate.date}
-                    description = 'Descrição'//{candidate.curriculo?.sumary}
+                    description = {candidate.curriculo?.sumary}
                     onClick = {() => getCandidateResume(candidate)}
                 /> 
         ))

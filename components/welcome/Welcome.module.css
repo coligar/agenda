@@ -8,3 +8,9 @@
     font-weight:500;
     color:gray;
 }
+
+.content{
+    display:flex;
+    align-items: center;
+    gap:20px
+}

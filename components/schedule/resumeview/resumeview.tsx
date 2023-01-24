@@ -27,6 +27,7 @@ import CommentIcon from '@mui/icons-material/Comment'
 import ContratadoIcon from '@mui/icons-material/StarRate';
 
 import { useGetData } from '../../../hooks/useRequest'
+import sanitizeHtml from 'sanitize-html'
 
 const Resumeview = (props:any) => 
 {
@@ -74,7 +75,7 @@ const Resumeview = (props:any) =>
     
     useEffect(() => 
     {
-        let userHasSchedule = props.data.schedule.filter((x:any) => new Date(x.day) >= new Date(Date.now()))
+        let userHasSchedule = props.data.schedule.filter((x:any) => new Date(x.day).toLocaleDateString() >= new Date(Date.now()).toLocaleDateString())
         let hasPhone = props.data.phone_contact.filter((x:any) => x.contact_type !== 'PERSONAL')
         let hasCellPhone = props.data.phone_contact.filter((x:any) => x.contact_type === 'PERSONAL')
 
@@ -154,6 +155,10 @@ const Resumeview = (props:any) =>
         setAnchorEl(null)
     }
 
+    const createMarkup = () => {
+        return {__html: sanitizeHtml(props.data.curriculo.sumary)};
+    }
+
     return(
 
         <div id="print">
@@ -219,13 +224,13 @@ const Resumeview = (props:any) =>
                 <div className={style.candidate_resume_data}>
 
                     <div className={style.candidate_resume_avatar}>
-                        <Avatar direction="row" name={props.data.name} width="52" avatar={props.data.avatar}/>
+                        <Avatar direction="row" name={`${props.data.name} ${props.data.lastname}`} width="52" avatar={props.data.avatar}/>
                     </div>
 
                     <div className={style.candidate_resume_name_area}>
 
                         <div className={style.candidate_resume_name}>
-                            {props.data.name}
+                            {props.data.name} {props.data.lastname}
                         </div>
 
                         <div className={style.candidate_resume_area}>
@@ -355,7 +360,7 @@ const Resumeview = (props:any) =>
                         </div>
 
                         <div className={style.candidate_resume_body_line} style={{flexDirection:"column"}}>
-                            {(props.data.curriculo) ? props.data.curriculo.sumary : '-'}
+                            {(props.data.curriculo) ? <span dangerouslySetInnerHTML={createMarkup()}></span> : '-'}
                         </div>
 
                     </div>

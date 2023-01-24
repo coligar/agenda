@@ -34,11 +34,13 @@
     "react-draggable": "^4.4.5",
     "react-hook-form": "latest",
     "react-toastify": "latest",
+    "sanitize-html": "^2.8.1",
     "swr": "latest",
     "typescript": "4.9.3",
     "yup": "latest"
   },
   "devDependencies": {
+    "@types/sanitize-html": "^2.8.0",
     "prisma": "^4.8.1"
   }
 }

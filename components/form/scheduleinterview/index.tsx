@@ -1,10 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Style from './scheduleinterview.module.css'
-
-import { prisma } from '../../../lib/prisma'
-
 import DateRangeIcon from '@mui/icons-material/DateRange'
-import PersonIcon from '@mui/icons-material/Person'
 
 import {useForm, UseFormSetValue, Controller} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -12,8 +8,9 @@ import * as yup from "yup"
 import { toast } from 'react-toastify'
 
 import { useGetData } from '../../../hooks/useRequest'
+import { mutate } from 'swr'
 
-import { Input, TextField, Select, MenuItem, FormControl, InputLabel, Button, Tooltip, FormControlLabel, Paper, Switch, Divider, Box, Card, Collapse, CardContent, IconButton, CardHeader, InputAdornment, CardActions } from '@mui/material'
+import { Input, TextField, Select, MenuItem, FormControl, Button } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -117,6 +114,7 @@ const ScheduleInterview = (props:any) =>
                 reset()
                 toast.success(resp.message, { hideProgressBar: false, autoClose: 2000 })
             } 
+            mutate('api/schedule');
             props.closeWindow()
         } 
         catch (error) 
