@@ -112,6 +112,12 @@
     color: #545460;
 }
 
+.candidate_resume_body_line p{
+    line-height: 20px;
+    margin: 0 0 15px 0;
+    font-size: 14px;
+}
+
 .candidate_resume_body_line_title
 {
     border-bottom: 1px solid #eee;

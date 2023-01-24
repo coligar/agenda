@@ -1,7 +1,8 @@
-import style from "./CandidateCard.module.css";
+import style from "./CandidateCard.module.css"
 import Avatar from "../../avatar"
 import BulletSatus from "../../bullet/status"
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@mui/material/Tooltip'
+import sanitizeHtml from 'sanitize-html';
 
 
 const CandidateCard = (props:any) => 
@@ -17,6 +18,11 @@ const CandidateCard = (props:any) =>
     {
         candidate_name = `${props.name.split(' ')[0]} ${props.name.split(' ')[last_index_array]}`
     }
+
+    const createMarkup = () => {
+        return {__html: sanitizeHtml(props.description?.substring(0, 60))};
+    }
+    
 
     return(
 
@@ -44,7 +50,7 @@ const CandidateCard = (props:any) =>
                     </div>
 
                     <div className={style.candidate_description}>
-                        {props.description}
+                        <span dangerouslySetInnerHTML={createMarkup()}></span> 
                     </div>
 
                 </div>
@@ -56,3 +62,5 @@ const CandidateCard = (props:any) =>
 }
 
 export default CandidateCard
+
+

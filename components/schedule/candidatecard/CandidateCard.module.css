@@ -76,8 +76,17 @@
 .candidate_description
 {
     padding:4px 0;
+    display: block;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     max-width:98%;
+}
+
+.candidate_description p{
+    line-height: 12px;
+    margin: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

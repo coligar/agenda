@@ -41,8 +41,8 @@ interface IFormPersonalDataInput
     rg: string, 
     sex: string, 
     area_activityId: string,
-    have_desability: boolean | string,
-    own_car: boolean | string,
+    have_desability: string | boolean,
+    own_car: string | boolean,
     scholarity_id: string,
     zip: string,
     address: string,
@@ -89,6 +89,9 @@ const setInputValues = (data:any, setValue:UseFormSetValue<IFormPersonalDataInpu
     //console.log(data)
     if(data || data !== undefined)
     {
+        let own_car = data.own_car ? 'S' : 'N'
+        let have_dasability = data.have_desability ? 'S' : 'N'
+   
         setValue("name", (data.name) ? data.name : '');
         setValue("lastname", (data.lastname) ? data.lastname : '')
         setValue("email", (data.email) ? data.email : '')
@@ -97,8 +100,8 @@ const setInputValues = (data:any, setValue:UseFormSetValue<IFormPersonalDataInpu
         setValue("birth_date", (data.birth_date) ? data.birth_date : '')
         setValue("cpf", (data.cpf) ? data.cpf : '')
         setValue("rg", (data.rg) ? data.rg : '')
-        setValue("own_car", (data.own_car) ? 'S' : 'N')
-        setValue("have_desability", (data.have_desability) ? 'S' : 'N')
+        setValue("own_car", own_car)
+        setValue("have_desability", have_dasability)
         setValue("scholarity_id", (data.scholarity_id) ? data.scholarity_id : '')
         setValue("phone", (data.phone) ? data.phone : '')
         setValue("zip", (data.address.length > 0) ? data.address[0].zip : '')
@@ -682,6 +685,7 @@ const PersonalDataForm: NextPage<Props> = (props) =>
                         <Controller
                             name="have_desability"
                             control={control}
+                            defaultValue=""
                             rules={{ required: 'Campo obrigatório' }}
                             render={({ field }) => 
                         
@@ -756,6 +760,7 @@ const PersonalDataForm: NextPage<Props> = (props) =>
                         <Controller
                             name="own_car"
                             control={control}
+                            defaultValue=""
                             rules={{ required: 'Campo obrigatório' }}
                             render={({ field }) => 
                             

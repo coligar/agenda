@@ -71,7 +71,7 @@ const Candidate = (props:any) =>
     if(user)
     {
         activeResume.is_visible = true
-        let has_active_schedule = user.schedule.find((f:any) => new Date(f.day).toLocaleDateString() === new Date().toLocaleDateString())
+        let has_active_schedule = user.schedule.find((f:any) => new Date(f.day).toLocaleDateString() >= new Date().toLocaleDateString())
  
         if(user.schedule.length > 0 && has_active_schedule){
             has_notification.has_notification = true
