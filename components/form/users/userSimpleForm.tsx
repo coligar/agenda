@@ -1,4 +1,5 @@
 import type {NextPage} from 'next'
+import React from 'react'
 import {useForm, UseFormSetValue, Controller} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup"
@@ -6,8 +7,9 @@ import { toast } from "react-toastify"
 import { useEffect } from 'react'
 import { mutate } from 'swr'
 import { useGetData } from '../../../hooks/useRequest'
-import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Tooltip } from '@mui/material'
+import { TextField, Select, MenuItem, FormControl, InputLabel, Button, Tooltip, Checkbox } from '@mui/material'
 import { useRouter } from 'next/router'
+
 
 interface IFormInput 
 {
@@ -18,6 +20,7 @@ interface IFormInput
     sex: string | null
     password: string
     area_activityId : string | null
+    lgpd: boolean
 }
 
 interface Props 
@@ -35,7 +38,8 @@ const fieldvalidations = yup.object({
     email: yup.string().email('Email inválido').required('Campo obrigatório'),
     sex: yup.string().required('Campo obrigatório'),
     password: yup.string().required('Campo obrigatório'),
-    area_activityId: yup.string().required('Campo obrigatório')
+    area_activityId: yup.string().required('Campo obrigatório'),
+    lgpd: yup.bool().required('Campo obrigatório'),
 })
 
 const formfields: Array<string> = ['name', 'lastname', 'email', 'role', 'sex']
@@ -60,6 +64,7 @@ const UserSimpleForm: NextPage<Props> = (props) =>
 {
     const {data: areas} = useGetData('api/activity')
     const { url, type, role, dados} = props
+    const [state, setState] = React.useState(false);
     const router = useRouter()
 
     let button_name: string = (type === 'POST') ? 'Cadastrar' : 'Atualizar'
@@ -109,7 +114,12 @@ const UserSimpleForm: NextPage<Props> = (props) =>
         }
     }
 
+    const isLgpdChecked = ()=> 
+    {
+        (!state) ? setState(true) : setState(false);
+    }
 
+    
     const onSubmit = async (data: IFormInput) => 
     {
         try 
@@ -256,7 +266,23 @@ const UserSimpleForm: NextPage<Props> = (props) =>
             />
             <p className='error'>{errors.area_activityId?.message}</p>
 
-            <Button type="submit" variant="contained" sx={{ mt: 3 }} disabled={isSubmitting}>
+            <Controller
+                name="lgpd"
+                control={control}
+                defaultValue={true}
+                rules={{ required: 'Campo obrigarório' }}
+                render={({ field }) => 
+                    <>
+                    
+                    <Checkbox {...field}  size='small' required onChange={isLgpdChecked} checked={state} name='Teste'/>
+                    <label style={{fontSize:'13px', lineHeight:'15px'}}>Concordo em <strong>enviar meus dados pessoais</strong> e que os mesmos sejam manipulados pelo <strong>Grupo Cristofoletti</strong>. Estou ciente também de que esses dados serão <strong>excluídos após 180 dias</strong> caso eu não realize a atualização dos mesmos.</label>
+                    </>
+                }
+            />
+            <p className='error'>{errors.lgpd?.message}</p>
+
+
+            <Button type="submit" variant="contained" sx={{ mt: 3 }} disabled={!state}>
                 {isSubmitting ? "salvando..." : `${button_name}`}
             </Button>
             
@@ -266,3 +292,5 @@ const UserSimpleForm: NextPage<Props> = (props) =>
 }
 
 export default UserSimpleForm
+
+

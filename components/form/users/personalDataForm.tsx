@@ -254,7 +254,7 @@ const PersonalDataForm: NextPage<Props> = (props) =>
         <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent >
                 <Paper>
-                    <div className={style.form_lines}>
+                    <div className={style.form_lines} style={{paddingTop:'30px'}}>
                         <Controller
                             name="name"
                             control={control}
