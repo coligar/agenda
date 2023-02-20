@@ -89,8 +89,8 @@ const setInputValues = (data:any, setValue:UseFormSetValue<IFormPersonalDataInpu
     //console.log(data)
     if(data || data !== undefined)
     {
-        let own_car = data.own_car ? 'S' : 'N'
-        let have_dasability = data.have_desability ? 'S' : 'N'
+        let own_car = (data && data.own_car) ? 'S' : 'N'
+        let have_dasability =(data && data.have_desability) ? 'S' : 'N'
    
         setValue("name", (data.name) ? data.name : '');
         setValue("lastname", (data.lastname) ? data.lastname : '')
